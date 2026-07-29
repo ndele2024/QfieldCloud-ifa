@@ -1,0 +1,45 @@
+services:
+
+  app:
+    build:
+      context: ./docker-app
+      target: webserver_test
+    environment:
+      # we must use the same db for test and runserver
+      POSTGRES_DB: test_${POSTGRES_DB}
+      POSTGRES_DB_TEST: test_${POSTGRES_DB}
+      TEST_POSTGIS_DB_HOST: test_postgis_db
+      TEST_POSTGIS_DB_PORT: 5432
+      TEST_POSTGIS_DB_NAME: test_postgis_db_name
+      TEST_POSTGIS_DB_USER: test_postgis_db_user
+      TEST_POSTGIS_DB_PASSWORD: test_postgis_db_password
+
+  worker_wrapper:
+    environment:
+      # we must use the same db for test and runserver
+      POSTGRES_DB: test_${POSTGRES_DB}
+      POSTGRES_DB_TEST: test_${POSTGRES_DB}
+    scale: ${QFIELDCLOUD_WORKER_REPLICAS}
+
+  db:
+    environment:
+      POSTGRES_DB: test_${POSTGRES_DB}
+
+  test_postgis_db:
+    image: postgis/postgis:${POSTGIS_IMAGE_VERSION}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: test_postgis_db_name
+      POSTGRES_USER: test_postgis_db_user
+      POSTGRES_PASSWORD: test_postgis_db_password
+
+networks:
+  default:
+    # Use a custom driver
+    name: ${QFIELDCLOUD_DEFAULT_NETWORK:-${COMPOSE_PROJECT_NAME}_default}
+
+volumes:
+  # We use a different volume, just so that the test_ database
+  # gets created in the entrypoint.
+  postgres_data:
+    name: ${COMPOSE_PROJECT_NAME}_postgres_data_test

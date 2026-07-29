@@ -1,0 +1,11 @@
+services:
+
+  app:
+    build:
+      args:
+        DEBUG_BUILD: ${DEBUG}
+
+  nginx:
+    volumes:
+      - static_volume:/var/www/html/staticfiles/
+      - media_volume:/var/www/html/mediafiles/

@@ -1,0 +1,54 @@
+{
+    "deltas": [
+        {
+            "uuid": "5cab83db-e2be-4e1b-8239-b30942bb4810",
+            "localPk": "2",
+            "sourcePk": "2",
+            "localLayerId": "points_xy_897d5ed7_b810_4624_abe3_9f7c0a93d6a1",
+            "sourceLayerId": "points_xy_897d5ed7_b810_4624_abe3_9f7c0a93d6a1",
+            "method": "patch",
+            "new": {
+                "attributes": {
+                    "dbl": 0.666,
+                    "int": 666,
+                    "str": "str666"
+                }
+            },
+            "old": {
+                "attributes": {
+                    "dbl": 0.2,
+                    "int": 2,
+                    "str": "str2"
+                }
+            }
+        },
+        {
+            "uuid": "e3ac977e-1cb2-4daf-9acb-f6e28ba016f4",
+            "localPk": "1",
+            "sourcePk": "1",
+            "localLayerId": "polygons_f18b6046_8e46_4206_a698_641c58e5ac73",
+            "sourceLayerId": "polygons_f18b6046_8e46_4206_a698_641c58e5ac73",
+            "method": "patch",
+            "new": {
+                "geometry": "POLYGON ((666 666, 5 2, 5 5, 2 5, 666 666 ))",
+                "attributes": {
+                    "dbl": 0.666,
+                    "int": 666,
+                    "str": "str666"
+                }
+            },
+            "old": {
+                "geometry": "POLYGON ((2 2, 5 2, 5 5, 2 5, 2 2 ))",
+                "attributes": {
+                    "dbl": 0.8,
+                    "int": 8,
+                    "str": "str8"
+                }
+            }
+        }
+    ],
+    "files": [],
+    "id": "b7c17bc6-e5af-4fa7-b905-4b395729d782",
+    "project": "504ef91b-43f2-4b2e-a617-ea9f29cd7abc",
+    "version": "1.0"
+}

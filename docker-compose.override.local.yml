@@ -1,0 +1,91 @@
+services:
+
+  app:
+    build:
+      args:
+        - DEBUG_BUILD=1
+
+    # TODO @suricactus: Most probably this needs to be removed once QF-5033 Bump Python to 3.14.1+in the Django image is merged
+    # required to allow `memray` to inspect memory usage of the app container
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
+
+    ports:
+      # allow direct access without nginx
+      - ${DJANGO_DEV_PORT}:8000
+      - ${DEBUG_APP_DEBUGPY_PORT:-5678}:5678
+    volumes:
+      # mount the source for live reload
+      - ./docker-app/qfieldcloud:/usr/src/app/qfieldcloud
+    command: python3 -m debugpy --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+
+  pipcompile: &default-django
+    build:
+      context: ./docker-app
+      target: build
+      network: host
+    profiles:
+      - donotstart
+    volumes:
+      # mount the source for live reload
+      - ./docker-app/requirements:/requirements
+    command: bash -c 'apt update && apt install -y git && for f in /requirements/*.in; do pip-compile --no-strip-extras -o "$${f%.in}.txt" "$$f"; done'
+
+  worker_wrapper:
+    scale: ${QFIELDCLOUD_WORKER_REPLICAS}
+    build:
+      args:
+        - DEBUG_BUILD=1
+    ports:
+      - ${DEBUG_WORKER_WRAPPER_DEBUGPY_PORT:-5679}:5679
+    environment:
+      DEBUG_QGIS_DEBUGPY_PORT: ${DEBUG_QGIS_DEBUGPY_PORT}
+      DEBUG_QGIS_WORKER_HOST_PATH: ${DEBUG_QGIS_WORKER_HOST_PATH:-}
+      # Variables transmises au conteneur qgis pour la validation IFE
+      VALIDATION_PG_HOST: ${VALIDATION_PG_HOST:-localhost}
+      VALIDATION_PG_PORT: ${VALIDATION_PG_PORT:-5432}
+      VALIDATION_PG_DB: ${VALIDATION_PG_DB:-ifa}
+      VALIDATION_PG_USER: ${VALIDATION_PG_USER:-postgres}
+      VALIDATION_PG_PASS: ${VALIDATION_PG_PASS:-}
+      VALIDATION_PG_SCHEMA: ${VALIDATION_PG_SCHEMA:-ifa_data}
+    volumes:
+      # mount the source for live reload
+      - ./docker-app/qfieldcloud:/usr/src/app/qfieldcloud
+      - ./docker-app/worker_wrapper:/usr/src/app/worker_wrapper
+    command: python3 -m debugpy --listen 0.0.0.0:5679 manage.py dequeue
+
+  qgis:
+    build:
+      args:
+        - DEBUG_BUILD=1
+    volumes:
+      # allow local development for `docker-qgis`
+      - ./docker-qgis/qfc_worker:/usr/src/app/qfc_worker:ro
+      - ./docker-qgis/entrypoint.py:/usr/src/app/entrypoint.py:ro
+      # allow local development for `libqfieldsync` if host directory present; requires `PYTHONPATH=/libqfieldsync:${PYTHONPATH}`
+      - ./docker-qgis/libqfieldsync:/libqfieldsync:ro
+      # allow local development for `qfieldcloud-sdk-python` if host directory present; requires `PYTHONPATH=/qfieldcloud-sdk-python:${PYTHONPATH}`
+      - ./docker-qgis/qfieldcloud-sdk-python:/qfieldcloud-sdk-python:ro
+
+# ---------------------------------------------------------------------------
+# Windows workaround : le volume custom_ca_certificates est défini dans
+# docker-compose.yml avec un bind mount sur ${PWD}/conf/ca. Le daemon Docker
+# (distro interne docker-desktop dans WSL2) n'a pas accès aux drives Windows
+# montés via /mnt/f/... — ce qui cause une erreur "no such file or directory".
+#
+# Fix : on écrase TOUS les driver_opts avec un volume tmpfs (mémoire vive).
+# Acceptable en dev local car conf/ca ne contient pas de vrais certificats.
+# Les options type/device/o doivent toutes être redéfinies pour que le merge
+# Docker Compose n'applique pas les opts du fichier de base.
+# ---------------------------------------------------------------------------
+volumes:
+  custom_ca_certificates:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: ""

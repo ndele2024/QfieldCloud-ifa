@@ -1,0 +1,131 @@
+map "$time_iso8601 # $msec" $time_iso8601_ms {
+  "~([^+]+)\+([\d:]+?) # \d+?\.(\d+)" "$1.$3+$2";
+}
+
+map "${DEBUG}" $debug_mode {
+    "1" "on";
+    default "off";
+}
+
+log_format json-logger escape=json
+'{'
+  '"ts":"$time_iso8601_ms",'
+  '"ip":"$remote_addr",'
+  '"method":"$request_method",'
+  '"status":$status,'
+  '"resp_time":$request_time,'
+  '"request_length":$request_length,'
+  '"resp_body_size":$body_bytes_sent,'
+  '"uri":"$request_uri",'
+  '"connection": "$connection",'
+  '"connection_requests": "$connection_requests",'
+  '"user_agent":"$http_user_agent",'
+  '"host":"$http_host",'
+  '"user":"$remote_user",'
+  '"upstream_addr":"$upstream_addr",'
+  '"upstream_connect_time":"$upstream_connect_time",'
+  '"upstream_header_time":"$upstream_header_time",'
+  '"upstream_response_time":"$upstream_response_time",'
+  '"request_id":"$request_id",'
+  '"source":"nginx"'
+'}';
+
+upstream django {
+  # Defines a shared memory zone between worker processes, necessary dynamic dns resolving
+  zone django 64k;
+
+  # Add Docker's DNS resolver with a short TTL and IPv6 turned off
+  resolver 127.0.0.11 valid=1s ipv6=off;
+
+  # the number of keepalive connections comes from the number Django workers we have
+  keepalive 32;
+
+  # Use Docker DNS resolution to dynamically resolve the app backend hostname
+  # `max_fails=1` and `fail_timeout=1s` ensures Nginx retries on almost every request from `loading.html`
+  server app:8000 max_fails=1 fail_timeout=1s resolve;
+}
+
+# If environment specifies allowing plain http not to be redirected to https.
+map $host $allow_internal_http {
+    default "${NGINX_ALLOW_INTERNAL_HTTP}";
+}
+
+# detect if request is coming from docker internal network
+geo $is_docker_internal {
+    default        0;
+    172.16.0.0/12  1;
+}
+
+# Determine if we should redirect to https
+map "$allow_internal_http:$is_docker_internal" $base_redirect_to_https {
+    "1:1"   0; # If we explicitly allow plain http and the request is coming from docker internal network, don't redirect to https.
+    default 1; # Default is to redirect to https.
+}
+
+# Exclude https redirect for the following URIs
+map $request_uri $redirect_to_https {
+    "~^/.well-known/acme-challenge/" 0; # Letsencrypt Challenge
+    default $base_redirect_to_https;
+}
+
+server {
+  listen 80;
+  server_name ${QFIELDCLOUD_HOST};
+
+  # cerbot
+  location /.well-known/acme-challenge/ {
+    root /var/www/certbot;
+  }
+
+  # prevent access by IP
+  if ($http_host !~ "${QFIELDCLOUD_HOST}(:${WEB_HTTP_PORT})?") {
+    return 444;
+  }
+
+  if ($redirect_to_https = "1") {
+    return 302 https://$host:${WEB_HTTPS_PORT}$request_uri;
+  }
+
+  # include additional config from the current QFieldCloud instance. This is different from the default `conf.d` directory.
+  include config.d/*.conf;
+
+  # include proxy settings and location blocks for the QFieldCloud instance.
+  include conf.d/includes/qfieldcloud.conf;
+}
+
+server {
+  listen 443 ssl;
+
+  ssl_certificate     ${QFIELDCLOUD_TLS_CERT};
+  ssl_certificate_key ${QFIELDCLOUD_TLS_KEY};
+
+  ssl_dhparam ${QFIELDCLOUD_TLS_DHPARAMS};
+  include /etc/nginx/options-ssl-nginx.conf;
+
+  access_log /var/log/nginx/access.log json-logger;
+  error_log /var/log/nginx/error.log ${NGINX_ERROR_LOG_LEVEL};
+
+  server_name ${QFIELDCLOUD_HOST} nginx;
+  client_max_body_size ${NGINX_CLIENT_MAX_BODY_SIZE};
+  keepalive_timeout 5;
+
+  # path for static files (only needed for serving local staticfiles)
+  root /var/www/html/;
+
+  # upgrade to https
+  error_page 497 https://$host:${WEB_HTTPS_PORT}$request_uri;
+
+  # prevent access by IP
+  if ($http_host !~ "${QFIELDCLOUD_HOST}(:${WEB_HTTPS_PORT})?") {
+    return 444;
+  }
+
+  # deny annoying bot
+  deny 34.215.13.216;
+
+  # include additional config from the current QFieldCloud instance. This is different from the default `conf.d` directory.
+  include config.d/*.conf;
+
+  # include proxy settings and location blocks for the QFieldCloud instance.
+  include conf.d/includes/qfieldcloud.conf;
+}

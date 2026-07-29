@@ -1,0 +1,1065 @@
+ Waiting for postgres...
+app-1  | Postgres is ready! ✨ 💅
+app-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+app-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+app-1  | 0.00s - to python to disable frozen modules.
+app-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+app-1  | {"request_id":"none","ts":"2026-07-28T20:16:50.892046+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":133371386979200,"source":"app"}
+app-1  | 0.01s - Debugger warning: It seems that frozen modules are being used, which may
+app-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+app-1  | 0.00s - to python to disable frozen modules.
+app-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+app-1  | {"request_id":"none","ts":"2026-07-28T20:16:54.384631+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":133432097960832,"source":"app"}
+app-1  | Watching for file changes with StatReloader
+app-1  | {"request_id":"none","ts":"2026-07-28T20:16:54.405824+00:00","level":"INFO","name":"django.utils.autoreload","message":"Watching for file changes with StatReloader","filename":"autoreload.py","lineno":667,"thread":133432097960832,"source":"app"}
+app-1  | Performing system checks...
+app-1  |
+app-1  | System check identified no issues (0 silenced).
+app-1  |
+app-1  | You have 206 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): account, admin, auditlog, auth, authentication, authtoken, axes, constance, contenttypes, core, django_cron, filestorage, invitations, notifications, sessions, sites, socialaccount, subscription.
+app-1  | Run 'python manage.py migrate' to apply them.
+app-1  | July 28, 2026 - 22:16:55
+app-1  | Django version 5.2.13, using settings 'qfieldcloud.settings'
+app-1  | Starting development server at http://0.0.0.0:8000/
+app-1  | Quit the server with CONTROL-C.
+app-1  |
+app-1  | WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+app-1  | For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+app-1  | [28/Jul/2026 22:23:53] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:23:53] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:23:53] "GET /admin/login/?next=/admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:23:54] "GET /accounts/login/?next=/admin/ HTTP/1.1" 200 18093
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/css/vendor.css HTTP/1.1" 200 191307
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/js/vendor/jquery.js HTTP/1.1" 200 89503
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/css/qfieldcloud.css HTTP/1.1" 200 1300
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/js/vendor/bootstrap.min.js HTTP/1.1" 200 62405
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/js/vendor/popper.min.js HTTP/1.1" 200 21198
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/debug_toolbar/css/toolbar.css HTTP/1.1" 200 30587
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/debug_toolbar/js/toolbar.js HTTP/1.1" 200 14879
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/debug_toolbar/js/utils.js HTTP/1.1" 200 4700
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/logo_sidetext_white.svg HTTP/1.1" 200 14243
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/logo_undertext_with_buffer.svg HTTP/1.1" 200 17498
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/debug_toolbar/css/print.css HTTP/1.1" 200 43
+app-1  | [28/Jul/2026 22:23:54] "GET /staticfiles/favicon.ico HTTP/1.1" 200 16958
+app-1  | Forbidden (Referer checking failed - Referer is insecure while host is secure.): /
+app-1  | {"status_code":403,"request":"<WSGIRequest: PROPFIND '/'>","request_id":"12b36c1a5805c4a8fd5ed0573212400e","ts":"2026-07-28T20:24:07.986044+00:00","level":"WARNING","name":"django.security.csrf","message":"Forbidden (Referer checking failed - Referer is insecure while host is secure.): /","filename":"log.py","lineno":253,"thread":133431405045440,"source":"app"}
+app-1  | [28/Jul/2026 22:24:08] "PROPFIND / HTTP/1.1" 403 16714
+app-1  | [28/Jul/2026 22:24:08,046] - Broken pipe from ('172.18.0.7', 43744)
+app-1  | [28/Jul/2026 22:24:11] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:24:11] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:24:11] "GET /admin/login/?next=/admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:24:12] "GET /accounts/login/?next=/admin/ HTTP/1.1" 200 18090
+app-1  | [28/Jul/2026 22:24:26] "GET /accounts/login/?next=/admin/ HTTP/1.1" 200 18091
+app-1  | {"request_id":"c99c03c80b9bc15da4d6ff077b2c19ec","ts":"2026-07-28T20:34:48.962482+00:00","level":"INFO","name":"axes.handlers.database","message":"AXES: Successful login by {username: \"********************\", ip_address: \"********************\", user_agent: \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\", path_info: \"/accounts/login/\"}.","filename":"database.py","lineno":295,"thread":133431388260032,"source":"app"}
+app-1  | {"request_id":"c99c03c80b9bc15da4d6ff077b2c19ec","ts":"2026-07-28T20:34:48.967508+00:00","level":"INFO","name":"axes.handlers.database","message":"AXES: Cleaned up 0 expired access attempts from database that were older than 2026-07-28 20:04:48.187139+00:00","filename":"database.py","lineno":425,"thread":133431388260032,"source":"app"}
+app-1  | {"request_id":"c99c03c80b9bc15da4d6ff077b2c19ec","ts":"2026-07-28T20:34:48.976350+00:00","level":"INFO","name":"axes.handlers.database","message":"AXES: Reset 0 access attempts from database.","filename":"database.py","lineno":445,"thread":133431388260032,"source":"app"}
+app-1  | {"request_id":"c99c03c80b9bc15da4d6ff077b2c19ec","ts":"2026-07-28T20:34:48.976459+00:00","level":"INFO","name":"axes.handlers.database","message":"AXES: Deleted 0 failed login attempts by {username: \"********************\", ip_address: \"********************\", user_agent: \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0\", path_info: \"/accounts/login/\"} from database.","filename":"database.py","lineno":317,"thread":133431388260032,"source":"app"}
+app-1  | [28/Jul/2026 22:34:49] "POST /accounts/login/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:34:49] "GET /admin/ HTTP/1.1" 200 77337
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/jazzmin/css/main.css HTTP/1.1" 200 16969
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/css/qfc_admin.css HTTP/1.1" 200 1701
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/jazzmin/js/main.js HTTP/1.1" 200 2391
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/js/qfc_admin.js HTTP/1.1" 200 2416
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/debug_toolbar/js/toolbar.js HTTP/1.1" 304 0
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/debug_toolbar/css/toolbar.css HTTP/1.1" 304 0
+app-1  | [28/Jul/2026 22:34:49] "GET /staticfiles/debug_toolbar/js/utils.js HTTP/1.1" 304 0
+app-1  | [28/Jul/2026 22:34:50] "GET /staticfiles/logo_notext.svg HTTP/1.1" 200 4479
+app-1  | [28/Jul/2026 22:34:50] "GET /staticfiles/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+app-1  | [28/Jul/2026 22:34:50] "GET /staticfiles/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+app-1  | [28/Jul/2026 22:34:50] "GET /staticfiles/debug_toolbar/css/print.css HTTP/1.1" 304 0
+app-1  | [28/Jul/2026 22:37:22] "GET /admin/core/project/ HTTP/1.1" 200 45827
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/jquery.init.js HTTP/1.1" 200 347
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/core.js HTTP/1.1" 200 6208
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/actions.js HTTP/1.1" 200 8076
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/prepopulate.js HTTP/1.1" 200 1531
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/urlify.js HTTP/1.1" 200 7887
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+app-1  | [28/Jul/2026 22:37:22] "GET /staticfiles/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+app-1  | [28/Jul/2026 22:37:22] "GET /admin/jsi18n/ HTTP/1.1" 200 8634
+app-1  | [28/Jul/2026 22:37:25] "GET /admin/ HTTP/1.1" 200 76838
+app-1  | [28/Jul/2026 22:43:33] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:43:34] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:43:34] "GET /admin/login/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:43:34] "GET /accounts/login/ HTTP/1.1" 200 17830
+app-1  | [28/Jul/2026 22:43:35] "GET /staticfiles/favicon.ico HTTP/1.1" 200 16958
+app-1  | Not Found: /favicon.ico
+app-1  | {"status_code":404,"request":"<WSGIRequest: GET '/favicon.ico'>","request_id":"3dce9dd63b79e6778e4503009caf76f8","ts":"2026-07-28T20:43:35.983433+00:00","level":"WARNING","name":"django.request","message":"Not Found: /favicon.ico","filename":"log.py","lineno":253,"thread":133431027537600,"source":"app"}
+app-1  | [28/Jul/2026 22:43:35] "GET /favicon.ico HTTP/1.1" 404 20057
+app-1  | [28/Jul/2026 22:43:35,984] - Broken pipe from ('172.18.0.7', 33038)
+app-1  | [28/Jul/2026 22:47:12] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:47:13] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:47:18] "GET /admin/login/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:47:19] "GET /accounts/login/ HTTP/1.1" 200 17831
+app-1  | [28/Jul/2026 22:47:19] "GET /staticfiles/favicon.ico HTTP/1.1" 200 16958
+app-1  | Not Found: /favicon.ico
+app-1  | {"status_code":404,"request":"<WSGIRequest: GET '/favicon.ico'>","request_id":"f5f10db04cb0600fe39596dedfaf0795","ts":"2026-07-28T20:47:20.032705+00:00","level":"WARNING","name":"django.request","message":"Not Found: /favicon.ico","filename":"log.py","lineno":253,"thread":133430943676096,"source":"app"}
+app-1  | [28/Jul/2026 22:47:20] "GET /favicon.ico HTTP/1.1" 404 20057
+app-1  | [28/Jul/2026 22:47:20,033] - Broken pipe from ('172.18.0.7', 55108)
+app-1  | [28/Jul/2026 22:48:01] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:01] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:01] "GET /admin/login/?next=/admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:02] "GET /accounts/login/?next=/admin/ HTTP/1.1" 200 17911
+app-1  | [28/Jul/2026 22:48:09] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:09] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:09] "GET /admin/login/?next=/admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:09] "GET /accounts/login/?next=/admin/ HTTP/1.1" 200 17910
+app-1  | [28/Jul/2026 22:48:10] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:10] "GET / HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:10] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:10] "GET /admin/login/?next=/admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:11] "GET /accounts/login/?next=/admin/ HTTP/1.1" 200 17910
+app-1  | [28/Jul/2026 22:48:13] "GET /admin/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:16] "GET /admin/login/ HTTP/1.1" 302 0
+app-1  | [28/Jul/2026 22:48:17] "GET /accounts/login/ HTTP/1.1" 200 17831
+app-1  | [28/Jul/2026 22:48:18] "GET /staticfiles/favicon.ico HTTP/1.1" 200 16958
+app-1  | Not Found: /favicon.ico
+app-1  | {"status_code":404,"request":"<WSGIRequest: GET '/favicon.ico'>","request_id":"56305cc07044f77ea8a0deb06cd7c780","ts":"2026-07-28T20:48:20.538373+00:00","level":"WARNING","name":"django.request","message":"Not Found: /favicon.ico","filename":"log.py","lineno":253,"thread":133430926890688,"source":"app"}
+app-1  | [28/Jul/2026 22:48:20] "GET /favicon.ico HTTP/1.1" 404 20057
+app-1  | Not Found: /security.txt
+app-1  | {"status_code":404,"request":"<WSGIRequest: GET '/security.txt'>","request_id":"1c537fc0baa2e2bd80fe2bfd0d9aa46e","ts":"2026-07-28T20:48:21.641760+00:00","level":"WARNING","name":"django.request","message":"Not Found: /security.txt","filename":"log.py","lineno":253,"thread":133430918497984,"source":"app"}
+app-1  | [28/Jul/2026 22:48:21] "GET /security.txt HTTP/1.1" 404 20061
+app-1  | [28/Jul/2026 22:48:21,643] - Broken pipe from ('172.18.0.7', 48636)
+app-1  | Not Found: /wiki
+app-1  | {"status_code":404,"request":"<WSGIRequest: GET '/wiki'>","request_id":"d2470441fff13073d64c90c35c2f7ee7","ts":"2026-07-28T20:48:38.104542+00:00","level":"WARNING","name":"django.request","message":"Not Found: /wiki","filename":"log.py","lineno":253,"thread":133430910105280,"source":"app"}
+app-1  | [28/Jul/2026 22:48:38] "GET /wiki HTTP/1.1" 404 20029
+app-1  | [28/Jul/2026 22:48:38,105] - Broken pipe from ('172.18.0.7', 37366)
+app-1  | [28/Jul/2026 22:53:38] "GET /api/v1/auth/providers/ HTTP/1.1" 200 72
+app-1  | [28/Jul/2026 22:53:38] "GET /api/v1/auth/providers/ HTTP/1.1" 200 72
+app-1  | [28/Jul/2026 22:54:10] "POST /api/v1/auth/login/ HTTP/1.1" 200 282
+app-1  | [28/Jul/2026 22:54:11] "GET /api/v1/projects/ HTTP/1.1" 200 2
+app-1  | Not Found: /api/v1/users//organizations/
+app-1  | {"status_code":404,"request":"<WSGIRequest: GET '/api/v1/users//organizations/'>","request_id":"9f906e7ebe6f76c9b90136f6a1da4550","ts":"2026-07-28T20:54:18.429317+00:00","level":"WARNING","name":"django.request","message":"Not Found: /api/v1/users//organizations/","filename":"log.py","lineno":253,"thread":133430893319872,"source":"app"}
+app-1  | [28/Jul/2026 22:54:18] "GET /api/v1/users//organizations/ HTTP/1.1" 404 34821
+app-1  | [28/Jul/2026 22:54:59] "POST /api/v1/projects/ HTTP/1.1" 201 648
+app-1  | {"request_id":"885ed546bdea95028fdd4b600e56995e","ts":"2026-07-28T20:55:06.316072+00:00","level":"ERROR","name":"root","message":"Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test.gpkg/v20260728205459-9fca02b5\"","filename":"rest_utils.py","lineno":46,"thread":133430809458368,"source":"app","exc_info":"Traceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/connection.py\", line 60, in create_connection\n    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/socket.py\", line 987, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno -2] Name or service not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 841, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/retry.py\", line 465, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 787, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 493, in _make_request\n    conn.request(\n    ~~~~~~~~~~~~^\n        method,\n        ^^^^^^^\n    ...<6 lines>...\n        enforce_content_length=enforce_content_length,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 96, in request\n    rval = super().request(method, url, body, headers, *args, **kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 500, in request\n    self.endheaders()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1362, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 123, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 223, in send\n    return super().send(str)\n           ~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1066, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 211, in _new_conn\n    raise NameResolutionError(self.host, self, e) from e\nurllib3.exceptions.NameResolutionError: AWSHTTPConnection(host='host.docker.internal', port=8009): Failed to resolve 'host.docker.internal' ([Errno -2] Name or service not known)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n  File \"/usr/src/app/qfieldcloud/filestorage/views.py\", line 143, in post\n    upload_project_file_version(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        request,\n        ^^^^^^^^\n    ...<2 lines>...\n        File.FileType.PROJECT_FILE,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/src/app/qfieldcloud/filestorage/view_helpers.py\", line 123, in upload_project_file_version\n    file_version = FileVersion.objects.add_version(\n        project=project,\n    ...<4 lines>...\n        package_job_id=package_job_id,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/contextlib.py\", line 85, in inner\n    return func(*args, **kwds)\n  File \"/usr/src/app/qfieldcloud/filestorage/models.py\", line 234, in add_version\n    file_version = self.create(\n        id=version_id,\n    ...<9 lines>...\n        created_at=created_at,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 665, in create\n    obj.save(force_insert=True, using=self.db)\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 902, in save\n    self.save_base(\n    ~~~~~~~~~~~~~~^\n        using=using,\n        ^^^^^^^^^^^^\n    ...<2 lines>...\n        update_fields=update_fields,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1008, in save_base\n    updated = self._save_table(\n        raw,\n    ...<4 lines>...\n        update_fields,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1169, in _save_table\n    results = self._do_insert(\n        cls._base_manager, using, fields, returning_fields, raw\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1210, in _do_insert\n    return manager._insert(\n           ~~~~~~~~~~~~~~~^\n        [self],\n        ^^^^^^^\n    ...<3 lines>...\n        raw=raw,\n        ^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 1873, in _insert\n    return query.get_compiler(using=using).execute_sql(returning_fields)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1881, in execute_sql\n    for sql, params in self.as_sql():\n                       ~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1806, in as_sql\n    self.prepare_value(field, self.pre_save_val(field, obj))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1750, in pre_save_val\n    return field.pre_save(obj, add=True)\n           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/usr/src/app/qfieldcloud/core/fields.py\", line 87, in pre_save\n    file = super().pre_save(model_instance, add)\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 338, in pre_save\n    file.save(file.name, file.file, save=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 99, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/core/files/storage/base.py\", line 49, in save\n    name = self._save(name, content)\n  File \"/usr/local/lib/python3.14/site-packages/storages/backends/s3.py\", line 565, in _save\n    obj.upload_fileobj(content, ExtraArgs=params, Config=self.transfer_config)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 731, in object_upload_fileobj\n    return self.meta.client.upload_fileobj(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        Fileobj=Fileobj,\n        ^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        Config=Config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 642, in upload_fileobj\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 103, in result\n    return self._coordinator.result()\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 264, in result\n    raise self._exception\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 135, in __call__\n    return self._execute_main(kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 158, in _execute_main\n    return_value = self._main(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/upload.py\", line 762, in _main\n    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 200, in _send_request\n    while self._needs_retry(\n          ~~~~~~~~~~~~~~~~~^\n        attempts,\n        ^^^^^^^^^\n    ...<3 lines>...\n        exception,\n        ^^^^^^^^^^\n    ):\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\n    responses = self._event_emitter.emit(\n        event_name,\n    ...<5 lines>...\n        request_dict=request_dict,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 412, in emit\n    return self._emitter.emit(aliased_event_name, **kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 256, in emit\n    return self._emit(event_name, kwargs)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 239, in _emit\n    response = handler(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 207, in __call__\n    if self._checker(**checker_kwargs):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 284, in __call__\n    should_retry = self._should_retry(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\n    return self._checker(attempt_number, response, caught_exception)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 363, in __call__\n    checker_response = checker(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 247, in __call__\n    return self._check_caught_exception(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        attempt_number, caught_exception\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\n    raise caught_exception\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 493, in send\n    raise EndpointConnectionError(endpoint_url=request.url, error=e)\nbotocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test.gpkg/v20260728205459-9fca02b5\""}
+app-1  | Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/
+app-1  | {"status_code":500,"request":"<WSGIRequest: POST '/api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/'>","request_id":"885ed546bdea95028fdd4b600e56995e","ts":"2026-07-28T20:55:06.372458+00:00","level":"ERROR","name":"django.request","message":"Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/","filename":"log.py","lineno":253,"thread":133430809458368,"source":"app"}
+app-1  | [28/Jul/2026 22:55:06] "POST /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/ HTTP/1.1" 500 566
+app-1  | [28/Jul/2026 22:55:06] "GET /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/?client=qgis&skip_metadata=1 HTTP/1.1" 200 2
+app-1  | [28/Jul/2026 22:55:06] "GET /api/v1/projects/ HTTP/1.1" 200 705
+app-1  | [28/Jul/2026 22:55:06] "GET /api/v1/subscriptions/admin/current/ HTTP/1.1" 200 378
+app-1  | [28/Jul/2026 22:55:07] "GET /api/v1/subscriptions/admin/current/ HTTP/1.1" 200 378
+app-1  | [28/Jul/2026 22:55:07] "GET /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/?client=qgis&skip_metadata=1 HTTP/1.1" 200 2
+app-1  | {"request_id":"699c642ab75b4924f5c8d10ef0d8eab0","ts":"2026-07-28T20:55:10.934291+00:00","level":"ERROR","name":"root","message":"Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud_attachments.zip/v20260728205459-7a5d45d9\"","filename":"rest_utils.py","lineno":46,"thread":133430893319872,"source":"app","exc_info":"Traceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/connection.py\", line 60, in create_connection\n    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/socket.py\", line 987, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno -2] Name or service not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 841, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/retry.py\", line 465, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 787, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 493, in _make_request\n    conn.request(\n    ~~~~~~~~~~~~^\n        method,\n        ^^^^^^^\n    ...<6 lines>...\n        enforce_content_length=enforce_content_length,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 96, in request\n    rval = super().request(method, url, body, headers, *args, **kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 500, in request\n    self.endheaders()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1362, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 123, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 223, in send\n    return super().send(str)\n           ~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1066, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 211, in _new_conn\n    raise NameResolutionError(self.host, self, e) from e\nurllib3.exceptions.NameResolutionError: AWSHTTPConnection(host='host.docker.internal', port=8009): Failed to resolve 'host.docker.internal' ([Errno -2] Name or service not known)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n  File \"/usr/src/app/qfieldcloud/filestorage/views.py\", line 143, in post\n    upload_project_file_version(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        request,\n        ^^^^^^^^\n    ...<2 lines>...\n        File.FileType.PROJECT_FILE,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/src/app/qfieldcloud/filestorage/view_helpers.py\", line 123, in upload_project_file_version\n    file_version = FileVersion.objects.add_version(\n        project=project,\n    ...<4 lines>...\n        package_job_id=package_job_id,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/contextlib.py\", line 85, in inner\n    return func(*args, **kwds)\n  File \"/usr/src/app/qfieldcloud/filestorage/models.py\", line 234, in add_version\n    file_version = self.create(\n        id=version_id,\n    ...<9 lines>...\n        created_at=created_at,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 665, in create\n    obj.save(force_insert=True, using=self.db)\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 902, in save\n    self.save_base(\n    ~~~~~~~~~~~~~~^\n        using=using,\n        ^^^^^^^^^^^^\n    ...<2 lines>...\n        update_fields=update_fields,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1008, in save_base\n    updated = self._save_table(\n        raw,\n    ...<4 lines>...\n        update_fields,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1169, in _save_table\n    results = self._do_insert(\n        cls._base_manager, using, fields, returning_fields, raw\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1210, in _do_insert\n    return manager._insert(\n           ~~~~~~~~~~~~~~~^\n        [self],\n        ^^^^^^^\n    ...<3 lines>...\n        raw=raw,\n        ^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 1873, in _insert\n    return query.get_compiler(using=using).execute_sql(returning_fields)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1881, in execute_sql\n    for sql, params in self.as_sql():\n                       ~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1806, in as_sql\n    self.prepare_value(field, self.pre_save_val(field, obj))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1750, in pre_save_val\n    return field.pre_save(obj, add=True)\n           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/usr/src/app/qfieldcloud/core/fields.py\", line 87, in pre_save\n    file = super().pre_save(model_instance, add)\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 338, in pre_save\n    file.save(file.name, file.file, save=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 99, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/core/files/storage/base.py\", line 49, in save\n    name = self._save(name, content)\n  File \"/usr/local/lib/python3.14/site-packages/storages/backends/s3.py\", line 565, in _save\n    obj.upload_fileobj(content, ExtraArgs=params, Config=self.transfer_config)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 731, in object_upload_fileobj\n    return self.meta.client.upload_fileobj(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        Fileobj=Fileobj,\n        ^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        Config=Config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 642, in upload_fileobj\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 103, in result\n    return self._coordinator.result()\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 264, in result\n    raise self._exception\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 135, in __call__\n    return self._execute_main(kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 158, in _execute_main\n    return_value = self._main(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/upload.py\", line 762, in _main\n    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 200, in _send_request\n    while self._needs_retry(\n          ~~~~~~~~~~~~~~~~~^\n        attempts,\n        ^^^^^^^^^\n    ...<3 lines>...\n        exception,\n        ^^^^^^^^^^\n    ):\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\n    responses = self._event_emitter.emit(\n        event_name,\n    ...<5 lines>...\n        request_dict=request_dict,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 412, in emit\n    return self._emitter.emit(aliased_event_name, **kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 256, in emit\n    return self._emit(event_name, kwargs)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 239, in _emit\n    response = handler(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 207, in __call__\n    if self._checker(**checker_kwargs):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 284, in __call__\n    should_retry = self._should_retry(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\n    return self._checker(attempt_number, response, caught_exception)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 363, in __call__\n    checker_response = checker(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 247, in __call__\n    return self._check_caught_exception(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        attempt_number, caught_exception\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\n    raise caught_exception\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 493, in send\n    raise EndpointConnectionError(endpoint_url=request.url, error=e)\nbotocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud_attachments.zip/v20260728205459-7a5d45d9\""}
+app-1  | Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud_attachments.zip/
+app-1  | {"status_code":500,"request":"<WSGIRequest: POST '/api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud_attachments.zip/'>","request_id":"699c642ab75b4924f5c8d10ef0d8eab0","ts":"2026-07-28T20:55:10.996134+00:00","level":"ERROR","name":"django.request","message":"Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud_attachments.zip/","filename":"log.py","lineno":253,"thread":133430893319872,"source":"app"}
+app-1  | {"request_id":"2294f66bf682beefafea2ce8c93ec4b3","ts":"2026-07-28T20:55:11.453471+00:00","level":"ERROR","name":"root","message":"Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud.qgs/v20260728205500-a3f58063\"","filename":"rest_utils.py","lineno":46,"thread":133430767494848,"source":"app","exc_info":"Traceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/connection.py\", line 60, in create_connection\n    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/socket.py\", line 987, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno -2] Name or service not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 841, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/retry.py\", line 465, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 787, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 493, in _make_request\n    conn.request(\n    ~~~~~~~~~~~~^\n        method,\n        ^^^^^^^\n    ...<6 lines>...\n        enforce_content_length=enforce_content_length,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 96, in request\n    rval = super().request(method, url, body, headers, *args, **kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 500, in request\n    self.endheaders()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1362, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 123, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 223, in send\n    return super().send(str)\n           ~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1066, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 211, in _new_conn\n    raise NameResolutionError(self.host, self, e) from e\nurllib3.exceptions.NameResolutionError: AWSHTTPConnection(host='host.docker.internal', port=8009): Failed to resolve 'host.docker.internal' ([Errno -2] Name or service not known)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n  File \"/usr/src/app/qfieldcloud/filestorage/views.py\", line 143, in post\n    upload_project_file_version(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        request,\n        ^^^^^^^^\n    ...<2 lines>...\n        File.FileType.PROJECT_FILE,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/src/app/qfieldcloud/filestorage/view_helpers.py\", line 123, in upload_project_file_version\n    file_version = FileVersion.objects.add_version(\n        project=project,\n    ...<4 lines>...\n        package_job_id=package_job_id,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/contextlib.py\", line 85, in inner\n    return func(*args, **kwds)\n  File \"/usr/src/app/qfieldcloud/filestorage/models.py\", line 234, in add_version\n    file_version = self.create(\n        id=version_id,\n    ...<9 lines>...\n        created_at=created_at,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 665, in create\n    obj.save(force_insert=True, using=self.db)\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 902, in save\n    self.save_base(\n    ~~~~~~~~~~~~~~^\n        using=using,\n        ^^^^^^^^^^^^\n    ...<2 lines>...\n        update_fields=update_fields,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1008, in save_base\n    updated = self._save_table(\n        raw,\n    ...<4 lines>...\n        update_fields,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1169, in _save_table\n    results = self._do_insert(\n        cls._base_manager, using, fields, returning_fields, raw\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1210, in _do_insert\n    return manager._insert(\n           ~~~~~~~~~~~~~~~^\n        [self],\n        ^^^^^^^\n    ...<3 lines>...\n        raw=raw,\n        ^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 1873, in _insert\n    return query.get_compiler(using=using).execute_sql(returning_fields)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1881, in execute_sql\n    for sql, params in self.as_sql():\n                       ~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1806, in as_sql\n    self.prepare_value(field, self.pre_save_val(field, obj))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1750, in pre_save_val\n    return field.pre_save(obj, add=True)\n           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/usr/src/app/qfieldcloud/core/fields.py\", line 87, in pre_save\n    file = super().pre_save(model_instance, add)\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 338, in pre_save\n    file.save(file.name, file.file, save=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 99, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/core/files/storage/base.py\", line 49, in save\n    name = self._save(name, content)\n  File \"/usr/local/lib/python3.14/site-packages/storages/backends/s3.py\", line 565, in _save\n    obj.upload_fileobj(content, ExtraArgs=params, Config=self.transfer_config)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 731, in object_upload_fileobj\n    return self.meta.client.upload_fileobj(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        Fileobj=Fileobj,\n        ^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        Config=Config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 642, in upload_fileobj\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 103, in result\n    return self._coordinator.result()\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 264, in result\n    raise self._exception\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 135, in __call__\n    return self._execute_main(kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 158, in _execute_main\n    return_value = self._main(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/upload.py\", line 762, in _main\n    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 200, in _send_request\n    while self._needs_retry(\n          ~~~~~~~~~~~~~~~~~^\n        attempts,\n        ^^^^^^^^^\n    ...<3 lines>...\n        exception,\n        ^^^^^^^^^^\n    ):\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\n    responses = self._event_emitter.emit(\n        event_name,\n    ...<5 lines>...\n        request_dict=request_dict,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 412, in emit\n    return self._emitter.emit(aliased_event_name, **kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 256, in emit\n    return self._emit(event_name, kwargs)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 239, in _emit\n    response = handler(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 207, in __call__\n    if self._checker(**checker_kwargs):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 284, in __call__\n    should_retry = self._should_retry(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\n    return self._checker(attempt_number, response, caught_exception)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 363, in __call__\n    checker_response = checker(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 247, in __call__\n    return self._check_caught_exception(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        attempt_number, caught_exception\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\n    raise caught_exception\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 493, in send\n    raise EndpointConnectionError(endpoint_url=request.url, error=e)\nbotocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud.qgs/v20260728205500-a3f58063\""}
+app-1  | Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud.qgs/
+app-1  | {"status_code":500,"request":"<WSGIRequest: POST '/api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud.qgs/'>","request_id":"2294f66bf682beefafea2ce8c93ec4b3","ts":"2026-07-28T20:55:11.493337+00:00","level":"ERROR","name":"django.request","message":"Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud.qgs/","filename":"log.py","lineno":253,"thread":133430767494848,"source":"app"}
+app-1  | {"request_id":"ddd7a3b846c7afa34b6fc2ab25638054","ts":"2026-07-28T20:56:30.286977+00:00","level":"ERROR","name":"root","message":"Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test.gpkg/v20260728205625-dcce39d5\"","filename":"rest_utils.py","lineno":46,"thread":133430759102144,"source":"app","exc_info":"Traceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/connection.py\", line 60, in create_connection\n    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/socket.py\", line 987, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno -2] Name or service not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 841, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/retry.py\", line 465, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 787, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 493, in _make_request\n    conn.request(\n    ~~~~~~~~~~~~^\n        method,\n        ^^^^^^^\n    ...<6 lines>...\n        enforce_content_length=enforce_content_length,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 96, in request\n    rval = super().request(method, url, body, headers, *args, **kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 500, in request\n    self.endheaders()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1362, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 123, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 223, in send\n    return super().send(str)\n           ~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1066, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 211, in _new_conn\n    raise NameResolutionError(self.host, self, e) from e\nurllib3.exceptions.NameResolutionError: AWSHTTPConnection(host='host.docker.internal', port=8009): Failed to resolve 'host.docker.internal' ([Errno -2] Name or service not known)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n  File \"/usr/src/app/qfieldcloud/filestorage/views.py\", line 143, in post\n    upload_project_file_version(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        request,\n        ^^^^^^^^\n    ...<2 lines>...\n        File.FileType.PROJECT_FILE,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/src/app/qfieldcloud/filestorage/view_helpers.py\", line 123, in upload_project_file_version\n    file_version = FileVersion.objects.add_version(\n        project=project,\n    ...<4 lines>...\n        package_job_id=package_job_id,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/contextlib.py\", line 85, in inner\n    return func(*args, **kwds)\n  File \"/usr/src/app/qfieldcloud/filestorage/models.py\", line 234, in add_version\n    file_version = self.create(\n        id=version_id,\n    ...<9 lines>...\n        created_at=created_at,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 665, in create\n    obj.save(force_insert=True, using=self.db)\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 902, in save\n    self.save_base(\n    ~~~~~~~~~~~~~~^\n        using=using,\n        ^^^^^^^^^^^^\n    ...<2 lines>...\n        update_fields=update_fields,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1008, in save_base\n    updated = self._save_table(\n        raw,\n    ...<4 lines>...\n        update_fields,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1169, in _save_table\n    results = self._do_insert(\n        cls._base_manager, using, fields, returning_fields, raw\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1210, in _do_insert\n    return manager._insert(\n           ~~~~~~~~~~~~~~~^\n        [self],\n        ^^^^^^^\n    ...<3 lines>...\n        raw=raw,\n        ^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 1873, in _insert\n    return query.get_compiler(using=using).execute_sql(returning_fields)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1881, in execute_sql\n    for sql, params in self.as_sql():\n                       ~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1806, in as_sql\n    self.prepare_value(field, self.pre_save_val(field, obj))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1750, in pre_save_val\n    return field.pre_save(obj, add=True)\n           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/usr/src/app/qfieldcloud/core/fields.py\", line 87, in pre_save\n    file = super().pre_save(model_instance, add)\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 338, in pre_save\n    file.save(file.name, file.file, save=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 99, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/core/files/storage/base.py\", line 49, in save\n    name = self._save(name, content)\n  File \"/usr/local/lib/python3.14/site-packages/storages/backends/s3.py\", line 565, in _save\n    obj.upload_fileobj(content, ExtraArgs=params, Config=self.transfer_config)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 731, in object_upload_fileobj\n    return self.meta.client.upload_fileobj(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        Fileobj=Fileobj,\n        ^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        Config=Config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 642, in upload_fileobj\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 103, in result\n    return self._coordinator.result()\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 264, in result\n    raise self._exception\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 135, in __call__\n    return self._execute_main(kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 158, in _execute_main\n    return_value = self._main(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/upload.py\", line 762, in _main\n    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 200, in _send_request\n    while self._needs_retry(\n          ~~~~~~~~~~~~~~~~~^\n        attempts,\n        ^^^^^^^^^\n    ...<3 lines>...\n        exception,\n        ^^^^^^^^^^\n    ):\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\n    responses = self._event_emitter.emit(\n        event_name,\n    ...<5 lines>...\n        request_dict=request_dict,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 412, in emit\n    return self._emitter.emit(aliased_event_name, **kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 256, in emit\n    return self._emit(event_name, kwargs)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 239, in _emit\n    response = handler(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 207, in __call__\n    if self._checker(**checker_kwargs):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 284, in __call__\n    should_retry = self._should_retry(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\n    return self._checker(attempt_number, response, caught_exception)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 363, in __call__\n    checker_response = checker(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 247, in __call__\n    return self._check_caught_exception(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        attempt_number, caught_exception\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\n    raise caught_exception\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 493, in send\n    raise EndpointConnectionError(endpoint_url=request.url, error=e)\nbotocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test.gpkg/v20260728205625-dcce39d5\""}
+app-1  | Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/
+app-1  | {"status_code":500,"request":"<WSGIRequest: POST '/api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/'>","request_id":"ddd7a3b846c7afa34b6fc2ab25638054","ts":"2026-07-28T20:56:30.336610+00:00","level":"ERROR","name":"django.request","message":"Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/","filename":"log.py","lineno":253,"thread":133430759102144,"source":"app"}
+app-1  | [28/Jul/2026 22:56:30] "POST /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test.gpkg/ HTTP/1.1" 500 566
+app-1  | [28/Jul/2026 22:56:30] "GET /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/?client=qgis&skip_metadata=1 HTTP/1.1" 200 2
+app-1  | {"request_id":"61bdc5f164c18144f0e3ec1c5fbdd4e9","ts":"2026-07-28T20:56:31.995072+00:00","level":"ERROR","name":"root","message":"Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud.qgs/v20260728205625-8639c0b1\"","filename":"rest_utils.py","lineno":46,"thread":133430650062528,"source":"app","exc_info":"Traceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/connection.py\", line 60, in create_connection\n    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/socket.py\", line 987, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno -2] Name or service not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 841, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/retry.py\", line 465, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 787, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 493, in _make_request\n    conn.request(\n    ~~~~~~~~~~~~^\n        method,\n        ^^^^^^^\n    ...<6 lines>...\n        enforce_content_length=enforce_content_length,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 96, in request\n    rval = super().request(method, url, body, headers, *args, **kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 500, in request\n    self.endheaders()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1362, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 123, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 223, in send\n    return super().send(str)\n           ~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1066, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 211, in _new_conn\n    raise NameResolutionError(self.host, self, e) from e\nurllib3.exceptions.NameResolutionError: AWSHTTPConnection(host='host.docker.internal', port=8009): Failed to resolve 'host.docker.internal' ([Errno -2] Name or service not known)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n  File \"/usr/src/app/qfieldcloud/filestorage/views.py\", line 143, in post\n    upload_project_file_version(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        request,\n        ^^^^^^^^\n    ...<2 lines>...\n        File.FileType.PROJECT_FILE,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/src/app/qfieldcloud/filestorage/view_helpers.py\", line 123, in upload_project_file_version\n    file_version = FileVersion.objects.add_version(\n        project=project,\n    ...<4 lines>...\n        package_job_id=package_job_id,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/contextlib.py\", line 85, in inner\n    return func(*args, **kwds)\n  File \"/usr/src/app/qfieldcloud/filestorage/models.py\", line 234, in add_version\n    file_version = self.create(\n        id=version_id,\n    ...<9 lines>...\n        created_at=created_at,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 665, in create\n    obj.save(force_insert=True, using=self.db)\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 902, in save\n    self.save_base(\n    ~~~~~~~~~~~~~~^\n        using=using,\n        ^^^^^^^^^^^^\n    ...<2 lines>...\n        update_fields=update_fields,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1008, in save_base\n    updated = self._save_table(\n        raw,\n    ...<4 lines>...\n        update_fields,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1169, in _save_table\n    results = self._do_insert(\n        cls._base_manager, using, fields, returning_fields, raw\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1210, in _do_insert\n    return manager._insert(\n           ~~~~~~~~~~~~~~~^\n        [self],\n        ^^^^^^^\n    ...<3 lines>...\n        raw=raw,\n        ^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 1873, in _insert\n    return query.get_compiler(using=using).execute_sql(returning_fields)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1881, in execute_sql\n    for sql, params in self.as_sql():\n                       ~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1806, in as_sql\n    self.prepare_value(field, self.pre_save_val(field, obj))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1750, in pre_save_val\n    return field.pre_save(obj, add=True)\n           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/usr/src/app/qfieldcloud/core/fields.py\", line 87, in pre_save\n    file = super().pre_save(model_instance, add)\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 338, in pre_save\n    file.save(file.name, file.file, save=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 99, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/core/files/storage/base.py\", line 49, in save\n    name = self._save(name, content)\n  File \"/usr/local/lib/python3.14/site-packages/storages/backends/s3.py\", line 565, in _save\n    obj.upload_fileobj(content, ExtraArgs=params, Config=self.transfer_config)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 731, in object_upload_fileobj\n    return self.meta.client.upload_fileobj(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        Fileobj=Fileobj,\n        ^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        Config=Config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 642, in upload_fileobj\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 103, in result\n    return self._coordinator.result()\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 264, in result\n    raise self._exception\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 135, in __call__\n    return self._execute_main(kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 158, in _execute_main\n    return_value = self._main(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/upload.py\", line 762, in _main\n    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 200, in _send_request\n    while self._needs_retry(\n          ~~~~~~~~~~~~~~~~~^\n        attempts,\n        ^^^^^^^^^\n    ...<3 lines>...\n        exception,\n        ^^^^^^^^^^\n    ):\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\n    responses = self._event_emitter.emit(\n        event_name,\n    ...<5 lines>...\n        request_dict=request_dict,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 412, in emit\n    return self._emitter.emit(aliased_event_name, **kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 256, in emit\n    return self._emit(event_name, kwargs)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 239, in _emit\n    response = handler(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 207, in __call__\n    if self._checker(**checker_kwargs):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 284, in __call__\n    should_retry = self._should_retry(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\n    return self._checker(attempt_number, response, caught_exception)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 363, in __call__\n    checker_response = checker(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 247, in __call__\n    return self._check_caught_exception(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        attempt_number, caught_exception\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\n    raise caught_exception\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 493, in send\n    raise EndpointConnectionError(endpoint_url=request.url, error=e)\nbotocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud.qgs/v20260728205625-8639c0b1\""}
+app-1  | Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud.qgs/
+app-1  | {"status_code":500,"request":"<WSGIRequest: POST '/api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud.qgs/'>","request_id":"61bdc5f164c18144f0e3ec1c5fbdd4e9","ts":"2026-07-28T20:56:32.039340+00:00","level":"ERROR","name":"django.request","message":"Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud.qgs/","filename":"log.py","lineno":253,"thread":133430650062528,"source":"app"}
+app-1  | {"request_id":"ac19ba6c4b6d0a03971ab559cad0860b","ts":"2026-07-28T20:56:34.337404+00:00","level":"ERROR","name":"root","message":"Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud_attachments.zip/v20260728205625-c4edf14a\"","filename":"rest_utils.py","lineno":46,"thread":133430675240640,"source":"app","exc_info":"Traceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 204, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/connection.py\", line 60, in create_connection\n    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/socket.py\", line 987, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno -2] Name or service not known\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 841, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/retry.py\", line 465, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 787, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connectionpool.py\", line 493, in _make_request\n    conn.request(\n    ~~~~~~~~~~~~^\n        method,\n        ^^^^^^^\n    ...<6 lines>...\n        enforce_content_length=enforce_content_length,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 96, in request\n    rval = super().request(method, url, body, headers, *args, **kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 500, in request\n    self.endheaders()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1362, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 123, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/awsrequest.py\", line 223, in send\n    return super().send(str)\n           ~~~~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.14/http/client.py\", line 1066, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/urllib3/connection.py\", line 211, in _new_conn\n    raise NameResolutionError(self.host, self, e) from e\nurllib3.exceptions.NameResolutionError: AWSHTTPConnection(host='host.docker.internal', port=8009): Failed to resolve 'host.docker.internal' ([Errno -2] Name or service not known)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.14/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n  File \"/usr/src/app/qfieldcloud/filestorage/views.py\", line 143, in post\n    upload_project_file_version(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        request,\n        ^^^^^^^^\n    ...<2 lines>...\n        File.FileType.PROJECT_FILE,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/src/app/qfieldcloud/filestorage/view_helpers.py\", line 123, in upload_project_file_version\n    file_version = FileVersion.objects.add_version(\n        project=project,\n    ...<4 lines>...\n        package_job_id=package_job_id,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/contextlib.py\", line 85, in inner\n    return func(*args, **kwds)\n  File \"/usr/src/app/qfieldcloud/filestorage/models.py\", line 234, in add_version\n    file_version = self.create(\n        id=version_id,\n    ...<9 lines>...\n        created_at=created_at,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 665, in create\n    obj.save(force_insert=True, using=self.db)\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 902, in save\n    self.save_base(\n    ~~~~~~~~~~~~~~^\n        using=using,\n        ^^^^^^^^^^^^\n    ...<2 lines>...\n        update_fields=update_fields,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1008, in save_base\n    updated = self._save_table(\n        raw,\n    ...<4 lines>...\n        update_fields,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1169, in _save_table\n    results = self._do_insert(\n        cls._base_manager, using, fields, returning_fields, raw\n    )\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/base.py\", line 1210, in _do_insert\n    return manager._insert(\n           ~~~~~~~~~~~~~~~^\n        [self],\n        ^^^^^^^\n    ...<3 lines>...\n        raw=raw,\n        ^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/query.py\", line 1873, in _insert\n    return query.get_compiler(using=using).execute_sql(returning_fields)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1881, in execute_sql\n    for sql, params in self.as_sql():\n                       ~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1806, in as_sql\n    self.prepare_value(field, self.pre_save_val(field, obj))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py\", line 1750, in pre_save_val\n    return field.pre_save(obj, add=True)\n           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/usr/src/app/qfieldcloud/core/fields.py\", line 87, in pre_save\n    file = super().pre_save(model_instance, add)\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 338, in pre_save\n    file.save(file.name, file.file, save=False)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/db/models/fields/files.py\", line 99, in save\n    self.name = self.storage.save(name, content, max_length=self.field.max_length)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/django/core/files/storage/base.py\", line 49, in save\n    name = self._save(name, content)\n  File \"/usr/local/lib/python3.14/site-packages/storages/backends/s3.py\", line 565, in _save\n    obj.upload_fileobj(content, ExtraArgs=params, Config=self.transfer_config)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 731, in object_upload_fileobj\n    return self.meta.client.upload_fileobj(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        Fileobj=Fileobj,\n        ^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        Config=Config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/boto3/s3/inject.py\", line 642, in upload_fileobj\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 103, in result\n    return self._coordinator.result()\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/futures.py\", line 264, in result\n    raise self._exception\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 135, in __call__\n    return self._execute_main(kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/tasks.py\", line 158, in _execute_main\n    return_value = self._main(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/s3transfer/upload.py\", line 762, in _main\n    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 200, in _send_request\n    while self._needs_retry(\n          ~~~~~~~~~~~~~~~~~^\n        attempts,\n        ^^^^^^^^^\n    ...<3 lines>...\n        exception,\n        ^^^^^^^^^^\n    ):\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\n    responses = self._event_emitter.emit(\n        event_name,\n    ...<5 lines>...\n        request_dict=request_dict,\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 412, in emit\n    return self._emitter.emit(aliased_event_name, **kwargs)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 256, in emit\n    return self._emit(event_name, kwargs)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/hooks.py\", line 239, in _emit\n    response = handler(**kwargs)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 207, in __call__\n    if self._checker(**checker_kwargs):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 284, in __call__\n    should_retry = self._should_retry(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\n    return self._checker(attempt_number, response, caught_exception)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 363, in __call__\n    checker_response = checker(\n        attempt_number, response, caught_exception\n    )\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 247, in __call__\n    return self._check_caught_exception(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        attempt_number, caught_exception\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\n    raise caught_exception\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n  File \"/usr/local/lib/python3.14/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/local/lib/python3.14/site-packages/botocore/httpsession.py\", line 493, in send\n    raise EndpointConnectionError(endpoint_url=request.url, error=e)\nbotocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: \"http://host.docker.internal:8009/qfieldcloud-local/projects/bb035b5e-40e0-44cd-87c1-df20a82d762b/files/ipe_test_cloud_attachments.zip/v20260728205625-c4edf14a\""}
+app-1  | Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud_attachments.zip/
+app-1  | {"status_code":500,"request":"<WSGIRequest: POST '/api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud_attachments.zip/'>","request_id":"ac19ba6c4b6d0a03971ab559cad0860b","ts":"2026-07-28T20:56:34.393766+00:00","level":"ERROR","name":"django.request","message":"Internal Server Error: /api/v1/files/bb035b5e-40e0-44cd-87c1-df20a82d762b/ipe_test_cloud_attachments.zip/","filename":"log.py","lineno":253,"thread":133430675240640,"source":"app"}
+qgis-1  | QGIS built
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:16:50.880876+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":133394764436352,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 123, in __getattr__
+worker_wrapper-1  |     asyncio.get_running_loop()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+worker_wrapper-1  | RuntimeError: no running event loop
+worker_wrapper-1  |
+worker_wrapper-1  | During handling of the above exception, another exception occurred:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedTable: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 275, in fetch_command
+worker_wrapper-1  |     klass = load_command_class(app_name, subcommand)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 48, in load_command_class
+worker_wrapper-1  |     module = import_module("%s.management.commands.%s" % (app_name, name))
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/importlib/__init__.py", line 88, in import_module
+worker_wrapper-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 12, in <module>
+worker_wrapper-1  |     from worker_wrapper.wrapper import (
+worker_wrapper-1  |     ...<6 lines>...
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 63, in <module>
+worker_wrapper-1  |     class JobRun:
+worker_wrapper-1  |     ...<434 lines>...
+worker_wrapper-1  |             return response["StatusCode"], logs
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 64, in JobRun
+worker_wrapper-1  |     container_timeout_secs = config.WORKER_TIMEOUT_S
+worker_wrapper-1  |                              ^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/utils/functional.py", line 253, in inner
+worker_wrapper-1  |     return func(_wrapped, *args)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 125, in __getattr__
+worker_wrapper-1  |     return self._get_sync_value(key, default)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 106, in _get_sync_value
+worker_wrapper-1  |     result = self._backend.get(key)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/backends/database.py", line 83, in get
+worker_wrapper-1  |     match = self._model._default_manager.filter(key=key).only("value").first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:16:58.241955+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":130628830839680,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 123, in __getattr__
+worker_wrapper-1  |     asyncio.get_running_loop()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+worker_wrapper-1  | RuntimeError: no running event loop
+worker_wrapper-1  |
+worker_wrapper-1  | During handling of the above exception, another exception occurred:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedTable: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 275, in fetch_command
+worker_wrapper-1  |     klass = load_command_class(app_name, subcommand)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 48, in load_command_class
+worker_wrapper-1  |     module = import_module("%s.management.commands.%s" % (app_name, name))
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/importlib/__init__.py", line 88, in import_module
+worker_wrapper-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 12, in <module>
+worker_wrapper-1  |     from worker_wrapper.wrapper import (
+worker_wrapper-1  |     ...<6 lines>...
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 63, in <module>
+worker_wrapper-1  |     class JobRun:
+worker_wrapper-1  |     ...<434 lines>...
+worker_wrapper-1  |             return response["StatusCode"], logs
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 64, in JobRun
+worker_wrapper-1  |     container_timeout_secs = config.WORKER_TIMEOUT_S
+worker_wrapper-1  |                              ^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/utils/functional.py", line 253, in inner
+worker_wrapper-1  |     return func(_wrapped, *args)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 125, in __getattr__
+worker_wrapper-1  |     return self._get_sync_value(key, default)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 106, in _get_sync_value
+worker_wrapper-1  |     result = self._backend.get(key)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/backends/database.py", line 83, in get
+worker_wrapper-1  |     match = self._model._default_manager.filter(key=key).only("value").first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:05.500259+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":128041510220672,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 123, in __getattr__
+worker_wrapper-1  |     asyncio.get_running_loop()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+worker_wrapper-1  | RuntimeError: no running event loop
+worker_wrapper-1  |
+worker_wrapper-1  | During handling of the above exception, another exception occurred:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedTable: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 275, in fetch_command
+worker_wrapper-1  |     klass = load_command_class(app_name, subcommand)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 48, in load_command_class
+worker_wrapper-1  |     module = import_module("%s.management.commands.%s" % (app_name, name))
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/importlib/__init__.py", line 88, in import_module
+worker_wrapper-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 12, in <module>
+worker_wrapper-1  |     from worker_wrapper.wrapper import (
+worker_wrapper-1  |     ...<6 lines>...
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 63, in <module>
+worker_wrapper-1  |     class JobRun:
+worker_wrapper-1  |     ...<434 lines>...
+worker_wrapper-1  |             return response["StatusCode"], logs
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 64, in JobRun
+worker_wrapper-1  |     container_timeout_secs = config.WORKER_TIMEOUT_S
+worker_wrapper-1  |                              ^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/utils/functional.py", line 253, in inner
+worker_wrapper-1  |     return func(_wrapped, *args)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 125, in __getattr__
+worker_wrapper-1  |     return self._get_sync_value(key, default)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 106, in _get_sync_value
+worker_wrapper-1  |     result = self._backend.get(key)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/backends/database.py", line 83, in get
+worker_wrapper-1  |     match = self._model._default_manager.filter(key=key).only("value").first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:12.205689+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":132582183375744,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 123, in __getattr__
+worker_wrapper-1  |     asyncio.get_running_loop()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+worker_wrapper-1  | RuntimeError: no running event loop
+worker_wrapper-1  |
+worker_wrapper-1  | During handling of the above exception, another exception occurred:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedTable: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 275, in fetch_command
+worker_wrapper-1  |     klass = load_command_class(app_name, subcommand)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 48, in load_command_class
+worker_wrapper-1  |     module = import_module("%s.management.commands.%s" % (app_name, name))
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/importlib/__init__.py", line 88, in import_module
+worker_wrapper-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 12, in <module>
+worker_wrapper-1  |     from worker_wrapper.wrapper import (
+worker_wrapper-1  |     ...<6 lines>...
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 63, in <module>
+worker_wrapper-1  |     class JobRun:
+worker_wrapper-1  |     ...<434 lines>...
+worker_wrapper-1  |             return response["StatusCode"], logs
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 64, in JobRun
+worker_wrapper-1  |     container_timeout_secs = config.WORKER_TIMEOUT_S
+worker_wrapper-1  |                              ^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/utils/functional.py", line 253, in inner
+worker_wrapper-1  |     return func(_wrapped, *args)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 125, in __getattr__
+worker_wrapper-1  |     return self._get_sync_value(key, default)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 106, in _get_sync_value
+worker_wrapper-1  |     result = self._backend.get(key)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/backends/database.py", line 83, in get
+worker_wrapper-1  |     match = self._model._default_manager.filter(key=key).only("value").first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:20.027237+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":140071653372800,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 123, in __getattr__
+worker_wrapper-1  |     asyncio.get_running_loop()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+worker_wrapper-1  | RuntimeError: no running event loop
+worker_wrapper-1  |
+worker_wrapper-1  | During handling of the above exception, another exception occurred:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedTable: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 275, in fetch_command
+worker_wrapper-1  |     klass = load_command_class(app_name, subcommand)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 48, in load_command_class
+worker_wrapper-1  |     module = import_module("%s.management.commands.%s" % (app_name, name))
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/importlib/__init__.py", line 88, in import_module
+worker_wrapper-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 12, in <module>
+worker_wrapper-1  |     from worker_wrapper.wrapper import (
+worker_wrapper-1  |     ...<6 lines>...
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 63, in <module>
+worker_wrapper-1  |     class JobRun:
+worker_wrapper-1  |     ...<434 lines>...
+worker_wrapper-1  |             return response["StatusCode"], logs
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 64, in JobRun
+worker_wrapper-1  |     container_timeout_secs = config.WORKER_TIMEOUT_S
+worker_wrapper-1  |                              ^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/utils/functional.py", line 253, in inner
+worker_wrapper-1  |     return func(_wrapped, *args)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 125, in __getattr__
+worker_wrapper-1  |     return self._get_sync_value(key, default)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 106, in _get_sync_value
+worker_wrapper-1  |     result = self._backend.get(key)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/backends/database.py", line 83, in get
+worker_wrapper-1  |     match = self._model._default_manager.filter(key=key).only("value").first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:28.553724+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":129900095542144,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 123, in __getattr__
+worker_wrapper-1  |     asyncio.get_running_loop()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+worker_wrapper-1  | RuntimeError: no running event loop
+worker_wrapper-1  |
+worker_wrapper-1  | During handling of the above exception, another exception occurred:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedTable: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 275, in fetch_command
+worker_wrapper-1  |     klass = load_command_class(app_name, subcommand)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 48, in load_command_class
+worker_wrapper-1  |     module = import_module("%s.management.commands.%s" % (app_name, name))
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/importlib/__init__.py", line 88, in import_module
+worker_wrapper-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+worker_wrapper-1  |   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+worker_wrapper-1  |   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 12, in <module>
+worker_wrapper-1  |     from worker_wrapper.wrapper import (
+worker_wrapper-1  |     ...<6 lines>...
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 63, in <module>
+worker_wrapper-1  |     class JobRun:
+worker_wrapper-1  |     ...<434 lines>...
+worker_wrapper-1  |             return response["StatusCode"], logs
+worker_wrapper-1  |   File "/usr/src/app/worker_wrapper/wrapper.py", line 64, in JobRun
+worker_wrapper-1  |     container_timeout_secs = config.WORKER_TIMEOUT_S
+worker_wrapper-1  |                              ^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/utils/functional.py", line 253, in inner
+worker_wrapper-1  |     return func(_wrapped, *args)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 125, in __getattr__
+worker_wrapper-1  |     return self._get_sync_value(key, default)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/base.py", line 106, in _get_sync_value
+worker_wrapper-1  |     result = self._backend.get(key)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/constance/backends/database.py", line 83, in get
+worker_wrapper-1  |     match = self._model._default_manager.filter(key=key).only("value").first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: relation "constance_constance" does not exist
+worker_wrapper-1  | LINE 1: ...nstance"."id", "constance_constance"."value" FROM "constance...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.01s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:38.641256+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":126104743850880,"source":"worker_wrapper"}
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:39.268846+00:00","level":"INFO","name":"root","message":"Dequeue QFieldCloud Jobs from the DB","filename":"dequeue.py","lineno":49,"thread":126104743850880,"source":"worker_wrapper"}
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | psycopg2.errors.UndefinedColumn: column core_job.triggered_by_id does not exist
+worker_wrapper-1  | LINE 1: ...tus", "core_job"."output", "core_job"."feedback", "core_job"...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  |
+worker_wrapper-1  | The above exception was the direct cause of the following exception:
+worker_wrapper-1  |
+worker_wrapper-1  | Traceback (most recent call last):
+worker_wrapper-1  |   File "<frozen runpy>", line 203, in _run_module_as_main
+worker_wrapper-1  |   File "<frozen runpy>", line 88, in _run_code
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/__main__.py", line 71, in <module>
+worker_wrapper-1  |     cli.main()
+worker_wrapper-1  |     ~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 542, in main
+worker_wrapper-1  |     run()
+worker_wrapper-1  |     ~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/server/cli.py", line 361, in run_file
+worker_wrapper-1  |     runpy.run_path(target, run_name="__main__")
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 310, in run_path
+worker_wrapper-1  |     return _run_module_code(code, init_globals, run_name, pkg_name=pkg_name, script_name=fname)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 127, in _run_module_code
+worker_wrapper-1  |     _run_code(code, mod_globals, init_globals, mod_name, mod_spec, pkg_name, script_name)
+worker_wrapper-1  |     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 118, in _run_code
+worker_wrapper-1  |     exec(code, run_globals)
+worker_wrapper-1  |     ~~~~^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "manage.py", line 21, in <module>
+worker_wrapper-1  |     main()
+worker_wrapper-1  |     ~~~~^^
+worker_wrapper-1  |   File "manage.py", line 17, in main
+worker_wrapper-1  |     execute_from_command_line(sys.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+worker_wrapper-1  |     utility.execute()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/__init__.py", line 436, in execute
+worker_wrapper-1  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/base.py", line 420, in run_from_argv
+worker_wrapper-1  |     self.execute(*args, **cmd_options)
+worker_wrapper-1  |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/core/management/base.py", line 464, in execute
+worker_wrapper-1  |     output = self.handle(*args, **options)
+worker_wrapper-1  |   File "/usr/src/app/qfieldcloud/core/management/commands/dequeue.py", line 95, in handle
+worker_wrapper-1  |     queued_job = jobs_qs.first()
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1106, in first
+worker_wrapper-1  |     for obj in queryset[:1]:
+worker_wrapper-1  |                ~~~~~~~~^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 386, in __iter__
+worker_wrapper-1  |     self._fetch_all()
+worker_wrapper-1  |     ~~~~~~~~~~~~~~~^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+worker_wrapper-1  |     self._result_cache = list(self._iterable_class(self))
+worker_wrapper-1  |                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/model_utils/managers.py", line 47, in _iter_inheritance_queryset
+worker_wrapper-1  |     yield from iter
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/query.py", line 93, in __iter__
+worker_wrapper-1  |     results = compiler.execute_sql(
+worker_wrapper-1  |         chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+worker_wrapper-1  |     )
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+worker_wrapper-1  |     cursor.execute(sql, params)
+worker_wrapper-1  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 122, in execute
+worker_wrapper-1  |     return super().execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+worker_wrapper-1  |     return self._execute_with_wrappers(
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+worker_wrapper-1  |         sql, params, many=False, executor=self._execute
+worker_wrapper-1  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |     )
+worker_wrapper-1  |     ^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+worker_wrapper-1  |     return executor(sql, params, many, context)
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+worker_wrapper-1  |     with self.db.wrap_database_errors:
+worker_wrapper-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/utils.py", line 91, in __exit__
+worker_wrapper-1  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+worker_wrapper-1  |   File "/usr/local/lib/python3.14/site-packages/django/db/backends/utils.py", line 105, in _execute
+worker_wrapper-1  |     return self.cursor.execute(sql, params)
+worker_wrapper-1  |            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+worker_wrapper-1  | django.db.utils.ProgrammingError: column core_job.triggered_by_id does not exist
+worker_wrapper-1  | LINE 1: ...tus", "core_job"."output", "core_job"."feedback", "core_job"...
+worker_wrapper-1  |                                                              ^
+worker_wrapper-1  |
+worker_wrapper-1  | Waiting for postgres...
+worker_wrapper-1  | Postgres is ready! ✨ 💅
+worker_wrapper-1  | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+worker_wrapper-1  | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+worker_wrapper-1  | 0.00s - to python to disable frozen modules.
+worker_wrapper-1  | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:52.447890+00:00","level":"INFO","name":"axes.apps","message":"AXES: BEGIN version 8.3.1, blocking by combination of username and ip_address","filename":"apps.py","lineno":53,"thread":131483961668480,"source":"worker_wrapper"}
+worker_wrapper-1  | {"request_id":"none","ts":"2026-07-28T20:17:53.042761+00:00","level":"INFO","name":"root","message":"Dequeue QFieldCloud Jobs from the DB","filename":"dequeue.py","lineno":49,"thread":131483961668480,"source":"worker_wrapper"}
+app-1             | [28/Jul/2026 22:58:33] "GET //admin/config.php HTTP/1.1" 302 0
+app-1             | [28/Jul/2026 22:58:33] "GET /admin/login/?next=/admin/config.php HTTP/1.1" 302 0
+app-1             | [28/Jul/2026 22:58:33] "GET /accounts/login/?next=/admin/config.php HTTP/1.1" 200 17931
