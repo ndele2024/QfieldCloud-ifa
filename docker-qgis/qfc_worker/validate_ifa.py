@@ -1,12 +1,12 @@
 """
-qfc_worker.validate_ife — Validation IFE post-application des deltas.
+qfc_worker.validate_ifa — Validation IFE post-application des deltas.
 
 Appelé comme étape du workflow apply_deltas (voir commands/apply_deltas.py).
 
 Flux :
   1. Chercher le GPKG IPE dans le répertoire de fichiers du projet
      (premier GPKG contenant la table "mesurage").
-  2. Ajouter validation_ife/ au sys.path et importer le moteur.
+  2. Ajouter validation_ifa/ au sys.path et importer le moteur.
   3. Ouvrir une connexion PostgreSQL (variables d'environnement VALIDATION_PG_*).
   4. Lancer engine.run() : validation + insertion si valide.
   5. Écrire la table rapport_validation dans le GPKG.
@@ -27,13 +27,13 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-# Chemin absolu vers validation_ife/ (relatif à ce fichier)
-_VALIDATION_IFE_DIR = Path(__file__).parent / "validation_ife"
+# Chemin absolu vers validation_ifa/ (relatif à ce fichier)
+_VALIDATION_IFA_DIR = Path(__file__).parent / "validation_ifa"
 
 
 def _ensure_validation_path() -> None:
-    """Ajoute validation_ife/ à sys.path si nécessaire."""
-    p = str(_VALIDATION_IFE_DIR)
+    """Ajoute validation_ifa/ à sys.path si nécessaire."""
+    p = str(_VALIDATION_IFA_DIR)
     if p not in sys.path:
         sys.path.insert(0, p)
 
@@ -241,7 +241,7 @@ def validate_ife_data(project_dir: Path) -> dict[str, Any]:
     # ── 2. Connexion PostgreSQL ────────────────────────────────────────────
     # Les variables d'environnement VALIDATION_PG_* doivent être définies
     # comme secrets QFieldCloud (ou dans le docker-compose.override.local.yml).
-    import config as ife_config  # importé depuis validation_ife/ via sys.path
+    import config as ife_config  # importé depuis validation_ifa/ via sys.path
 
     try:
         import psycopg2
@@ -255,7 +255,7 @@ def validate_ife_data(project_dir: Path) -> dict[str, Any]:
 
     # ── 3. Validation + insertion ──────────────────────────────────────────
     try:
-        from core import engine  # importé depuis validation_ife/core/
+        from core import engine  # importé depuis validation_ifa/core/
 
         result = engine.run(
             gpkg_path,

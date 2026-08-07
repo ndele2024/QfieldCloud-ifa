@@ -1,8 +1,7 @@
 ﻿"""
 Règles métier : Autres observations fauniques (table ifa_data.autre_obser_fauni).
 
-Source : "UE IFE LISTE DES REGLES.instructions.md", section
-"Table / Couche : Autres observations fauniques (AUTRE_OBSER_FAUNI)".
+Source : "Règles IFA 2.0/AUTRE_OBSER_FAUNI.groovy".
 
 Non couvert ici (filtre de listes déroulantes UI, sans effet sur la
 validité d'un enregistrement déjà saisi) :

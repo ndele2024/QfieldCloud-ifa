@@ -27,12 +27,14 @@ PG_SCHEMA = os.environ.get("VALIDATION_PG_SCHEMA", "ifa_data")
 # generate_ipe_form.py et extract_ipe_subset.py si le schéma évolue).
 IPE_TABLES = [
     "mesurage", "infor_gener", "equipe",
+    "amenagement", "espec_amena",
     "analy_physi_chimi", "profi_mesur", "resul_analy_physi_chimi",
     "autre_obser_fauni",
     "descr_habit", "forme_descr_habit",
     "habitat", "espec_habit", "forme_eleme_habit",
     "peche_exper", "pose_levee_filet", "denom_espec", "detail_speci",
     "perturbation",
+    "ensemencement", "marqu_ensem",
 ]
 
 

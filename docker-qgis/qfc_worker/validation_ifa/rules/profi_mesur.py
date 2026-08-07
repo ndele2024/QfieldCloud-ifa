@@ -1,8 +1,7 @@
 ﻿"""
 Règles métier : Profil de mesures physico-chimie (table ifa_data.profi_mesur).
 
-Source : "UE IFE LISTE DES REGLES.instructions.md", section
-"Table / Couche : profil de mesures phisico-chimie (PROFI_MESUR)".
+Source : "Règles IFA 2.0/PROFI_MESUR.groovy".
 
 La génération de la liste de profondeurs (generer_profondeurs) est une
 règle de SAISIE (elle alimente la liste de choix proposée à l'utilisateur
@@ -15,8 +14,10 @@ spécifiée, pour :
   2. être couverte par des tests unitaires (voir tests/test_profi_mesur.py),
      comme demandé pour l'ensemble du programme.
 
-Règle de validation effectivement appliquée par le moteur :
+Règles de validation effectivement appliquées par le moteur :
   - Profondeur (pme_profd_m) obligatoire et strictement positive.
+  - pH (pme_val_ph), s'il est renseigné, compris entre 5 et 8.
+  - Au moins une des trois mesures Oxygène / pH / Température renseignée.
 """
 
 from __future__ import annotations
@@ -24,8 +25,11 @@ from __future__ import annotations
 from core.models import Severity, ValidationIssue
 from core.registry import register
 from core.rule_base import RuleContext, RuleKind
+from rules.common import at_least_one_of
 
 LAYER = "profi_mesur"
+
+PH_MIN, PH_MAX = 5, 8
 
 
 def generer_profondeurs(profondeur_max: float | None = None) -> list[float]:
@@ -81,3 +85,23 @@ def profondeur_obligatoire_positive(ctx: RuleContext) -> list[ValidationIssue]:
             fields=["pme_profd_m"], record=ctx.record_key(),
         )]
     return []
+
+
+@register(LAYER, kind=RuleKind.VALIDATION)
+def ph_dans_bornes(ctx: RuleContext) -> list[ValidationIssue]:
+    """Si le pH est renseigné, sa valeur doit être comprise entre 5 et 8."""
+    value = ctx.row.get("pme_val_ph")
+    if value is None or PH_MIN <= value <= PH_MAX:
+        return []
+    return [ValidationIssue(
+        layer=ctx.layer, severity=Severity.ERROR, code="PROFI_MESUR_PH_HORS_BORNES",
+        message=f"Le pH mesuré ({value}) doit être compris entre {PH_MIN} et {PH_MAX}.",
+        fields=["pme_val_ph"], record=ctx.record_key(),
+    )]
+
+
+register(LAYER, kind=RuleKind.VALIDATION)(at_least_one_of(
+    ["pme_val_oxyge", "pme_val_ph", "pme_val_tempe_cel"],
+    "Oxygène, pH, Température",
+    code="PROFI_MESUR_AU_MOINS_UNE_MESURE_REQUISE",
+))

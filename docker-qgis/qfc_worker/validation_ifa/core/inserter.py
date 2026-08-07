@@ -21,12 +21,14 @@ from typing import Any
 # de données, répercuter le changement ici également.
 INSERT_ORDER = [
     "mesurage", "infor_gener", "equipe",
+    "amenagement", "espec_amena",
     "analy_physi_chimi", "profi_mesur", "resul_analy_physi_chimi",
     "autre_obser_fauni",
     "descr_habit", "forme_descr_habit",
     "habitat", "espec_habit", "forme_eleme_habit",
     "peche_exper", "pose_levee_filet", "denom_espec", "detail_speci",
     "perturbation",
+    "ensemencement", "marqu_ensem",
 ]
 
 
@@ -39,7 +41,10 @@ def _insert_rows(cur, table: str, rows: list[dict[str, Any]], pg_schema: str) ->
     if not rows:
         return 0
 
-    columns = [c for c in rows[0].keys() if c != "geometry"]
+    # Exclure "fid" : c'est la clé primaire propre au GeoPackage (ajoutée pour
+    # rendre les couches modifiables dans QField). Elle n'existe pas dans les
+    # tables PostgreSQL, qui gèrent leur propre identité.
+    columns = [c for c in rows[0].keys() if c not in ("geometry", "fid")]
     has_geom = "geometry" in rows[0]
 
     col_list = ", ".join(f'"{c}"' for c in columns)

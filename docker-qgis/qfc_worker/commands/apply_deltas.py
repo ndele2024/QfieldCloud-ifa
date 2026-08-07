@@ -36,7 +36,7 @@ from qfc_worker.utils import (
     stop_app,
     upload_project,
 )
-from qfc_worker.validate_ife import validate_ife_data
+from qfc_worker.validate_ifa import validate_ife_data
 from qfc_worker.workflow import (
     Step,
     WorkDirPath,

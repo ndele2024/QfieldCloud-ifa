@@ -1,8 +1,7 @@
 """
 Règles métier : Equipe de travail (table ifa_data.equipe).
 
-Source : "UE IFE LISTE DES REGLES.instructions.md", section
-"Table / Couche : Equipe de travail (EQUIPE)".
+Source : "Règles IFA 2.0/EQUIPE.groovy".
 
 Règle couverte :
   - champs obligatoires : responsable de l'équipe (EQR_CODE_RESPO) ou le nom d'un intervenant externe (TIE_CODE)

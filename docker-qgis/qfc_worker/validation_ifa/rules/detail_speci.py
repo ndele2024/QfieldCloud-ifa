@@ -1,8 +1,7 @@
 ﻿"""
 Règles métier pour Détails des spécimens (table ifa_data.detail_speci).
 
-Source : "UE IFE LISTE DES REGLES.instructions.md", section
-"Table / couche : Détails des spécimens (DETAIL_SPECI)".
+Source : "Règles IFA 2.0/DETAIL_SPECI.groovy".
 
 C'est la couche avec le plus grand nombre de règles du référentiel. Elles
 sont regroupées ci-dessous par thème, dans le même ordre que le document
@@ -85,10 +84,14 @@ COEFFICIENT_CONDITION_BORNES = {
     "COAR": (0.6, 1.1),
     "COCL": (0.6, 1.4),
     "ESLU": (0.5, 0.9),
+    # PEFL / SAFO / CACO partagent les mêmes bornes, de même que SAAL / SAVI.
     "PEFL": (0.8, 1.4),
+    "SAFO": (0.8, 1.4),
+    "CACO": (0.8, 1.4),
     "SANA": (0.6, 1.2),
     "SASA": (0.7, 1.4),
     "SAAL": (0.5, 0.9),
+    "SAVI": (0.5, 0.9),
 }
 
 

@@ -1,8 +1,7 @@
 ﻿"""
 Règles métier : Analyse physico-chimique (table ifa_data.analy_physi_chimi).
 
-Source : "UE IFE LISTE DES REGLES.instructions.md", section
-"Table / Couche : Analyse physico-chimique (ANALY_PHYSI_CHIMI)".
+Source : "Règles IFA 2.0/ANALY_PHYSI_CHIMI.groovy".
 
 Règles couvertes ici :
   - Numéro de station obligatoire.

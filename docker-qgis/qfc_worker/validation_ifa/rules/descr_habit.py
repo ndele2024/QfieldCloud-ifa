@@ -1,8 +1,7 @@
 ﻿"""
 Règles métier : Description de l'habitat (table ifa_data.descr_habit).
 
-Source : "UE IFE LISTE DES REGLES.instructions.md", section
-"Table / Couche : Description de l'habitat (DESCR_HABIT)".
+Source : "Règles IFA 2.0/DESCR_HABIT.groovy".
 
 Non couvert ici (filtre de liste déroulante UI, désactivation conditionnelle
 d'un champ : sans effet sur la validité d'un enregistrement déjà saisi) :
