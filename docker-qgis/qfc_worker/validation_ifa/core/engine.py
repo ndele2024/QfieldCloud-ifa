@@ -95,7 +95,7 @@ def run(
             report.issues.extend(rule.run(ctx))
 
     if report.is_valid and apply:
-        inserter.insert_all(layers, conn, pg_schema=pg_schema)
+        inserter.insert_all(layers, conn, pg_schema=pg_schema, schemas=schemas)
         report.inserted = True
 
     return report
