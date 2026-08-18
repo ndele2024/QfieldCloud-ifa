@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .models import ValidationReport
+from .models import LAYER_BASE_DE_DONNEES, ValidationReport
 
 
 def save_report(report: ValidationReport, path: str | Path) -> None:
@@ -23,6 +23,12 @@ def save_report(report: ValidationReport, path: str | Path) -> None:
         json.dumps(report.to_dict(), indent=2, ensure_ascii=False, default=str),
         encoding="utf-8",
     )
+
+
+def erreurs_base_de_donnees(report: ValidationReport) -> list:
+    """Anomalies portant sur la communication avec PostgreSQL (connexion,
+    lecture du schéma, insertion) plutôt que sur la saisie de l'utilisateur."""
+    return [i for i in report.errors if i.layer == LAYER_BASE_DE_DONNEES]
 
 
 def report_summary(report: ValidationReport) -> str:
@@ -36,10 +42,29 @@ def report_summary(report: ValidationReport) -> str:
             lines.append(f"  {len(report.warnings)} avertissement(s) — voir le rapport JSON.")
         return "\n".join(lines)
 
-    lines = [f"✗ Validation échouée : {len(report.errors)} erreur(s). Aucune donnée insérée."]
-    by_layer: dict[str, int] = {}
-    for issue in report.errors:
-        by_layer[issue.layer] = by_layer.get(issue.layer, 0) + 1
-    for layer, count in sorted(by_layer.items()):
-        lines.append(f"  - {layer} : {count} erreur(s)")
+    erreurs_bd = erreurs_base_de_donnees(report)
+    erreurs_saisie = [i for i in report.errors if i.layer != LAYER_BASE_DE_DONNEES]
+
+    lines: list[str] = []
+
+    # Les problèmes de base de données sont affichés en premier et en entier :
+    # ils n'ont rien à voir avec la saisie de l'utilisateur, et ce sont eux
+    # qu'on cherche à voir sans ouvrir les journaux du conteneur.
+    if erreurs_bd:
+        lines.append(f"✗ Problème de base de données ({len(erreurs_bd)}) :")
+        for issue in erreurs_bd:
+            lines.append(f"  - [{issue.code}] {issue.message}")
+
+    if erreurs_saisie:
+        lines.append(
+            f"✗ Validation échouée : {len(erreurs_saisie)} erreur(s). Aucune donnée insérée."
+        )
+        by_layer: dict[str, int] = {}
+        for issue in erreurs_saisie:
+            by_layer[issue.layer] = by_layer.get(issue.layer, 0) + 1
+        for layer, count in sorted(by_layer.items()):
+            lines.append(f"  - {layer} : {count} erreur(s)")
+    elif erreurs_bd:
+        lines.append("  Aucune donnée insérée.")
+
     return "\n".join(lines)

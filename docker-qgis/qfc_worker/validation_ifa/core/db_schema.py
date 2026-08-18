@@ -9,11 +9,16 @@ modification de ce dépôt n'est nécessaire pour ce type de règle.
 Fonctions exposées :
   - load_schema(conn, tables) -> dict[str, LayerSchema]
   - check_db_rules(layer, rows, schema) -> list[ValidationIssue]
+  - column_label(layer, column) -> str  (libellé lisible d'une colonne)
 """
 
 from __future__ import annotations
 
+import json
 import re
+from functools import lru_cache
+
+import config
 
 from .models import LayerSchema, Severity, ValidationIssue
 
@@ -28,6 +33,41 @@ _RE_BETWEEN = re.compile(
     r"\"?(?P<col>\w+)\"?\s+BETWEEN\s+(?P<low>-?\d+(\.\d+)?)\s+AND\s+(?P<high>-?\d+(\.\d+)?)",
     re.IGNORECASE,
 )
+
+
+@lru_cache(maxsize=1)
+def _load_column_aliases() -> dict[str, dict[str, str]]:
+    """Charge { table: { colonne: alias } } depuis le fichier JSON généré par
+    generate_column_aliases.py (voir config.COLUMN_ALIASES_PATH).
+
+    Mis en cache : le fichier ne change pas pendant l'exécution, inutile de
+    le relire pour chaque enregistrement validé.
+
+    Si le fichier est absent ou illisible, retourne un dictionnaire vide :
+    les messages retomberont alors sur le nom brut des colonnes (voir
+    column_label). Une table de libellés manquante ne doit jamais empêcher
+    une validation de s'exécuter.
+    """
+    try:
+        with open(config.COLUMN_ALIASES_PATH, encoding="utf-8") as fichier:
+            return json.load(fichier).get("tables", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def column_label(layer: str, column: str) -> str:
+    """Libellé lisible d'une colonne, pour les messages destinés à
+    l'utilisateur (ex. "ing_date_debut_inven" -> "Date du début de
+    l'inventaire"). Retombe sur le nom brut de la colonne si aucun alias
+    n'est connu.
+
+    Le libellé dépend du COUPLE (table, colonne) : plusieurs colonnes
+    portent un nom différent selon la table (ex. efa_code = « Espèce » dans
+    detail_speci mais « Espèce visée » dans peche_exper), d'où le paramètre
+    `layer`.
+    """
+    alias = _load_column_aliases().get(layer.lower(), {}).get(column.lower())
+    return alias or column
 
 
 def _parse_numeric_ranges(check_clause: str) -> dict[str, tuple[float | None, float | None]]:
@@ -140,7 +180,15 @@ def check_db_rules(layer: str, rows: list[dict], schema: LayerSchema) -> list[Va
     """Applique les règles automatiquement déduites du schéma PostgreSQL à
     chaque enregistrement de `rows`. Couvre : NOT NULL, plages numériques
     (CHECK), appartenance à un ENUM. Ne couvre PAS les clés étrangères
-    inter-tables (gérées par les relations applicatives, pas par ce module)."""
+    inter-tables (gérées par les relations applicatives, pas par ce module).
+
+    Les messages désignent les colonnes par leur ALIAS métier (voir
+    column_label) plutôt que par leur nom technique : « Date du début de
+    l'inventaire » est exploitable par la personne qui a saisi le
+    formulaire, « ing_date_debut_inven » ne l'est pas. En revanche le champ
+    `fields` de chaque anomalie continue de porter le nom TECHNIQUE de la
+    colonne : il est lu par l'interface (QField/QGIS) pour mettre le bon
+    champ en évidence dans le formulaire, et doit donc rester stable."""
     issues: list[ValidationIssue] = []
 
     for row in rows:
@@ -151,7 +199,10 @@ def check_db_rules(layer: str, rows: list[dict], schema: LayerSchema) -> list[Va
             if value is None or (isinstance(value, float) and value != value):
                 issues.append(ValidationIssue(
                     layer=layer, severity=Severity.ERROR, code="DB_NOT_NULL",
-                    message=f"Le champ « {col} » est obligatoire (contrainte NOT NULL).",
+                    message=(
+                        f"Le champ « {column_label(layer, col)} » est obligatoire "
+                        "(contrainte NOT NULL)."
+                    ),
                     fields=[col], record=key, rule_name="db_schema.not_null",
                 ))
 
@@ -166,13 +217,19 @@ def check_db_rules(layer: str, rows: list[dict], schema: LayerSchema) -> list[Va
             if low is not None and value < low:
                 issues.append(ValidationIssue(
                     layer=layer, severity=Severity.ERROR, code="DB_RANGE_MIN",
-                    message=f"Le champ « {col} » doit être supérieur ou égal à {low} (valeur saisie : {value}).",
+                    message=(
+                        f"Le champ « {column_label(layer, col)} » doit être supérieur ou égal "
+                        f"à {low} (valeur saisie : {value})."
+                    ),
                     fields=[col], record=key, rule_name="db_schema.range",
                 ))
             if high is not None and value > high:
                 issues.append(ValidationIssue(
                     layer=layer, severity=Severity.ERROR, code="DB_RANGE_MAX",
-                    message=f"Le champ « {col} » doit être inférieur ou égal à {high} (valeur saisie : {value}).",
+                    message=(
+                        f"Le champ « {column_label(layer, col)} » doit être inférieur ou égal "
+                        f"à {high} (valeur saisie : {value})."
+                    ),
                     fields=[col], record=key, rule_name="db_schema.range",
                 ))
 
@@ -181,7 +238,10 @@ def check_db_rules(layer: str, rows: list[dict], schema: LayerSchema) -> list[Va
             if value is not None and value not in allowed:
                 issues.append(ValidationIssue(
                     layer=layer, severity=Severity.ERROR, code="DB_ENUM_INVALID",
-                    message=f"La valeur « {value} » du champ « {col} » n'est pas une valeur autorisée.",
+                    message=(
+                        f"La valeur « {value} » du champ « {column_label(layer, col)} » "
+                        "n'est pas une valeur autorisée."
+                    ),
                     fields=[col], record=key, rule_name="db_schema.enum",
                 ))
 
