@@ -24,6 +24,16 @@ class Severity(str, Enum):
     WARNING = "warning"
 
 
+# Pseudo-couche portée par les anomalies qui ne concernent AUCUN
+# enregistrement en particulier mais la communication avec PostgreSQL
+# (connexion impossible, lecture du schéma, échec d'insertion).
+#
+# Les parenthèses garantissent qu'aucune vraie table ne peut porter ce nom :
+# un client peut donc filtrer ces anomalies de façon fiable, et le résumé
+# texte les distingue des erreurs de saisie.
+LAYER_BASE_DE_DONNEES = "(base de données)"
+
+
 @dataclass
 class ValidationIssue:
     """Une anomalie détectée sur un enregistrement par une règle.

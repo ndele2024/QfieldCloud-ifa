@@ -39,10 +39,10 @@ INSERT_ORDER = [
 
 # Couches produites par la validation elle-même : elles n'existent que dans le
 # GeoPackage, comme restitution pour le technicien (cf.
-# validate_ifa._write_rapport_to_gpkg), et n'ont aucune table PostgreSQL
-# correspondante. Sans cette exclusion, le rapport écrit au run précédent est
-# relu par gpkg_reader et réinjecté ici : l'INSERT échoue sur une relation
-# inexistante et annule tout le lot.
+# validate_ifa._write_rapport_to_gpkg côté QFieldCloud), et n'ont aucune table
+# PostgreSQL correspondante. Sans cette exclusion, le rapport écrit au run
+# précédent est relu par gpkg_reader et réinjecté ici : l'INSERT échoue sur une
+# relation inexistante et annule tout le lot, à chaque synchronisation.
 NON_INSERTABLE_TABLES = frozenset({"rapport_validation"})
 
 
@@ -82,8 +82,8 @@ def _insert_rows(cur, table: str, rows: list[dict[str, Any]], pg_schema: str,
     mettant à jour ceux dont la clé primaire `primary_key` existe déjà.
     Toutes les lignes d'une même couche sont supposées avoir le même
     ensemble de colonnes (issu du schéma GeoPackage) ; la clé "geometry"
-    (ajoutée par gpkg_reader, en WKT) est traduite en ST_GeomFromText si
-    présente, sinon ignorée.
+    (si le lecteur en fournit une, en WKT) est traduite en ST_GeomFromText
+    si présente, sinon ignorée.
 
     Returns:
         Le nombre de lignes réellement affectées (insérées ou mises à jour).
@@ -139,21 +139,33 @@ def insert_all(layers: dict[str, list[dict[str, Any]]], conn, pg_schema: str = "
     Raises:
         Toute exception levée par le driver (ex. psycopg2.Error) est
         propagée après rollback — l'appelant décide comment la rapporter.
+        L'exception reçoit au passage un attribut `table_en_cours` nommant
+        la table en cours d'insertion au moment de l'échec, pour que
+        l'appelant puisse le mentionner dans son rapport (voir
+        core/engine.py). Son TYPE reste inchangé : les appelants qui
+        l'attrapent tel quel ne sont pas affectés.
     """
     cur = conn.cursor()
     counts: dict[str, int] = {}
+    table_en_cours: str | None = None
     try:
         ordered = [t for t in INSERT_ORDER if t in layers] + \
                   [t for t in layers if t not in INSERT_ORDER]
         for table in ordered:
             if table in NON_INSERTABLE_TABLES:
                 continue
+            table_en_cours = table
             schema = (schemas or {}).get(table)
             counts[table] = _insert_rows(cur, table, layers[table], pg_schema,
                                          primary_key=schema.primary_key if schema else None)
         conn.commit()
-    except Exception:
+    except Exception as exc:
         conn.rollback()
+        try:
+            exc.table_en_cours = table_en_cours
+        except AttributeError:
+            pass  # exception exotique (__slots__) : l'information est perdue,
+                  # ce qui ne doit jamais empêcher la remontée de l'erreur.
         raise
     finally:
         cur.close()

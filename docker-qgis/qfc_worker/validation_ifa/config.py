@@ -44,6 +44,14 @@ IPE_TABLES = [
 LAC_LCE_PATH = os.environ.get("VALIDATION_LAC_LCE_PATH", str(BASE_DIR / "lac_LCE.txt"))
 COURS_EAU_LCE_PATH = os.environ.get("VALIDATION_COURS_EAU_LCE_PATH", str(BASE_DIR / "cours_eau_LCE.txt"))
 
+# Alias (libellés lisibles) des colonnes de la base, utilisés par
+# core/db_schema.py dans les messages d'erreur à destination de
+# l'utilisateur. Généré depuis "table-colonne-allias.xlsx" par
+# generate_column_aliases.py — relancer ce script si le classeur change.
+COLUMN_ALIASES_PATH = os.environ.get(
+    "VALIDATION_COLUMN_ALIASES_PATH", str(BASE_DIR / "column_aliases.json")
+)
+
 
 def get_dsn() -> str:
     """Chaîne de connexion psycopg2 construite depuis les paramètres ci-dessus."""
