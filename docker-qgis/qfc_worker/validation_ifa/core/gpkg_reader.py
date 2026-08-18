@@ -1,9 +1,11 @@
 """
 core.gpkg_reader — Lecture d'un GeoPackage (.gpkg) via sqlite3 (stdlib).
 
-Remplace la version geopandas/fiona du programme standalone : ici on tourne
-dans le conteneur docker-qgis (QGIS disponible, mais on n'en a pas besoin
-pour lire un GPKG). sqlite3 est suffisant — un GPKG est du SQLite standard.
+Un GeoPackage EST du SQLite standard : la bibliothèque standard `sqlite3`
+suffit à le lire, sans aucune dépendance à geopandas/fiona/GDAL. Ce lecteur
+est ainsi identique à la version déployée dans QFieldCloud
+(docker-qgis/qfc_worker/validation_ifa/core/gpkg_reader.py), où les
+bibliothèques GIS Python ne sont pas installées.
 
 Les géométries binaires GPKG (GeoPackageBinary) sont ignorées : le moteur
 de validation n'effectue aucune opération géométrique (les règles métier IPE

@@ -28,6 +28,7 @@ import psycopg2
 
 import config
 from core import engine, report
+from core.models import ValidationReport
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -47,7 +48,19 @@ def main(argv: list[str] | None = None) -> int:
     try:
         conn = psycopg2.connect(config.get_dsn())
     except Exception as exc:
+        # Un rapport est produit même ici : c'est l'erreur de base de données
+        # la plus fréquente, et elle doit être consultable dans le JSON sans
+        # avoir à lire les journaux du conteneur.
+        result = ValidationReport(source=str(args.gpkg))
+        result.issues.append(engine.issue_base_de_donnees(
+            "DB_CONNEXION_IMPOSSIBLE",
+            f"Connexion à PostgreSQL impossible (hôte {config.PG_HOST}:{config.PG_PORT}, "
+            f"base {config.PG_DB})",
+            rule_name="cli.connect", exc=exc,
+        ))
+        report.save_report(result, report_path)
         print(f"Erreur de connexion à PostgreSQL : {exc}", file=sys.stderr)
+        print(f"Rapport détaillé : {report_path}", file=sys.stderr)
         return 2
 
     try:
