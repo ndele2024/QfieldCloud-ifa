@@ -1,0 +1,57 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Mon profil{% endblock %}
+{% block heading %}Mon profil{% endblock %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-lg-6">
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label text-muted">Nom d'utilisateur</label>
+          <input type="text" class="form-control" value="{{ user.username }}" disabled>
+          <div class="form-text">
+            Le nom d'utilisateur apparaît dans les chemins de stockage des projets :
+            il ne peut être changé que par un administrateur.
+          </div>
+        </div>
+
+        {% for field in form %}
+          <div class="mb-3 {% if field.field.widget.input_type == 'checkbox' %}form-check{% endif %}">
+            {% if field.field.widget.input_type == 'checkbox' %}
+              {{ field }}
+              <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% else %}
+              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+            {% endif %}
+
+            {% if field.help_text %}
+              <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% for error in field.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+
+      <p class="form-text mt-3">
+        Changer d'adresse e-mail la marque comme non vérifiée : c'est bien cette
+        nouvelle adresse qui servira ensuite à vous connecter.
+      </p>
+
+    </div>
+  </div>
+
+{% endblock %}

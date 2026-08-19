@@ -31,6 +31,7 @@ from rest_framework import permissions
 
 from qfieldcloud.authentication import views as auth_views
 from qfieldcloud.core.admin import qfc_admin_site
+from qfieldcloud.core.dashboard.views import index_redirect
 from qfieldcloud.core.utils2.view_utils import blocked_view
 from qfieldcloud.core.views.redirect_views import redirect_to_admin_project_view
 from qfieldcloud.filestorage.views import (
@@ -44,11 +45,11 @@ admin.site.index_title = _("Welcome to QFieldCloud Admin")
 
 
 urlpatterns = [
-    path(
-        "",
-        RedirectView.as_view(url=settings.QFIELDCLOUD_ADMIN_URI, permanent=False),
-        name="index",
-    ),
+    # Aiguillage : l'admin pour un superutilisateur, le tableau de bord pour un
+    # compte « équipe » — qui n'y verrait qu'une page vide, faute de permissions
+    # de modèle.
+    path("", index_redirect, name="index"),
+    path("dashboard/", include("qfieldcloud.core.dashboard.urls")),
     path(
         "swagger.yaml",
         SpectacularAPIView.as_view(),

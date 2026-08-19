@@ -1,0 +1,131 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{{ project.name }}{% endblock %}
+{% block heading %}{{ project.name }}{% endblock %}
+
+{% block content %}
+
+  <p>
+    <a href="{% url 'dashboard:projects' %}" class="small">&larr; Retour aux projets</a>
+  </p>
+
+  <dl class="row small">
+    <dt class="col-sm-3">Identifiant</dt>
+    <dd class="col-sm-9"><code>{{ project.id }}</code></dd>
+
+    <dt class="col-sm-3">Propriétaire</dt>
+    <dd class="col-sm-9">{{ project.owner.username }}</dd>
+
+    <dt class="col-sm-3">Créé le</dt>
+    <dd class="col-sm-9">{{ project.created_at|date:"d/m/Y H:i" }}</dd>
+
+    <dt class="col-sm-3">Dernière mise à jour</dt>
+    <dd class="col-sm-9">{{ project.updated_at|date:"d/m/Y H:i" }}</dd>
+
+    <dt class="col-sm-3">Dernières données</dt>
+    <dd class="col-sm-9">{{ project.data_last_updated_at|date:"d/m/Y H:i"|default:"—" }}</dd>
+
+    {% if project.description %}
+      <dt class="col-sm-3">Description</dt>
+      <dd class="col-sm-9">{{ project.description }}</dd>
+    {% endif %}
+  </dl>
+
+  <h2 class="h6 text-uppercase text-muted mt-4">Fichiers</h2>
+
+  {% if files %}
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Taille</th>
+            <th>Déposé le</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for file in files %}
+            <tr>
+              <td><code>{{ file.name }}</code></td>
+              <td>{{ file.get_file_type_display }}</td>
+              <td>{{ file.latest_version.size|filesizeformat|default:"—" }}</td>
+              <td>{{ file.uploaded_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-muted fst-italic">Aucun fichier pour ce projet.</p>
+  {% endif %}
+
+  <h2 class="h6 text-uppercase text-muted mt-4">
+    Synchronisations
+    <span class="badge bg-secondary">{{ jobs_total }}</span>
+  </h2>
+
+  {% if jobs_page.object_list %}
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Statut</th>
+            <th>Lancée par</th>
+            <th>Créée le</th>
+            <th>Terminée le</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for job in jobs_page %}
+            <tr>
+              <td>{{ job.get_type_display }}</td>
+              <td>
+                {% comment %}
+                  Couleur portée par le statut lui-même : un échec doit se
+                  repérer sans lire toute la colonne.
+                {% endcomment %}
+                {% if job.status == "finished" %}
+                  <span class="badge bg-success">{{ job.get_status_display }}</span>
+                {% elif job.status == "failed" or job.status == "stopped" %}
+                  <span class="badge bg-danger">{{ job.get_status_display }}</span>
+                {% else %}
+                  <span class="badge bg-secondary">{{ job.get_status_display }}</span>
+                {% endif %}
+              </td>
+              <td>{{ job.created_by.username }}</td>
+              <td>{{ job.created_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ job.finished_at|date:"d/m/Y H:i"|default:"—" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if jobs_page.has_other_pages %}
+      <nav>
+        <ul class="pagination pagination-sm">
+          {% if jobs_page.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ jobs_page.previous_page_number }}">Précédent</a>
+            </li>
+          {% endif %}
+          <li class="page-item disabled">
+            <span class="page-link">
+              Page {{ jobs_page.number }} / {{ jobs_page.paginator.num_pages }}
+            </span>
+          </li>
+          {% if jobs_page.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ jobs_page.next_page_number }}">Suivant</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <p class="text-muted fst-italic">Aucune synchronisation enregistrée.</p>
+  {% endif %}
+
+{% endblock %}

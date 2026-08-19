@@ -1,6 +1,6 @@
 # Système de validation IFE — Documentation technique
 
-> Projet IFA 2.0 · DGEA  
+> Projet IFA 2.0 · DGEA
 > Dernière mise à jour : 2026-07-27
 
 ---
@@ -31,7 +31,7 @@
 
 ## 1. Vue d'ensemble
 
-Le système de validation IFE (Inventaire Forestier Étendu) s'intègre dans le workflow
+Le système de validation IFA s'intègre dans le workflow
 QFieldCloud **apply_deltas**. Après qu'un technicien de terrain pousse ses données depuis
 QField, le serveur :
 
@@ -132,7 +132,7 @@ validate_ife_data(project_dir)
 QFieldCloud suffixe les noms de tables avec un UUID lors du packaging, ex. :
 `mesurage_4f552916_c02c_43c8_bdac_48c7a363bb95`
 
-Ces tables apparaissent dans `sqlite_master` mais **pas** dans `gpkg_contents`.  
+Ces tables apparaissent dans `sqlite_master` mais **pas** dans `gpkg_contents`.
 La détection interroge donc `sqlite_master` et accepte les noms exacts ET préfixés :
 
 ```python
@@ -148,7 +148,7 @@ matched = {
 }
 ```
 
-> **Pourquoi ne pas utiliser `gpkg_contents` ?**  
+> **Pourquoi ne pas utiliser `gpkg_contents` ?**
 > OGR/QGIS utilise `gpkg_contents` pour lister les couches, mais QFieldCloud peut
 > enregistrer les tables avec leur nom UUID sans mettre à jour `gpkg_contents`.
 > `sqlite_master` est la seule source fiable.
@@ -209,7 +209,7 @@ class ValidationReport:
     def to_dict(self) → dict   # JSON-sérialisable
 ```
 
-> **Important :** `ValidationReport` n'a **pas** d'attributs `error_count` ni `warning_count`.  
+> **Important :** `ValidationReport` n'a **pas** d'attributs `error_count` ni `warning_count`.
 > Utiliser `len(result.errors)` et `len(result.warnings)`.
 
 ### 3.3 Fichiers produits
@@ -310,7 +310,7 @@ VALIDATION_PG_PASS=ndele
 VALIDATION_PG_SCHEMA=ifa_data
 ```
 
-> **Attention :** `docker compose restart` ne relit pas `.env`.  
+> **Attention :** `docker compose restart` ne relit pas `.env`.
 > Après toute modification du `.env`, recréer le conteneur :
 > ```bash
 > docker compose up -d worker_wrapper

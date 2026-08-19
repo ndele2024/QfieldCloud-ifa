@@ -1,6 +1,6 @@
-# Documentation IFA 2.0 — QFieldCloud, validation IFE et plugin QField
+# Documentation IFA 2.0 — QFieldCloud, validation IFA et plugin QField
 
-> Projet IFA 2.0 · DGEA
+> Projet IFA 2.0
 > Document unique — fusion de `README-IFA.md`, `VALIDATION_IFA.md` et `Mise en place du serveur.md`
 > Dernière mise à jour : 2026-08-18
 
@@ -38,8 +38,15 @@
    - 6.6 [Interface](#66-interface)
    - 6.7 [Limites connues](#67-limites-connues)
 7. [Workflow complet](#7-workflow-complet)
-8. [Exploitation et mises à jour](#8-exploitation-et-mises-à-jour)
-9. [Dépannage](#9-dépannage)
+8. [Interface utilisateur (hors admin)](#8-interface-utilisateur-hors-admin)
+   - 8.1 [Le problème résolu](#81-le-problème-résolu)
+   - 8.2 [Les écrans](#82-les-écrans)
+   - 8.3 [Fichiers](#83-fichiers)
+   - 8.4 [Principes de conception](#84-principes-de-conception)
+   - 8.5 [Étendre le tableau de bord](#85-étendre-le-tableau-de-bord)
+   - 8.6 [Notes](#86-notes)
+9. [Exploitation et mises à jour](#9-exploitation-et-mises-à-jour)
+10. [Dépannage](#10-dépannage)
 
 ---
 
@@ -542,7 +549,7 @@ docker compose stop mkcert     # il ne sert plus
 ```
 
 > Un certificat valide reconnu publiquement supprime du même coup la principale cause
-> de `HTTP paquet = 0` côté plugin (voir §9).
+> de `HTTP paquet = 0` côté plugin (voir §10).
 
 ---
 
@@ -1033,7 +1040,7 @@ Le bouton reste **cliquable même en gris**.
 
 #### Panneau diagnostic
 
-Affiche l'état réel pour lever tout doute. C'est l'outil de dépannage n°1 (voir §9).
+Affiche l'état réel pour lever tout doute. C'est l'outil de dépannage n°1 (voir §10).
 
 | Champ | Contenu |
 |---|---|
@@ -1110,7 +1117,158 @@ sondages ; désactivé pendant une attente, sans quoi il paraîtrait sans effet)
 
 ---
 
-## 8. Exploitation et mises à jour
+## 8. Interface utilisateur (hors admin)
+
+### 8.1 Le problème résolu
+
+L'accueil `/` de QFieldCloud redirige vers l'admin Django. Or l'admin n'affiche
+que les modèles sur lesquels le compte détient une permission : un utilisateur
+`is_staff = True` **sans permission de modèle** y voit une **page vide**.
+
+Plutôt que de distribuer des permissions d'admin — qui donneraient accès à des
+écrans d'administration complets — un espace autonome a été ajouté sur
+`/dashboard/`, indépendant du système de permissions de l'admin.
+
+> ⚠️ **Ne jamais renvoyer un compte non superutilisateur vers `/admin/`.**
+> L'admin le redirige vers la page de connexion, laquelle — le voyant déjà
+> authentifié — le renvoie vers `LOGIN_REDIRECT_URL`, qui vaut `index`,
+> c'est-à-dire l'accueil : le navigateur tourne en rond jusqu'à abandonner.
+> C'est le comportement que présentait l'installation d'origine pour tout
+> utilisateur connecté dépourvu du statut `is_staff`.
+
+### 8.2 Les écrans
+
+| Écran | URL | Contenu |
+|---|---|---|
+| Projets | `/dashboard/` | Ses projets et ceux de ses équipes, en deux listes distinctes |
+| Détail projet | `/dashboard/projets/<uuid>/` | Fichiers du projet + historique des synchronisations |
+| Mon profil | `/dashboard/profil/` | Prénom, nom, e-mail, lettre d'information |
+| Mot de passe | `/dashboard/mot-de-passe/` | Changement de mot de passe |
+
+Aiguillage de l'accueil, assuré par `views.index_redirect()` :
+
+| Visiteur | Destination |
+|---|---|
+| Non identifié | page de connexion |
+| Superutilisateur | `/admin/` |
+| Tout autre compte | `/dashboard/` |
+
+### 8.3 Fichiers
+
+**Paquet autonome** `docker-app/qfieldcloud/core/dashboard/` :
+
+| Fichier | Rôle |
+|---|---|
+| `scope.py` | **Règle de visibilité** — qui voit quels projets |
+| `forms.py` | Formulaire du profil (+ synchronisation allauth) |
+| `views.py` | Les 4 vues + l'aiguillage de la page d'accueil |
+| `urls.py` | Routes, montées sur `/dashboard/` |
+
+**Gabarits** `docker-app/qfieldcloud/core/templates/dashboard/` :
+`base.html` (mise en page + menu), `projects.html`, `project_detail.html`,
+`profile.html`, `password.html`.
+
+Ils réutilisent les feuilles de style existantes (`vendor.css` Bootstrap,
+`qfieldcloud.css`) et le contexte `whitelabel`, déjà global au projet — aucun
+actif nouveau.
+
+**Seul fichier existant modifié** — `docker-app/qfieldcloud/urls.py` :
+
+```python
+from qfieldcloud.core.dashboard.views import index_redirect
+
+path("", index_redirect, name="index"),
+path("dashboard/", include("qfieldcloud.core.dashboard.urls")),
+```
+
+Le nom de route `index` est conservé : il est référencé ailleurs, notamment par
+`LOGIN_REDIRECT_URL`. **Aucune migration** : la customisation n'ajoute aucun
+modèle.
+
+### 8.4 Principes de conception
+
+#### a) Le rattachement se fait par l'activité, pas par la propriété
+
+Un technicien qui synchronise un projet d'équipe n'en est pas propriétaire ; se
+fonder sur `Project.owner` ne montrerait donc rien. La visibilité est déduite
+des **synchronisations** (`Job.created_by`) :
+
+- **« Mes projets »** — projets ayant au moins un `Job` créé par l'utilisateur ;
+- **« Projets des équipes »** — projets ayant au moins un `Job` créé par un
+  **coéquipier**, l'utilisateur étant exclu de cette liste ; sans cette
+  exclusion, tout projet personnel réapparaîtrait dans la seconde liste.
+
+Les équipes viennent de `TeamMember` :
+`Team.objects.filter(members__member=user)`.
+
+#### b) Tout passe par `scope.py`
+
+Ce module est le **seul** endroit qui décide de la visibilité. La vue de détail
+n'a pas sa propre règle : elle interroge `scope.visible_projects(user)` et
+renvoie 404 si le projet n'y figure pas — ce qui ne révèle même pas son
+existence. Modifier la règle se fait donc à un seul endroit.
+
+#### c) « Mis à jour par » vient du dernier job
+
+`Project.updated_at` dit *que* quelque chose a changé, jamais *par qui*.
+`scope.with_last_sync()` annote donc chaque projet avec le dernier `Job`
+(`last_sync_at`, `last_sync_by`, `last_sync_type`) au moyen d'un `Subquery`, en
+une seule requête plutôt qu'une par ligne.
+
+#### d) L'e-mail doit être synchronisé avec allauth
+
+`ACCOUNT_LOGIN_METHODS` autorise la connexion par e-mail, et allauth n'interroge
+pas `User.email` mais sa propre table `EmailAddress`. Modifier `User.email` seul
+laisserait l'utilisateur se connecter avec son **ancienne** adresse.
+`ProfileForm._sync_allauth_email()` répercute le changement et repasse l'adresse
+en « non vérifiée » — sans conséquence sur la connexion tant que
+`ACCOUNT_EMAIL_VERIFICATION=optional` (voir §5.1).
+
+Le **nom d'utilisateur reste non modifiable** : il apparaît dans les chemins de
+stockage des projets et dans les noms d'équipe (`@organisation/equipe`).
+
+### 8.5 Étendre le tableau de bord
+
+**Ajouter un écran** — trois gestes :
+
+1. une vue dans `views.py`, héritant de `DashboardContextMixin` (elle fournit
+   `menu` et `admin_uri` au gabarit) ;
+2. une route dans `urls.py` ;
+3. un gabarit qui fait `{% extends "dashboard/base.html" %}` ; ajouter l'entrée
+   correspondante dans le menu de `base.html`.
+
+**Changer la règle de visibilité** — modifier `scope.py` seul. Par exemple, pour
+inclure aussi les projets dont l'utilisateur est propriétaire :
+
+```python
+def own_project_ids(user):
+    from django.db.models import Q
+    return Project.objects.filter(
+        Q(jobs__created_by=user) | Q(owner=user)
+    ).values_list("id", flat=True)
+```
+
+**Prise en compte des modifications** — le code Python est monté dans le
+conteneur `app` : un redémarrage suffit, sans reconstruction d'image.
+
+```bash
+docker compose restart app
+```
+
+### 8.6 Notes
+
+- Les libellés sont écrits **en français directement**, sans `{% translate %}` :
+  c'est une customisation propre au déploiement IFA. Pour l'internationaliser,
+  encadrer les chaînes de `{% translate %}` et alimenter les fichiers `.po`.
+- L'historique des synchronisations est paginé (`JOBS_PER_PAGE = 25` dans
+  `views.py`).
+- Le tableau de bord reste vide tant que le compte n'a lancé aucune
+  synchronisation : c'est le comportement voulu. Pour le voir peuplé, il faut un
+  push depuis QField ou un rattachement à une équipe déjà active.
+
+---
+
+## 9. Exploitation et mises à jour
 
 ### Rebuild après modification de `validate_ifa.py` ou du moteur
 
@@ -1150,7 +1308,7 @@ docker compose run --rm --entrypoint certbot certbot renew --dry-run
 
 ---
 
-## 9. Dépannage
+## 10. Dépannage
 
 ### « aucun GPKG IPE trouvé »
 

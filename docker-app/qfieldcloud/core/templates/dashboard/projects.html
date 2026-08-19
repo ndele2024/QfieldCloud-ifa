@@ -1,0 +1,99 @@
+{% extends "dashboard/base.html" %}
+
+{% comment %}
+Deux listes volontairement distinctes plutôt qu'un tableau unique avec une
+colonne « origine » : la question « où en sont MES relevés ? » n'est pas la
+même que « où en est l'équipe ? », et les mélanger obligerait à trier à l'œil.
+{% endcomment %}
+
+{% block title %}Projets{% endblock %}
+{% block heading %}Projets{% endblock %}
+
+{% block content %}
+
+  {% comment %}Macro impossible en Django : le tableau est donc écrit deux fois.{% endcomment %}
+
+  <h2 class="h6 text-uppercase text-muted mt-4">Mes projets</h2>
+  <p class="small text-muted">Projets que vous avez synchronisés.</p>
+
+  {% if own_projects %}
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Identifiant</th>
+            <th>Nom</th>
+            <th>Propriétaire</th>
+            <th>Créé le</th>
+            <th>Dernière mise à jour</th>
+            <th>Par</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in own_projects %}
+            <tr>
+              <td>
+                <a href="{% url 'dashboard:project_detail' project.id %}">
+                  <code>{{ project.id }}</code>
+                </a>
+              </td>
+              <td>{{ project.name }}</td>
+              <td>{{ project.owner.username }}</td>
+              <td>{{ project.created_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ project.last_sync_at|date:"d/m/Y H:i"|default:project.updated_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ project.last_sync_by|default:"—" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-muted fst-italic">Aucun projet synchronisé pour l'instant.</p>
+  {% endif %}
+
+  <h2 class="h6 text-uppercase text-muted mt-5">Projets des équipes</h2>
+  <p class="small text-muted">
+    Projets synchronisés par les membres de vos équipes
+    {% if teams %}
+      ({% for team in teams %}{{ team.teamname }}{% if not forloop.last %}, {% endif %}{% endfor %}).
+    {% else %}
+      — vous n'appartenez à aucune équipe.
+    {% endif %}
+  </p>
+
+  {% if team_projects %}
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Identifiant</th>
+            <th>Nom</th>
+            <th>Propriétaire</th>
+            <th>Créé le</th>
+            <th>Dernière mise à jour</th>
+            <th>Par</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in team_projects %}
+            <tr>
+              <td>
+                <a href="{% url 'dashboard:project_detail' project.id %}">
+                  <code>{{ project.id }}</code>
+                </a>
+              </td>
+              <td>{{ project.name }}</td>
+              <td>{{ project.owner.username }}</td>
+              <td>{{ project.created_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ project.last_sync_at|date:"d/m/Y H:i"|default:project.updated_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ project.last_sync_by|default:"—" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-muted fst-italic">Aucun projet d'équipe à afficher.</p>
+  {% endif %}
+
+{% endblock %}
