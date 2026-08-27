@@ -94,6 +94,7 @@ RUN echo '{}' > fixture.json
 # RUN usermod -u 1000 app
 
 COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 ##########################
