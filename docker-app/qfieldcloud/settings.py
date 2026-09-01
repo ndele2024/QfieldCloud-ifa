@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     "qfieldcloud.notifs",
     "qfieldcloud.authentication",
     "qfieldcloud.filestorage",
+    "qfieldcloud.ifa",
     # 3rd party - keep at bottom to allow overrides
     "notifications",
     "axes",
@@ -223,6 +224,57 @@ DATABASES = {
         },
     }
 }
+
+#########################
+# IFA — base de données métier
+#########################
+
+# La base IFA est celle du ministère : elle préexiste à QFieldCloud, d'autres
+# applications l'alimentent, et QFieldCloud s'y connecte en lecture seule pour
+# répondre aux points d'accès de `qfieldcloud.ifa`. Elle n'est jamais migrée
+# (voir `qfieldcloud.ifa.routers.IfaDatabaseRouter`).
+#
+# Les variables `VALIDATION_PG_*` sont déjà celles que le conteneur `qgis`
+# utilise pour valider les livraisons : une seule base, un seul jeu de
+# paramètres, aucune chance de les voir diverger.
+IFA_DB_ALIAS = "ifa"
+IFA_DB_SCHEMA = os.environ.get("VALIDATION_PG_SCHEMA", "ifa_data")
+
+# SRID des colonnes `shape` du schéma métier (NAD83 / MTM). Les filtres par
+# zone y reprojettent le polygone du client pour conserver l'index GiST.
+IFA_DB_SRID = int(os.environ.get("IFA_DB_SRID", "32187"))
+
+# Garde-fou : une recherche mal filtrée ne doit pas immobiliser un travailleur
+# gunicorn. Les tables comptent plusieurs centaines de milliers de lignes.
+IFA_DB_STATEMENT_TIMEOUT_MS = int(
+    os.environ.get("IFA_DB_STATEMENT_TIMEOUT_MS", "20000")
+)
+
+IFA_RECHERCHE_LIMITE_DEFAUT = int(os.environ.get("IFA_RECHERCHE_LIMITE_DEFAUT", "200"))
+IFA_RECHERCHE_LIMITE_MAX = int(os.environ.get("IFA_RECHERCHE_LIMITE_MAX", "1000"))
+
+# L'alias n'est déclaré que si la base est configurée : une installation
+# QFieldCloud sans base IFA doit démarrer normalement, les points d'accès
+# répondant alors 503.
+if os.environ.get("VALIDATION_PG_HOST"):
+    DATABASES[IFA_DB_ALIAS] = {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": os.environ.get("VALIDATION_PG_DB", "ifa"),
+        "USER": os.environ.get("VALIDATION_PG_USER", "postgres"),
+        "PASSWORD": os.environ.get("VALIDATION_PG_PASS", ""),
+        "HOST": os.environ["VALIDATION_PG_HOST"],
+        "PORT": os.environ.get("VALIDATION_PG_PORT", "5432"),
+        "OPTIONS": {
+            "sslmode": os.environ.get("VALIDATION_PG_SSLMODE", "prefer"),
+        },
+        # `MIRROR` empêche le lanceur de tests de créer — puis de détruire —
+        # une base `test_ifa` sur le serveur du ministère. Aucun test n'y
+        # touche : ceux qui interrogent réellement la base IFA sont ignorés
+        # sauf si `IFA_DB_TESTS=1` (voir `qfieldcloud/ifa/tests/`).
+        "TEST": {"MIRROR": "default"},
+    }
+
+DATABASE_ROUTERS = ["qfieldcloud.ifa.routers.IfaDatabaseRouter"]
 
 # Connection details for the test PostGIS database. This database is used only in tests for temporarily storing spatial data.
 TEST_POSTGIS_DB_HOST = os.environ.get("TEST_POSTGIS_DB_HOST")

@@ -79,6 +79,17 @@ services:
       QFIELDCLOUD_DEFAULT_TIME_ZONE: ${QFIELDCLOUD_DEFAULT_TIME_ZONE}
       QFIELDCLOUD_QGIS_IMAGE_NAME: ${QFIELDCLOUD_QGIS_IMAGE_NAME:-${COMPOSE_PROJECT_NAME}-qgis}
       QFIELDCLOUD_TRANSFORMATION_GRIDS_VOLUME_NAME: ${COMPOSE_PROJECT_NAME}_transformation_grids
+      # Base métier IFA, interrogée en lecture seule par les points d'accès
+      # `/api/v1/ifa/`. Mêmes variables que celles transmises au conteneur
+      # `qgis` pour la validation des livraisons — une seule base, un seul jeu
+      # de paramètres. Sans VALIDATION_PG_HOST, l'alias n'est pas déclaré et
+      # les points d'accès répondent 503 (voir qfieldcloud/ifa/db.py).
+      VALIDATION_PG_HOST: ${VALIDATION_PG_HOST:-}
+      VALIDATION_PG_PORT: ${VALIDATION_PG_PORT:-5432}
+      VALIDATION_PG_DB: ${VALIDATION_PG_DB:-ifa}
+      VALIDATION_PG_USER: ${VALIDATION_PG_USER:-postgres}
+      VALIDATION_PG_PASS: ${VALIDATION_PG_PASS:-}
+      VALIDATION_PG_SCHEMA: ${VALIDATION_PG_SCHEMA:-ifa_data}
     logging:
       driver: "json-file"
       options:

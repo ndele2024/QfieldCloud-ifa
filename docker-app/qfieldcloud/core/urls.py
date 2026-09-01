@@ -15,6 +15,7 @@ from qfieldcloud.core.views import (
 )
 from qfieldcloud.core.views.accounts_views import resend_confirmation_email
 from qfieldcloud.filestorage.urls import urlpatterns as filestorage_urlpatterns
+from qfieldcloud.ifa.urls import urlpatterns as ifa_urlpatterns
 from qfieldcloud.subscription.urls import urlpatterns as subscription_urlpatterns
 
 router = DefaultRouter()
@@ -46,6 +47,9 @@ organizations/<str:organization_name>/teams/<str:team_name>/members/
 urlpatterns = [
     *filestorage_urlpatterns,
     *subscription_urlpatterns,
+    # Points d'accès propres au programme IFA 2.0 (préfixe « ifa/ ») : ils
+    # lisent la base métier du ministère, pas les projets QFieldCloud.
+    path("ifa/", include(ifa_urlpatterns)),
     path("projects/public/", projects_views.PublicProjectsListView.as_view()),
     path("", include(router.urls)),
     path("users/", users_views.ListCreateUsersView.as_view()),
