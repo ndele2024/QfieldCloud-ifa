@@ -6,20 +6,26 @@ assemble avec le reste de la requête. Toutes les valeurs venues du client
 passent en paramètres liés ; seuls le nom du schéma et le SRID (configuration
 serveur, validés) sont concaténés.
 
-Les quatre modes correspondent aux quatre critères de la fenêtre « Consulter
-une UE » du plugin QField.
+Les cinq modes correspondent aux cinq critères de la fenêtre « Consulter
+une UE » du plugin QField. Ils ne s'excluent pas : la fenêtre laisse en
+sélectionner plusieurs, et `predicats()` les assemble en **conjonction** — une
+unité doit satisfaire tous les critères cochés pour figurer dans le résultat.
+C'est le sens attendu d'un formulaire de recherche : cocher « région 02 » puis
+« bassin Saguenay » resserre la liste, il ne l'élargit pas.
 """
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 MODE_REGION = "region"
 MODE_LCE = "lce"
+MODE_BASSIN = "bassin"
 MODE_CODE = "code"
 MODE_EMPRISE = "emprise"
 
-MODES = (MODE_REGION, MODE_LCE, MODE_CODE, MODE_EMPRISE)
+MODES = (MODE_REGION, MODE_LCE, MODE_BASSIN, MODE_CODE, MODE_EMPRISE)
 
 
 def predicat(
@@ -36,10 +42,49 @@ def predicat(
         return _predicat_region(schema, valeur)
     if mode == MODE_LCE:
         return _predicat_lce(schema, valeur)
+    if mode == MODE_BASSIN:
+        return _predicat_bassin(schema, valeur)
     if mode == MODE_EMPRISE:
         return _predicat_emprise(schema, srid_metier, wkt)
 
     raise ValueError(f"Mode de recherche inconnu : {mode!r}")
+
+
+def predicats(
+    criteres: Sequence[Mapping[str, Any]],
+    schema: str,
+    srid_metier: int,
+) -> tuple[str, list[Any]]:
+    """Conjonction des critères retenus, sous la forme `(fragment, paramètres)`.
+
+    Chaque critère est un dictionnaire `{mode, valeur}` — ou `{mode, wkt}` pour
+    l'emprise —, déjà validé par le sérialiseur. Les fragments sont
+    parenthésés avant d'être joints par `AND` : chacun est un `EXISTS` ou une
+    comparaison simple aujourd'hui, mais un fragment futur contenant un `OR`
+    changerait sinon le sens de toute la clause.
+
+    L'ordre est celui du client. Il ne change rien au résultat, mais il rend
+    les requêtes reproductibles — et donc lisibles dans les journaux et dans un
+    `EXPLAIN`.
+    """
+    if not criteres:
+        raise ValueError("Au moins un critère de recherche est attendu.")
+
+    fragments: list[str] = []
+    parametres: list[Any] = []
+
+    for critere in criteres:
+        fragment, valeurs = predicat(
+            mode=critere["mode"],
+            schema=schema,
+            srid_metier=srid_metier,
+            valeur=str(critere.get("valeur", "") or ""),
+            wkt=str(critere.get("wkt", "") or ""),
+        )
+        fragments.append(f"({fragment})")
+        parametres.extend(valeurs)
+
+    return "\n          AND ".join(fragments), parametres
 
 
 def _predicat_code(valeur: str) -> tuple[str, list[Any]]:
@@ -115,6 +160,29 @@ def _predicat_lce(schema: str, valeur: str) -> tuple[str, list[Any]]:
     return fragment, [numero, numero]
 
 
+def _predicat_bassin(schema: str, valeur: str) -> tuple[str, list[Any]]:
+    """Nom du bassin versant (`infor_gener.ing_nom_bassi`).
+
+    La recherche est partielle et insensible à la casse, comme celle par code
+    d'unité, et pour la même raison : le nom est un texte libre du fonds
+    hérité, saisi au fil des années sans référentiel fermé. On y trouve aussi
+    bien « Saguenay » que « SAGUENAY (BASSIN) » ; exiger la forme exacte
+    reviendrait à n'offrir le critère qu'à ceux qui connaissent déjà la
+    graphie stockée.
+
+    Le nom n'est pas une colonne d'`unite_echan` : il est porté par les
+    `infor_gener` de l'unité, comme le n° de plan d'eau — d'où le même
+    `EXISTS`, qui répond dès la première ligne trouvée.
+    """
+    fragment = f"""EXISTS (
+            SELECT 1
+            FROM {schema}.infor_gener i
+            WHERE i.une_code_ident = u.une_code_ident
+              AND i.ing_nom_bassi ILIKE %s
+        )"""
+    return fragment, [f"%{_echapper_like(valeur.strip())}%"]
+
+
 def _predicat_emprise(schema: str, srid_metier: int, wkt: str) -> tuple[str, list[Any]]:
     """Zone tracée sur la carte, en EPSG:4326.
 
@@ -134,6 +202,54 @@ def _predicat_emprise(schema: str, srid_metier: int, wkt: str) -> tuple[str, lis
               )
         )"""
     return fragment, [wkt]
+
+
+def libelle_critere(critere: Mapping[str, Any]) -> str:
+    """Un critère en quelques mots, pour les messages et le journal."""
+    mode = critere["mode"]
+    valeur = str(critere.get("valeur", "") or "").strip()
+
+    if mode == MODE_REGION:
+        return f"région {valeur}"
+    if mode == MODE_LCE:
+        return f"plan d'eau n° {valeur}"
+    if mode == MODE_BASSIN:
+        return f"bassin « {valeur} »"
+    if mode == MODE_CODE:
+        return f"code contenant « {valeur} »"
+
+    return "emprise tracée"
+
+
+def libelle_criteres(criteres: Sequence[Mapping[str, Any]]) -> str:
+    """Le filtre entier en une ligne.
+
+    Les critères sont joints par « et » et non par une virgule : c'est bien
+    une conjonction, et la phrase doit dire au technicien pourquoi sa liste
+    s'est resserrée.
+    """
+    if not criteres:
+        return "aucun critère"
+
+    return " et ".join(libelle_critere(critere) for critere in criteres)
+
+
+def resume(criteres: Sequence[Mapping[str, Any]]) -> list[dict[str, str]]:
+    """Les critères tels qu'on les renvoie au client, sans leur géométrie.
+
+    Le WKT d'une emprise pèse jusqu'à 100 ko : le réémettre dans chaque page
+    de résultats ferait voyager le polygone autant de fois qu'il y a de pages,
+    sur une liaison de terrain, pour une information que le client possède
+    déjà. Le mode et sa valeur suffisent à ce qu'il vérifie ce qui a été
+    appliqué.
+    """
+    return [
+        {
+            "mode": critere["mode"],
+            "valeur": str(critere.get("valeur", "") or "").strip(),
+        }
+        for critere in criteres
+    ]
 
 
 def requete_denombrement(schema: str, fragment: str) -> str:
@@ -173,6 +289,7 @@ def requete_page(schema: str, fragment: str) -> str:
             reg.rad_no,
             eau.ing_no_plan_eau_offic,
             eau.ing_nom_plan_eau,
+            eau.ing_nom_bassi,
             pos.latitude,
             pos.longitude
         FROM (
@@ -186,12 +303,13 @@ def requete_page(schema: str, fragment: str) -> str:
         LEFT JOIN {schema}.type_unite_echan t
                ON t.tue_code_ident = u.tue_code_ident
         LEFT JOIN LATERAL (
-            SELECT i.ing_no_plan_eau_offic, i.ing_nom_plan_eau
+            SELECT i.ing_no_plan_eau_offic, i.ing_nom_plan_eau, i.ing_nom_bassi
             FROM {schema}.infor_gener i
             WHERE i.une_code_ident = u.une_code_ident
               AND (
                     i.ing_no_plan_eau_offic IS NOT NULL
                  OR i.ing_nom_plan_eau IS NOT NULL
+                 OR i.ing_nom_bassi IS NOT NULL
               )
             ORDER BY i.mes_no_seq DESC
             LIMIT 1

@@ -112,12 +112,18 @@ class ValidationReport:
         inserted: True si les données ont été insérées en base (donc aucune
             erreur bloquante n'a été trouvée — des avertissements peuvent
             néanmoins être présents).
+        inventaires_ignores: « une_code_ident » déjà validés (mes_ind_valid
+            = 'O' dans le GeoPackage), dont aucun enregistrement n'a été traité.
+        inventaires_valides: « une_code_ident » validés et insérés lors de
+            ce traitement, désormais marqués mes_ind_valid = 'O'.
     """
     source: str
     layers_processed: list[str] = field(default_factory=list)
     record_counts: dict[str, int] = field(default_factory=dict)
     issues: list[ValidationIssue] = field(default_factory=list)
     inserted: bool = False
+    inventaires_ignores: list[str] = field(default_factory=list)
+    inventaires_valides: list[str] = field(default_factory=list)
 
     @property
     def errors(self) -> list[ValidationIssue]:
@@ -139,6 +145,8 @@ class ValidationReport:
             "record_counts": self.record_counts,
             "is_valid": self.is_valid,
             "inserted": self.inserted,
+            "inventaires_ignores": self.inventaires_ignores,
+            "inventaires_valides": self.inventaires_valides,
             "error_count": len(self.errors),
             "warning_count": len(self.warnings),
             "issues": [i.to_dict() for i in self.issues],

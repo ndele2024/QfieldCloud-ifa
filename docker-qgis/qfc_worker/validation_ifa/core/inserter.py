@@ -45,6 +45,31 @@ INSERT_ORDER = [
 # relation inexistante et annule tout le lot, à chaque synchronisation.
 NON_INSERTABLE_TABLES = frozenset({"rapport_validation"})
 
+# Colonnes présentes dans le GeoPackage que l'INSERT ne doit jamais porter.
+#
+#   "geometry" — traitée à part : convertie par ST_GeomFromText et écrite
+#                dans la colonne "shape" (voir _insert_rows).
+#   "fid"      — clé primaire propre au GeoPackage, ajoutée pour rendre les
+#                couches modifiables dans QField. Les tables PostgreSQL
+#                gèrent leur propre identité.
+#   "qgis_id"  — colonne technique ajoutée au schéma pour le packaging hors
+#                ligne de QFieldSync, qui exige une clé d'UNE seule colonne
+#                là où le schéma hérité en compte jusqu'à six (voir
+#                add_qgis_id.sql). Elle a été posée sur `ifa_structure` — sur
+#                lequel le projet modèle est bâti — et sur quatre
+#                référentiels d'`ifa_data` ; les tables d'inventaire
+#                d'`ifa_data` ne l'ont pas : `ifa_data.mesurage` a pour clé
+#                (une_code_ident, mes_no_seq). L'y insérer échoue en
+#                UndefinedColumn et annule tout le lot, puisque l'insertion
+#                est une transaction unique.
+#
+#                Là où la colonne existe, ce n'est pas une raison de
+#                l'insérer : c'est une identité que PostgreSQL engendre
+#                lui-même (GENERATED ... AS IDENTITY), et elle n'entre dans
+#                aucune clé primaire d'`ifa_data`. La laisser au serveur est
+#                donc juste dans les deux cas.
+NON_INSERTABLE_COLUMNS = frozenset({"geometry", "fid", "qgis_id"})
+
 
 def _conflict_clause(primary_key: list[str], columns: list[str], has_geom: bool) -> str:
     """Construit la clause ON CONFLICT ciblant la clé primaire de la table.
@@ -83,7 +108,8 @@ def _insert_rows(cur, table: str, rows: list[dict[str, Any]], pg_schema: str,
     Toutes les lignes d'une même couche sont supposées avoir le même
     ensemble de colonnes (issu du schéma GeoPackage) ; la clé "geometry"
     (si le lecteur en fournit une, en WKT) est traduite en ST_GeomFromText
-    si présente, sinon ignorée.
+    si présente, sinon ignorée. Les colonnes techniques du GeoPackage
+    ("fid", "qgis_id") sont écartées — voir NON_INSERTABLE_COLUMNS.
 
     Returns:
         Le nombre de lignes réellement affectées (insérées ou mises à jour).
@@ -91,10 +117,9 @@ def _insert_rows(cur, table: str, rows: list[dict[str, Any]], pg_schema: str,
     if not rows:
         return 0
 
-    # Exclure "fid" : c'est la clé primaire propre au GeoPackage (ajoutée pour
-    # rendre les couches modifiables dans QField). Elle n'existe pas dans les
-    # tables PostgreSQL, qui gèrent leur propre identité.
-    columns = [c for c in rows[0].keys() if c not in ("geometry", "fid")]
+    # Les colonnes techniques du GeoPackage ne suivent pas : voir
+    # NON_INSERTABLE_COLUMNS pour ce qu'elles sont et pourquoi.
+    columns = [c for c in rows[0].keys() if c not in NON_INSERTABLE_COLUMNS]
     has_geom = "geometry" in rows[0]
 
     col_list = ", ".join(f'"{c}"' for c in columns)

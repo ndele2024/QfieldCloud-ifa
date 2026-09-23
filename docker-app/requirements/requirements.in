@@ -36,6 +36,7 @@ django-stubs-ext==5.2.9
 djangorestframework==3.17.1
 djangorestframework-stubs==3.16.9
 drf-spectacular==0.29.0
+gdal==3.10.3
 json-log-formatter==1.1.1
 mypy-boto3-s3==1.35.81
 phonenumbers==9.0.27

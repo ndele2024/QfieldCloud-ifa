@@ -253,6 +253,46 @@ IFA_DB_STATEMENT_TIMEOUT_MS = int(
 IFA_RECHERCHE_LIMITE_DEFAUT = int(os.environ.get("IFA_RECHERCHE_LIMITE_DEFAUT", "200"))
 IFA_RECHERCHE_LIMITE_MAX = int(os.environ.get("IFA_RECHERCHE_LIMITE_MAX", "1000"))
 
+# Ouverture d'une unité dans QField : le projet modèle est recopié chez
+# l'utilisateur, son `data.gpkg` rempli des seuls inventaires de l'unité
+# demandée. C'est le dernier paquet du modèle qui sert de source — celui que
+# QFieldSync a produit, dont les couches pointent déjà sur le GeoPackage.
+IFA_PROJET_MODELE_ID = os.environ.get("IFA_PROJET_MODELE_ID", "")
+IFA_PROJET_MODELE_PROPRIETAIRE = os.environ.get(
+    "IFA_PROJET_MODELE_PROPRIETAIRE", "ifa_team"
+)
+IFA_PROJET_MODELE_NOM = os.environ.get(
+    "IFA_PROJET_MODELE_NOM", "v8_default_config_pkey_ObvervationGenTest"
+)
+
+# Un projet d'affichage par utilisateur et par mode, réutilisé d'une unité à
+# l'autre : l'appareil garde ainsi ses réglages, ses fonds de carte et son
+# cache. Les noms sont fixes — deux projets ne peuvent pas les porter en même
+# temps chez le même propriétaire.
+IFA_PROJET_AFFICHAGE_MODIFIABLE = os.environ.get(
+    "IFA_PROJET_AFFICHAGE_MODIFIABLE", "affichage_UE_IFA_RW"
+)
+IFA_PROJET_AFFICHAGE_CONSULTATION = os.environ.get(
+    "IFA_PROJET_AFFICHAGE_CONSULTATION", "affichage_UE_IFA_R"
+)
+
+# Garde-fou du remplissage : une unité porte quelques milliers de lignes tous
+# inventaires confondus. Au-delà, c'est que le filtre n'a pas mordu, et il vaut
+# mieux échouer que de fabriquer un GeoPackage de plusieurs gigaoctets.
+IFA_OUVERTURE_LIGNES_MAX = int(os.environ.get("IFA_OUVERTURE_LIGNES_MAX", "200000"))
+
+# Création d'une unité : un seul projet de saisie par utilisateur, préparé à
+# partir du même modèle et rempli des données que le technicien a choisi
+# d'embarquer (région, n° de plan d'eau, ou emprise tracée sur la carte).
+IFA_PROJET_FORMULAIRE = os.environ.get("IFA_PROJET_FORMULAIRE", "formulaire_UE_IFA")
+
+# Les deux garde-fous de ce filtre-là. Une région porte plus de douze mille
+# unités : tout embarquer ferait un GeoPackage qu'aucun appareil de terrain ne
+# téléchargerait. Le plafond d'unités est vérifié avant toute lecture des
+# inventaires, celui des lignes pendant le remplissage.
+IFA_FORMULAIRE_UNITES_MAX = int(os.environ.get("IFA_FORMULAIRE_UNITES_MAX", "2000"))
+IFA_FORMULAIRE_LIGNES_MAX = int(os.environ.get("IFA_FORMULAIRE_LIGNES_MAX", "300000"))
+
 # L'alias n'est déclaré que si la base est configurée : une installation
 # QFieldCloud sans base IFA doit démarrer normalement, les points d'accès
 # répondant alors 503.

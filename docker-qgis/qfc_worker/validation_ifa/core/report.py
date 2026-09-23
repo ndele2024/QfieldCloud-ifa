@@ -40,6 +40,10 @@ def report_summary(report: ValidationReport) -> str:
             lines.append("  Données insérées en base.")
         if report.warnings:
             lines.append(f"  {len(report.warnings)} avertissement(s) — voir le rapport JSON.")
+        if report.inventaires_valides:
+            lines.append(f"  {len(report.inventaires_valides)} inventaire(s) marqué(s) validé(s).")
+        if report.inventaires_ignores:
+            lines.append(f"  {len(report.inventaires_ignores)} inventaire(s) déjà validé(s), ignoré(s).")
         return "\n".join(lines)
 
     erreurs_bd = erreurs_base_de_donnees(report)

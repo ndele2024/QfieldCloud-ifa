@@ -8,14 +8,17 @@ et pourraient être réutilisés indépendamment (ex. un futur outil qui ne
 ferait QUE valider sans jamais insérer).
 
 Déroulement de `run()` :
-  1. Lecture du GeoPackage -> { couche: [enregistrements] }.
+  1. Lecture du GeoPackage -> { couche: [enregistrements] }, en écartant
+     les inventaires déjà validés (mes_ind_valid = 'O' dans mesurage).
   2. Chargement des métadonnées PostgreSQL (NOT NULL, plages, ENUM, PK)
      pour chaque couche présente.
   3. Règles automatiques issues du schéma (core.db_schema).
   4. Règles personnalisées TRANSFORM (peuvent modifier les enregistrements),
      puis VALIDATION, dans cet ordre, couche par couche.
   5. S'il n'y a AUCUNE erreur bloquante (des avertissements n'empêchent
-     pas l'insertion) : insertion en base dans une seule transaction.
+     pas l'insertion) : insertion en base dans une seule transaction, avec
+     mes_ind_valid = 'O' pour les mesurages traités, puis même marquage
+     dans le GeoPackage.
   6. Construction et retour du ValidationReport (toujours produit, que
      l'insertion ait eu lieu ou non).
 
@@ -90,12 +93,18 @@ def run(
     discover_rules()
 
     gpkg_path = Path(gpkg_path)
-    layers = gpkg_reader.read_gpkg(gpkg_path, layers=tables)
+    # Un inventaire déjà validé lors d'une synchronisation précédente n'est
+    # ni revalidé ni réinséré : ses enregistrements sont écartés de toutes
+    # les couches dès la lecture.
+    deja_valides = gpkg_reader.inventaires_valides(gpkg_path)
+    layers = gpkg_reader.read_gpkg(gpkg_path, layers=tables,
+                                   exclure_inventaires=deja_valides)
 
     report = ValidationReport(
         source=str(gpkg_path),
         layers_processed=list(layers.keys()),
         record_counts={name: len(rows) for name, rows in layers.items()},
+        inventaires_ignores=sorted(deja_valides),
     )
 
     # Lecture du schéma PostgreSQL. En cas d'échec (connexion perdue, droits
@@ -152,6 +161,14 @@ def run(
             report.issues.extend(rule.run(ctx))
 
     if report.is_valid and apply:
+        # Les mesurages insérés sont marqués validés dans la même transaction
+        # que l'insertion : la base ne peut pas porter « O » pour un
+        # inventaire dont l'insertion aurait échoué.
+        mesurages = layers.get(gpkg_reader.TABLE_MESURAGE, [])
+        a_marquer = sorted({r[gpkg_reader.CHAMP_INVENTAIRE] for r in mesurages
+                            if r.get(gpkg_reader.CHAMP_INVENTAIRE) is not None})
+        for row in mesurages:
+            row[gpkg_reader.CHAMP_VALIDE] = gpkg_reader.VALEUR_VALIDE
         try:
             # `schemas` fournit la clé primaire de chaque table, qui sert de
             # cible au ON CONFLICT : sans lui, un second envoi du même
@@ -172,6 +189,28 @@ def run(
                     "La transaction a été annulée : aucune donnée n'a été insérée"
                 ),
                 rule_name="engine.insert_all", exc=exc,
+            ))
+
+    if report.inserted:
+        report.inventaires_valides = a_marquer
+        # Le GeoPackage n'est marqué qu'APRÈS le commit en base. Un échec ici
+        # n'est pas bloquant : les données sont en base, et au pire les
+        # inventaires seront retraités (et mis à jour via ON CONFLICT) à la
+        # prochaine synchronisation.
+        try:
+            gpkg_reader.marquer_inventaires_valides(gpkg_path, a_marquer)
+        except Exception as exc:
+            report.issues.append(ValidationIssue(
+                layer=gpkg_reader.TABLE_MESURAGE, severity=Severity.WARNING,
+                code="GPKG_MARQUAGE_VALIDE_ECHOUE",
+                message=(
+                    "Les données ont été insérées en base, mais l'indicateur de validation "
+                    "(mes_ind_valid) n'a pas pu être mis à jour dans le GeoPackage : ces "
+                    "inventaires seront retraités à la prochaine synchronisation. "
+                    f"Détail technique : {decrire_exception(exc)}"
+                ),
+                fields=[gpkg_reader.CHAMP_VALIDE], record={},
+                rule_name="engine.marquer_inventaires_valides",
             ))
 
     return report

@@ -20,6 +20,7 @@ LIGNE_SQL = {
     "rad_no": "02",
     "ing_no_plan_eau_offic": "12777",
     "ing_nom_plan_eau": "ILETS, LAC DES  ",
+    "ing_nom_bassi": "SAGUENAY",
     "latitude": Decimal("48.429444"),
     "longitude": Decimal("-70.079722"),
 }
@@ -82,3 +83,14 @@ class NormalisationTestCase(SimpleTestCase):
         unite = normaliser_unite(LIGNE_SQL)
 
         self.assertEqual(unite["ing_nom_plan_eau"], "ILETS, LAC DES")
+
+    def test_le_nom_du_bassin_accompagne_le_plan_d_eau(self):
+        unite = normaliser_unite(LIGNE_SQL)
+
+        self.assertEqual(unite["ing_nom_bassi"], "SAGUENAY")
+
+    def test_le_bassin_absent_sort_en_chaine_vide(self):
+        """Toutes les `infor_gener` du fonds hérité ne le renseignent pas."""
+        unite = normaliser_unite({**LIGNE_SQL, "ing_nom_bassi": None})
+
+        self.assertEqual(unite["ing_nom_bassi"], "")

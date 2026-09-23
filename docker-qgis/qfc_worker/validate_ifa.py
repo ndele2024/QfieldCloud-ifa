@@ -109,6 +109,12 @@ def _write_rapport_to_gpkg(gpkg_path: Path, result: Any) -> None:
         if result.is_valid
         else f"{len(result.errors)} erreur(s), {len(result.warnings)} avertissement(s). Non insérées."
     )
+    # Inventaires marqués mes_ind_valid = 'O' à ce traitement, et ceux
+    # écartés parce qu'ils l'étaient déjà (voir core.gpkg_reader).
+    if result.inventaires_valides:
+        resume += f" {len(result.inventaires_valides)} inventaire(s) marqué(s) validé(s)."
+    if result.inventaires_ignores:
+        resume += f" {len(result.inventaires_ignores)} inventaire(s) déjà validé(s), ignoré(s)."
     cur.execute(
         "INSERT INTO rapport_validation (statut, couche, code_regle, severite, message, champs, enregistrement, genere_le) "
         "VALUES (?,?,?,?,?,?,?,?)",
@@ -297,6 +303,8 @@ def validate_ife_data(project_dir: Path) -> dict[str, Any]:
         "error_count": len(result.errors),
         "warning_count": len(result.warnings),
         "layers_processed": result.layers_processed,
+        "inventaires_valides": result.inventaires_valides,
+        "inventaires_ignores": result.inventaires_ignores,
     }
 
 

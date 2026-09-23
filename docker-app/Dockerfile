@@ -18,7 +18,9 @@ RUN apt-get update \
     libpq-dev \
     python3-dev \
     gcc \
-    # fiona dependencies
+    # fiona and GDAL python bindings dependencies
+    # NOTE `gdal-config` (from `libgdal-dev`) drives the build of the `gdal`
+    # package, whose version must match the system GDAL — see `requirements.in`.
     g++ \
     libgdal-dev \
     gdal-bin \

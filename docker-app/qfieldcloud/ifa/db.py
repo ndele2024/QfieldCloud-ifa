@@ -8,9 +8,14 @@ n'en est pas propriétaire. Trois conséquences, appliquées ici :
    l'ORM (clés composites, types énumérés, colonnes `shape` en EPSG:32187) et
    surtout : le décrire en modèles inviterait tôt ou tard une migration à s'y
    appliquer. Tout passe par du SQL brut, paramétré.
-2. **Transaction en lecture seule.** `curseur()` ouvre un `SET TRANSACTION
-   READ ONLY` : même un défaut de programmation ne peut pas écrire dans la base
-   de production.
+2. **Transaction en lecture seule par défaut.** `curseur()` ouvre un
+   `SET TRANSACTION READ ONLY` : même un défaut de programmation ne peut pas
+   écrire dans la base de production. La seule exception est
+   `curseur_ecriture()`, et les deux seules écritures que QFieldCloud pratique
+   sur la base métier y passent, toutes deux sur `unite_echan` :
+   le **verrouillage** d'une unité (`verrou.py`) et la **création** d'une
+   nouvelle unité (`unite.py`). Le compte PostgreSQL du serveur a donc besoin
+   des droits `UPDATE` et `INSERT` sur cette table, et d'eux seuls.
 3. **Délai maximal par requête.** `statement_timeout` empêche une recherche mal
    filtrée d'immobiliser un travailleur gunicorn — les tables comptent plusieurs
    centaines de milliers de lignes et certaines colonnes ne sont pas indexées
@@ -90,6 +95,43 @@ def curseur() -> Iterator[Any]:
         logger.exception("Interrogation de la base IFA en échec")
         raise BaseIfaIndisponibleError(
             "La base de données IFA n'a pas répondu.",
+        ) from erreur
+
+
+@contextmanager
+def curseur_ecriture() -> Iterator[Any]:
+    """Curseur sur la base IFA, en écriture.
+
+    Contrepartie de `curseur()`, et seule porte d'écriture du module. Deux
+    usages, tous deux sur `unite_echan` : le verrouillage d'une unité — sans
+    quoi deux techniciens ouvriraient la même — et la création d'une nouvelle
+    unité, qui réserve son code au moment où le technicien la déclare.
+
+    La transaction reste celle de Django (`transaction.atomic`) : une erreur
+    levée dans le bloc annule l'`UPDATE`. Le délai maximal est le même que pour
+    une lecture — un `UPDATE` sur clé primaire qui dépasse vingt secondes est
+    un incident, pas une requête lente.
+    """
+    if not est_configuree():
+        raise BaseIfaIndisponibleError(
+            "La base de données IFA n'est pas configurée sur ce serveur "
+            "(variable VALIDATION_PG_HOST absente).",
+        )
+
+    alias = settings.IFA_DB_ALIAS
+    delai_ms = int(settings.IFA_DB_STATEMENT_TIMEOUT_MS)
+
+    try:
+        with transaction.atomic(using=alias):
+            with connections[alias].cursor() as cur:
+                cur.execute(f"SET LOCAL statement_timeout = {delai_ms}")
+                yield cur
+    except BaseIfaIndisponibleError:
+        raise
+    except DatabaseError as erreur:
+        logger.exception("Écriture dans la base IFA en échec")
+        raise BaseIfaIndisponibleError(
+            "La base de données IFA n'a pas accepté la mise à jour.",
         ) from erreur
 
 
