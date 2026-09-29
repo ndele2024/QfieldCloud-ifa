@@ -2,7 +2,9 @@
 
 > Projet IFA 2.0
 > Document unique — fusion de `README-IFA.md`, `VALIDATION_IFA.md` et `Mise en place du serveur.md`
-> Dernière mise à jour : 2026-08-18
+> Dernière mise à jour : 2026-09-29 — ajout du §11 (plugin « IFA 2.0 — Menu », points d'accès
+> `/api/v1/ifa/`, ouverture automatique des projets, détection du push et attente du rapport,
+> distribution et mise à jour automatique du plugin)
 
 ---
 
@@ -47,6 +49,12 @@
    - 8.6 [Notes](#86-notes)
 9. [Exploitation et mises à jour](#9-exploitation-et-mises-à-jour)
 10. [Dépannage](#10-dépannage)
+11. [Programme IFA 2.0 — plugin « Menu » et points d'accès `/api/v1/ifa/`](#11-programme-ifa-20--plugin--menu--et-points-daccès-apiv1ifa)
+    - 11.1 [Ce que fait le plugin](#111-ce-que-fait-le-plugin)
+    - 11.2 [Points d'accès serveur](#112-points-daccès-serveur)
+    - 11.3 [Ouverture automatique du projet préparé](#113-ouverture-automatique-du-projet-préparé)
+    - 11.4 [Après un push : déverrouillage et rapport de validation](#114-après-un-push--déverrouillage-et-rapport-de-validation)
+    - 11.5 [Installation et mise à jour du plugin](#115-installation-et-mise-à-jour-du-plugin)
 
 ---
 
@@ -66,6 +74,12 @@ Après qu'un technicien de terrain pousse ses données depuis QField, le serveur
 3. écrit un rapport lisible dans le GPKG et un JSON pour le plugin QField ;
 4. ajoute automatiquement la couche `rapport_validation` au projet QGS ;
 5. upload le projet mis à jour → le technicien voit son rapport après synchronisation.
+
+Elle sert aussi le **programme de terrain IFA 2.0** : l'application Django
+`qfieldcloud.ifa` expose des points d'accès `/api/v1/ifa/` (recherche, ouverture,
+création et déverrouillage des unités d'échantillonnage), interrogés par le plugin
+QField **« IFA 2.0 — Menu »** (`ifa_menu`). Ce plugin reprend aussi l'affichage du
+rapport de validation, jusque-là assuré par `plugin_auth.qml`. Voir §11.
 
 ### 1.2 Chaîne de traitement
 
@@ -109,13 +123,18 @@ IFA 2.0\
 │   │           └── rules\                   ← règles métier (.py par domaine)
 │   ├── docker-app\worker_wrapper\
 │   │   └── wrapper.py                       ← lance le conteneur QGIS, passe VALIDATION_PG_*
+│   ├── docker-app\qfieldcloud\ifa\          ← points d'accès /api/v1/ifa/ (§11, et son README.md)
 │   ├── docker-compose.override.local.yml
 │   ├── .env                                 ← valeurs des variables d'environnement
 │   └── DOCUMENTATION_IFA.md                 ← le présent document
 │
 └── formulaires\
+    ├── plugins\ifa_menu\                    ← ✅ plugin QField « IFA 2.0 — Menu » EN USAGE (§11)
+    │   ├── main.qml, Fenetre*.qml, Service*.qml, PasseurProjet.qml, …
+    │   ├── install.py                       ← installation (plugin d'application)
+    │   └── README.md                        ← documentation détaillée du plugin
     ├── rapport_ife_plugin\
-    │   ├── plugin_auth.qml                  ← ✅ plugin QField EN USAGE
+    │   ├── plugin_auth.qml                  ← plugin de validation autonome — repris par ifa_menu
     │   ├── plugin.qml                       ← variante : délégation à cloudProjectsModel
     │   ├── plugin_server.qml                ← variante historique (URL + token en dur)
     │   └── plugin_local.qml                 ← variante historique (lecture fichier local)
@@ -783,6 +802,17 @@ VALIDATION_PG_SCHEMA=ifa_data
 
 **Source :** `formulaires/rapport_ife_plugin/plugin_auth.qml`
 
+> ℹ️ **Repris par le plugin « IFA 2.0 — Menu » (§11).** L'affichage du rapport de
+> validation vit désormais dans `ifa_menu` (`ServiceValidation.qml`,
+> `FenetreValidation.qml`), qui partage une seule session avec le reste du
+> programme : un jeton, une demande de mot de passe. Deux principes décrits
+> ci-dessous y restent valables — URL tirée de `QFieldCloudConnection`, jeton
+> propre obtenu par `POST /api/v1/auth/login/`. La détection, elle, a changé :
+> ni sondage de `deltafile.json` ni de `data_last_updated_at`, mais le signal
+> `pushFinished` de QField, puis quelques lectures espacées du rapport
+> (§11.4). Ne pas installer les deux plugins ensemble : leurs jetons se
+> disputeraient la session.
+
 Le plugin affiche, dans QField, l'état de validation des données poussées : un bouton
 **IFA** vert (valide) / rouge (invalide) / sablier (en attente), et deux panneaux
 coulissants — rapport détaillé et diagnostic.
@@ -1115,6 +1145,11 @@ sondages ; désactivé pendant une attente, sans quoi il paraîtrait sans effet)
    └─ Affiche le rapport (bouton IFA vert/rouge + panneau de détail)
 ```
 
+Avec le plugin **« IFA 2.0 — Menu »** (§11), l'étape 1 ne passe plus par QGIS
+Desktop pour chaque unité : le technicien **crée** une unité ou en **ouvre** une
+existante depuis QField, le serveur prépare le projet correspondant, et le plugin
+le télécharge puis l'ouvre (§11.3). Les étapes 2 à 4 sont inchangées.
+
 ---
 
 ## 8. Interface utilisateur (hors admin)
@@ -1288,6 +1323,19 @@ docker compose exec worker_wrapper env | grep VALIDATION_PG
 
 ### Mise à jour du plugin QField
 
+**Plugin « IFA 2.0 — Menu » (en usage)** — plugin d'application, voir §11.5
+(les appareils se mettent à jour depuis la page d'admin « Plugin QField IFA »).
+Pour un poste de développement :
+
+```powershell
+cd formulaires\plugins\ifa_menu
+python install.py
+```
+
+puis **relancer QField**. Aucune synchronisation n'est nécessaire.
+
+**Plugin de projet `plugin_auth.qml` (historique)** :
+
 ```bash
 python formulaires/package_plugin.py --project-dir "chemin/vers/projet"
 ```
@@ -1446,3 +1494,236 @@ serveur et la validité de la session côté Django).
 `reportPanel.severityFilter` : elle vaut `undefined`, le filtre par défaut retombe sur
 « avertissements uniquement » et masque les erreurs. La déclarer sur le `Drawer`
 `reportPanel` (§6.6).
+
+### Le projet préparé ne s'ouvre pas tout seul (plugin « Menu »)
+
+Le dialogue « Projet prêt à ouvrir » donne la raison. Les plus courantes :
+
+| Message | Cause | Remède |
+|---|---|---|
+| « QField n'est pas connecté à QFieldCloud » | le **compte de QField** n'est pas connecté — le jeton du plugin ne suffit pas | se connecter depuis l'écran « Projets » de QField |
+| « … modifications non synchronisées … » | des deltas attendent dans le projet ouvert | synchroniser, puis recommencer |
+| « QField signale : Project busy. » | le projet est déjà en cours de synchronisation dans QField | attendre la fin, puis l'ouvrir depuis « Projets » |
+| « … n'expose pas sa liste de projets cloud » | version de QField ayant renommé `cloudProjectsModel` | vérifier la version ; ajuster `PasseurProjet.verifier()` |
+
+Le journal des messages de QField trace chaque étape sous `[IFA] passeur :`.
+
+### `database disk image is malformed` à l'ouverture d'un projet préparé
+
+Observé une fois (29 septembre 2026, instance locale) : `data.gpkg` du projet
+`formulaire_UE_IFA` arrivé tronqué — 643 Ko sur les 11 Mo annoncés par son
+en-tête —, réécrit sur le disque trois secondes **après** un téléchargement
+complet. Le serveur l'avait servi entier (journal `nginx`), sa copie était
+intacte, un seul travail de packaging. **Non reproduit, cause inconnue.**
+
+Si cela revient, **ne toucher à aucun fichier** et relever tout de suite :
+
+```bash
+# côté serveur : le fichier a-t-il été servi en entier ?
+docker compose logs --since <heure UTC> nginx | grep "latest/files/data.gpkg"
+```
+
+```python
+# côté poste : taille réelle et taille annoncée par l'en-tête SQLite
+import os
+b = open("data.gpkg", "rb").read(100)
+print(os.path.getsize("data.gpkg"),
+      int.from_bytes(b[28:32], "big") * int.from_bytes(b[16:18], "big"))
+```
+
+Réparation : supprimer la copie locale du projet dans QField (appui long →
+supprimer), puis le retélécharger depuis l'écran « Projets ».
+
+### Rien ne se passe après un push (plugin « Menu »)
+
+Ni question de déverrouillage, ni fenêtre d'attente, et le rapport n'apparaît
+qu'après « Rafraîchir ». Dans le journal QField :
+
+| Ligne attendue | Si elle manque |
+|---|---|
+| `[IFA] detection du push : signaux de QField` (au démarrage) | `… (secours)` à la place : `cloudProjectsModel` introuvable, la détection retombe sur la lecture de `deltafile.json`, peu fiable (§11.4) — vérifier la version de QField |
+| `[IFA] push detecte (signal pushFinished) — unite « … »` | le push a échoué côté QField (`[IFA] push en echec : …`), ou le projet poussé n'est pas le projet ouvert |
+
+Côté serveur, `docker compose logs nginx` montre le `POST /api/v1/deltas/<projet>/`
+du push, puis — si le plugin l'a vu — les `GET …/rapport_ife.json/` du plugin
+dans les secondes qui suivent.
+
+### Le plugin reste désactivé après une mise à jour
+
+`pluginManager.installFromUrl()` désactive le plugin qu'il remplace ; le plugin
+se réactive lui-même à la réception de `installEnded` (§11.5). S'il est resté
+éteint : le réactiver dans QField → Réglages → Plugins, et relever dans le
+journal les lignes `[IFA] mise a jour …` et `[IFA] plugin mis a jour en … —
+reactivation`. Si QField n'avait accordé l'autorisation que « pour cette
+fois » au premier chargement, il la redemande après chaque mise à jour :
+l'accorder de façon permanente.
+
+---
+
+## 11. Programme IFA 2.0 — plugin « Menu » et points d'accès `/api/v1/ifa/`
+
+Le programme de terrain IFA 2.0 repose sur deux pièces, chacune documentée en
+détail à côté de son code :
+
+| Pièce | Emplacement | Documentation détaillée |
+|---|---|---|
+| Plugin QField **« IFA 2.0 — Menu »** (`ifa_menu`) | `formulaires/plugins/ifa_menu/` | `formulaires/plugins/ifa_menu/README.md` |
+| Application Django **`qfieldcloud.ifa`** | `QfieldCloud-ifa/docker-app/qfieldcloud/ifa/` | `QfieldCloud-ifa/docker-app/qfieldcloud/ifa/README.md` |
+
+La présente section en donne la vue d'ensemble et le fonctionnement de bout en
+bout.
+
+### 11.1 Ce que fait le plugin
+
+Un bouton ▶ dans la barre d'outils de QField ouvre un menu :
+
+```
+IFA 2.0
+├── Gestionnaire de projet            (squelettes)
+├── Gestionnaire d'unité d'échantillonnage
+│   ├── Créer une UE                  → projet de saisie formulaire_UE_IFA
+│   └── Consulter une UE              → recherche, puis projet affichage_UE_IFA_R / _RW
+└── Validation des données
+    └── Rapport de validation         → rapport_ife.json (reprend plugin_auth.qml, §6)
+```
+
+C'est un **plugin d'application** (installé par `python install.py`, actif quel
+que soit le projet ouvert), et non un plugin de projet comme `plugin_auth.qml`.
+Il porte **une seule session** vers QFieldCloud (`SessionCloud.qml`) : un jeton,
+une demande de mot de passe, partagés par la recherche, l'ouverture, la création
+et la validation.
+
+### 11.2 Points d'accès serveur
+
+Servis par `qfieldcloud.ifa`, qui lit la base métier du ministère (schéma
+`ifa_data`, sans ORM) et prépare des projets QFieldCloud sous le compte de
+l'utilisateur :
+
+| Point d'accès | Rôle |
+|---|---|
+| `POST /api/v1/ifa/unites/recherche/` | Recherche multicritère des unités (région, LCE, bassin, emprise, code), paginée. |
+| `POST /api/v1/ifa/unites/<code>/ouvrir/` | Verrouille l'unité (mode modifiable) ou non (consultation), remplit un projet d'affichage, lance son packaging. |
+| `POST /api/v1/ifa/formulaire/preparer/` | Crée **et verrouille** une nouvelle unité, remplit le projet `formulaire_UE_IFA`, lance son packaging. |
+| `POST /api/v1/ifa/unites/<code>/deverrouiller/` | Rend une unité, à la demande de son détenteur. |
+| `GET /api/v1/ifa/plugin/metadata.txt` | **Public** — version publiée du plugin (§11.5). |
+| `GET /api/v1/ifa/plugin/ifa_menu.zip` | **Public** — archive du plugin, pour `installFromUrl()` (§11.5). |
+| `<admin>/ifa/plugin/` | Personnel — page de dépôt d'une nouvelle version, lien « Plugin QField IFA » du menu de l'admin (§11.5). |
+
+Les deux points d'accès de préparation répondent dès que les fichiers sont
+écrits, avec l'identifiant du **travail de packaging** ; le plugin suit ensuite
+ce travail par `GET /api/v1/jobs/<id>/`. Variables de configuration
+(`IFA_DB_*`, `IFA_PROJET_*`, plafonds) : voir le README de `qfieldcloud.ifa`, §2.
+
+Le GeoPackage métier du projet préparé s'appelle **`ifa_data.gpkg`** : le
+packaging de QFieldCloud écrit son propre `data.gpkg` (le convertisseur hors
+ligne), et les deux ne doivent pas se confondre.
+
+### 11.3 Ouverture automatique du projet préparé
+
+Depuis le 29 septembre 2026, les trois parcours — **Créer une UE**, **Consulter
+→ ouvrir sans verrouiller**, **Consulter → ouvrir et verrouiller** — se
+terminent par l'ouverture du projet dans QField, à la place du projet courant,
+sans passer par l'écran « Projets ».
+
+```
+Plugin (fenêtre)          Plugin (main.qml)               QFieldCloud            QField
+     │                           │                             │                    │
+     │ PasseurProjet.verifier()  │                             │                    │
+     │  QField connecté ?        │                             │                    │
+     │  modifications en attente ?                             │                    │
+     │── POST …/ouvrir/ ou …/formulaire/preparer/ ────────────►│ crée/verrouille,   │
+     │                           │                             │ remplit, package   │
+     │── GET /jobs/<id>/ (sondage, 3 s) ──────────────────────►│                    │
+     │   packaging terminé       │                             │                    │
+     │── passeur.demander() ────►│                             │                    │
+     │                           │ appendProject(id, true) ───────────────────────►│
+     │                           │ projectPackageAndDownload(id) ─────────────────►│── télécharge
+     │                           │◄── projectDownloaded ──────────────────────────│
+     │                           │ Qt.callLater → iface.loadFile(localPath)       │── ouvre
+```
+
+**`PasseurProjet.qml`** reproduit l'enchaînement que QField applique lui-même
+à un projet qu'il vient de créer (`QfCloudScreen.qml`). Il atteint
+`cloudProjectsModel` et `cloudConnection` par `iface.findItemByObjectName()` :
+QField leur pose un `objectName` (vérifié en v4.2.11 et en master). Il écoute le
+signal `warning` du modèle (certains refus, comme « Project busy. », ne passent
+que par lui), borne chaque étape (20 s pour l'ajout, 3 min pour le
+téléchargement) et diffère `loadFile()` hors de la pile du signal du modèle.
+
+**Vérification préalable.** Avant tout appel au serveur, le plugin s'assure que
+**QField lui-même** est connecté à QFieldCloud — c'est son compte qui télécharge,
+pas le jeton du plugin — et qu'**aucune modification n'attend d'être
+synchronisée** dans le projet ouvert : le remplacer pourrait les perdre. Sinon,
+un message demande de synchroniser d'abord, et rien n'est créé ni verrouillé.
+Le plugin **ne pousse pas** les modifications de lui-même : c'est un choix
+délibéré.
+
+**Fenêtre d'attente.** Une fenêtre centrée (`DialogueAttente.qml`) suit tout le
+parcours, du clic à l'ouverture — verrouillage ou création, packaging,
+récupération, téléchargement, ouverture. Elle vit dans `main.qml` pour survivre
+à la fenêtre qui l'a ouverte.
+
+**Repli.** Si l'ouverture automatique échoue, un dialogue
+(`DialogueProjetPret.qml`) rappelle ce qui est acquis (« L'unité … est créée et
+verrouillée à votre nom. »), donne la raison, et nomme le projet à ouvrir depuis
+l'écran « Projets ». L'unité est prête dans tous les cas.
+
+> **Correction historique.** Le README du plugin a longtemps affirmé que
+> `cloudProjectsModel` était introuvable depuis un plugin. C'était faux : l'échec
+> venait de noms de méthodes inventés (`downloadProject`, `projectDownload`)
+> dans l'ancien code de téléchargement, aujourd'hui supprimé.
+
+### 11.4 Après un push : déverrouillage et rapport de validation
+
+Le plugin reprend le rôle de `plugin_auth.qml` (§6) avec une différence de
+fond : il ne **sonde plus** `deltafile.json`. Le push est connu par le signal
+**`cloudProjectsModel.pushFinished`**, et les modifications en attente par
+**`cloudProjectsModel.layerObserver.deltaFileWrapper.count`** — deux API de
+QField, vérifiées dans les en-têtes installés (v4.2.11). La lecture de
+`deltafile.json` par `XMLHttpRequest` sur une URL `file://` a manqué des pushes
+sur le terrain, sans trace : Qt peut refuser ces lectures en silence. Elle ne
+sert plus que de secours, si le modèle de QField est introuvable.
+
+```
+push réussi du projet ouvert (pushFinished)
+   → « Déverrouiller l'unité … ? »         DialogueDeverrouillage
+        ├─ Déverrouiller  → POST /api/v1/ifa/unites/<code>/deverrouiller/
+        └─ Garder verrouillée
+   → fenêtre d'attente « Validation des données »
+        GET …/packages/<projet>/latest/files/rapport_ife.json
+        à 2, 4, 8, 15 puis 30 s, jusqu'à un rapport plus récent (genere_le)
+   → fenêtre refermée ; notification du verdict
+     (ou, sans rapport au bout d'une minute : invitation à « Rafraîchir »)
+```
+
+La fenêtre d'attente est une seconde instance de `DialogueAttente`, distincte
+de celle de l'ouverture de projet. Elle s'ouvre **après** la question du
+déverrouillage, qu'elle recouvrirait sinon.
+
+### 11.5 Installation et mise à jour du plugin
+
+```powershell
+cd formulaires\plugins\ifa_menu
+python install.py          # plugin d'application (recommandé)
+python install.py --zip    # archive pour distribution
+```
+
+Après toute modification d'un fichier autre que `main.qml`, **relancer QField** :
+désactiver puis réactiver le plugin ne purge pas le cache QML.
+
+**Distribution aux appareils (depuis la version 0.2.0).** Le serveur publie la
+version courante du plugin ; les appareils la comparent au démarrage et
+proposent la mise à jour.
+
+1. Augmenter `version=` dans `formulaires/plugins/ifa_menu/metadata.txt`.
+2. `python install.py --zip`.
+3. Admin QFieldCloud → menu du haut **« Plugin QField IFA »** : déposer
+   `ifa_menu.zip` et `metadata.txt`, puis **Publier**.
+4. Au prochain démarrage de QField, chaque appareil propose la nouvelle
+   version (« Plus tard » / « Installer ») et se réactive tout seul après
+   l'installation.
+
+Adresses publiques : `https://<serveur>/api/v1/ifa/plugin/metadata.txt` et
+`…/ifa_menu.zip`. Première installation sur un appareil : QField → Réglages →
+Plugins → installer depuis une URL, avec l'adresse de l'archive. Détail côté
+serveur : README de `qfieldcloud.ifa`, §10 ; côté plugin : README du plugin, §2.

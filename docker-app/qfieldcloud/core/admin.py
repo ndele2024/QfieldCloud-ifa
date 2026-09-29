@@ -129,8 +129,19 @@ class QfcAdminSite(AdminSite):
                 self.admin_view(self.global_search_view),
                 name="global_search",
             ),
+            # IFA 2.0 : dépôt d'une nouvelle version du plugin QField.
+            path(
+                "ifa/plugin/",
+                self.admin_view(self.ifa_plugin_view),
+                name="ifa_plugin",
+            ),
         ]
         return custom_urls + urls
+
+    def ifa_plugin_view(self, request: HttpRequest) -> HttpResponse:
+        from qfieldcloud.ifa.plugin_views import page_plugin
+
+        return page_plugin(request, self)
 
     def global_search_view(self, request: HttpRequest) -> HttpResponse:
         """Custom multi-model search view with exact username/email matching.

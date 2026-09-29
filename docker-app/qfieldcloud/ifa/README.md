@@ -641,3 +641,45 @@ requêtes (`filtres.py`), la validation des filtres et des demandes d'ouverture
 GeoPackage (`gpkg.py`), la lecture du projet packagé (`paquet.py`) et
 l'appariement des tables (`inventaires.py`) : tout ce qui peut se casser sans
 qu'un appel réseau ne le dise.
+
+---
+
+## 10. Distribution du plugin QField — `plugin.py`, `plugin_views.py`
+
+Le serveur garde **la** version publiée du plugin « IFA 2.0 — Menu » et la sert
+aux appareils, qui s'en servent pour se mettre à jour (voir le README du
+plugin, §2).
+
+| Adresse | Accès | Rôle |
+|---|---|---|
+| `GET /api/v1/ifa/plugin/metadata.txt` | **public** | la version publiée (`version=`) |
+| `GET /api/v1/ifa/plugin/ifa_menu.zip` | **public** | l'archive, pour `pluginManager.installFromUrl()` |
+| `<admin>/ifa/plugin/` | personnel | page de dépôt, lien « Plugin QField IFA » du menu du haut |
+
+**Pourquoi publiques.** `installFromUrl()` télécharge sans le jeton du plugin,
+et la vérification de version au démarrage ne doit pas réclamer de mot de
+passe. Le plugin ne contient ni secret ni donnée, seulement son code QML.
+Les réponses portent `Cache-Control: no-store` : l'adresse ne change pas quand
+la version change.
+
+**Pourquoi un nom d'archive fixe.** QField nomme le dossier du plugin installé
+d'après le nom du fichier téléchargé (suffixe de version retiré), et ce nom est
+l'identifiant du plugin. Servie sous un autre nom, la nouvelle version
+s'installerait à côté de l'ancienne. Réglable par `IFA_PLUGIN_NOM` (défaut
+`ifa_menu`), qui doit rester le nom du dossier qu'écrit `install.py`.
+
+**Contrôles au dépôt** (`plugin.verifier()`) : archive `.zip` lisible, `main.qml`
+à sa racine, `version=` numérique dans `metadata.txt`, et même version dans le
+`metadata.txt` intérieur de l'archive s'il existe — sinon les appareils
+compareraient une version et en installeraient une autre, puis la
+reproposeraient sans fin. La page refuse aussi une version qui n'avance pas,
+sauf case « Publier quand même ».
+
+**Stockage.** `MEDIA_ROOT/ifa_plugin/`, sur le volume `media_volume` : les
+fichiers survivent aux reconstructions d'image. Chaque fichier est écrit à
+côté puis renommé (`os.replace`) — un appareil qui télécharge au même instant
+reçoit l'ancien ou le nouveau, jamais un mélange —, l'archive **avant**
+`metadata.txt`, pour qu'aucun appareil ne voie la nouvelle version annoncée
+avec l'ancienne archive.
+
+Tests : `tests/test_plugin.py`.

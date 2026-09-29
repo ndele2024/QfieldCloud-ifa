@@ -1,5 +1,7 @@
 from django.urls import path
 
+from qfieldcloud.ifa import plugin
+from qfieldcloud.ifa.plugin_views import archive_plugin, metadonnees_plugin
 from qfieldcloud.ifa.views import (
     DeverrouillerUniteView,
     OuvrirUniteView,
@@ -31,5 +33,18 @@ urlpatterns = [
         "formulaire/preparer/",
         PreparerFormulaireView.as_view(),
         name="ifa_formulaire_preparer",
+    ),
+    # Distribution du plugin QField — publique, voir `plugin.py`. Le nom de
+    # l'archive dans l'adresse est celui que QField donnera au dossier du
+    # plugin installé.
+    path(
+        f"plugin/{plugin.NOM_METADONNEES}",
+        metadonnees_plugin,
+        name="ifa_plugin_metadonnees",
+    ),
+    path(
+        f"plugin/{plugin.NOM_ARCHIVE}",
+        archive_plugin,
+        name="ifa_plugin_archive",
     ),
 ]

@@ -1053,6 +1053,11 @@ JAZZMIN_SETTINGS = {
             "name": "Global Search",
             "url": "admin:global_search",
         },
+        # IFA 2.0 : publication du plugin QField (qfieldcloud/ifa/plugin.py).
+        {
+            "name": "Plugin QField IFA",
+            "url": "admin:ifa_plugin",
+        },
     ],
 }
 

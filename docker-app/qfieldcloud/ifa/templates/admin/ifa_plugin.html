@@ -1,0 +1,93 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; Plugin QField IFA 2.0
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main" class="w-75 mx-auto">
+    <h1>Plugin QField « IFA 2.0 — Menu »</h1>
+
+    {# Version publiée #}
+    <div class="card">
+        <div class="card-body">
+            <div class="module">
+                <h2 class="p-1 border-bottom">Version publiée</h2>
+
+                {% if actuel %}
+                    <table class="qfc-table">
+                        <tbody>
+                            <tr><th>Version</th><td><strong>{{ actuel.version }}</strong></td></tr>
+                            <tr><th>Nom</th><td>{{ actuel.nom }}</td></tr>
+                            <tr><th>Publiée le</th><td>{{ publie_le|date:"Y-m-d H:i" }}</td></tr>
+                            <tr><th>Taille de l'archive</th><td>{{ actuel.taille_archive|filesizeformat }}</td></tr>
+                            <tr><th>Archive</th><td><a href="{{ url_archive }}">{{ url_archive }}</a></td></tr>
+                            <tr><th>Version (lue par les appareils)</th><td><a href="{{ url_metadonnees }}">{{ url_metadonnees }}</a></td></tr>
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="p-2">Aucune version publiée pour l'instant. Les appareils ne proposent pas de mise à jour.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# Dépôt #}
+    <div class="card">
+        <div class="card-body">
+            <div class="module">
+                <h2 class="p-1 border-bottom">Publier une nouvelle version</h2>
+
+                <form method="post" enctype="multipart/form-data" class="p-3">
+                    {% csrf_token %}
+
+                    {% if formulaire.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for erreur in formulaire.non_field_errors %}<p class="mb-0">{{ erreur }}</p>{% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% for champ in formulaire %}
+                        <div class="form-group">
+                            <label for="{{ champ.id_for_label }}"><strong>{{ champ.label }}</strong></label><br>
+                            {{ champ }}
+                            {% if champ.errors %}<div class="text-danger">{{ champ.errors|join:" " }}</div>{% endif %}
+                            <small class="form-text text-muted">{{ champ.help_text }}</small>
+                        </div>
+                    {% endfor %}
+
+                    <div class="form-group">
+                        <label><input type="checkbox" name="forcer" value="1"> Publier quand même une version qui n'est pas plus récente</label>
+                        <small class="form-text text-muted">Pour revenir en arrière après une mauvaise publication. Les appareils déjà à jour ne la proposeront pas : seuls ceux qui ont une version plus ancienne l'installeront.</small>
+                    </div>
+
+                    <button type="submit" class="button default">Publier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {# Mode d'emploi #}
+    <div class="card">
+        <div class="card-body">
+            <div class="module">
+                <h2 class="p-1 border-bottom">Procédure</h2>
+                <ol class="p-3 mb-0">
+                    <li>Dans <code>formulaires/plugins/ifa_menu/metadata.txt</code>, augmenter <code>version=</code>.</li>
+                    <li>Construire l'archive : <code>python install.py --zip</code>.</li>
+                    <li>Déposer ici <code>ifa_menu.zip</code> et <code>metadata.txt</code>.</li>
+                    <li>Au prochain démarrage de QField, chaque appareil propose la mise à jour.</li>
+                </ol>
+                <p class="px-3 text-muted small">
+                    Première installation sur un appareil : QField → Réglages → Plugins → installer depuis une URL,
+                    avec l'adresse de l'archive ci-dessus, puis activer le plugin.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
