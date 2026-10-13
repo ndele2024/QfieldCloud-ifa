@@ -469,7 +469,7 @@ Sans `https://` devant, sans barre oblique ni port à la fin : cette variable se
 **Modification 2 — `DJANGO_ALLOWED_HOSTS`** (vers la ligne 278) :
 
 ```diff
--DJANGO_ALLOWED_HOSTS="149.56.108.189 localhost 127.0.0.1 0.0.0.0 app nginx"
+-DJANGO_ALLOWED_HOSTS="<IP du VPS> localhost 127.0.0.1 0.0.0.0 app nginx"
 +DJANGO_ALLOWED_HOSTS="ifa.example.org localhost 127.0.0.1 0.0.0.0 app nginx"
 ```
 

@@ -8,22 +8,42 @@ from decimal import Decimal
 from typing import Any
 
 from django.conf import settings
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import status, views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from qfieldcloud.ifa import db, filtres, formulaire, ouverture, verrou
+from qfieldcloud.ifa import (
+    db,
+    filtres,
+    formulaire,
+    ouverture,
+    projet_gestion,
+    projet_sonda,
+    unite_gestion,
+    verrou,
+)
 from qfieldcloud.ifa.exceptions import FiltreInvalideError
 from qfieldcloud.ifa.serializers import (
     DeverrouillageSerializer,
     FormulaireSerializer,
+    ListeProjetsSerializer,
+    ModificationProjetSerializer,
     OuvertureSerializer,
     OuvrirUniteSerializer,
     PreparerFormulaireSerializer,
+    ProjetDetailSerializer,
+    ProjetSondageCreeSerializer,
+    ProjetSondageSerializer,
     RechercheUnitesSerializer,
     ResultatRechercheSerializer,
+    SuppressionFaiteSerializer,
+    SuppressionProjetSerializer,
+    SuppressionUniteFaiteSerializer,
+    TypesDuProjetSerializer,
+    TypesUeSerializer,
+    UniteDetailSerializer,
 )
 
 logger = logging.getLogger(__name__)
@@ -216,6 +236,62 @@ class DeverrouillerUniteView(views.APIView):
 
 
 @extend_schema_view(
+    get=extend_schema(
+        description=(
+            "Une unité d'échantillonnage : ce que sa suppression emporterait "
+            "(mesurages, enregistrements par table) et les droits de l'appelant."
+        ),
+        responses={200: UniteDetailSerializer},
+    ),
+)
+class UniteView(views.APIView):
+    """`GET /api/v1/ifa/unites/<une_code_ident>/`."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request: Request, une_code_ident: str) -> Response:
+        return Response(
+            unite_gestion.lire(une_code_ident, request.user),
+            status=status.HTTP_200_OK,
+        )
+
+
+@extend_schema_view(
+    post=extend_schema(
+        description=(
+            "Supprime une unité d'échantillonnage et toutes ses données de "
+            "terrain. Exige le mot de passe de l'appelant. Un utilisateur "
+            "standard ne supprime que ses propres unités non diffusées ; un "
+            "administrateur, toute unité. Une unité verrouillée par quelqu'un "
+            "d'autre n'est jamais supprimée."
+        ),
+        request=SuppressionProjetSerializer,
+        responses={200: SuppressionUniteFaiteSerializer},
+    ),
+)
+class SupprimerUniteView(views.APIView):
+    """`POST /api/v1/ifa/unites/<une_code_ident>/supprimer/`.
+
+    POST plutôt que DELETE, comme pour un projet : la demande porte le mot de
+    passe.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request: Request, une_code_ident: str) -> Response:
+        demande = SuppressionProjetSerializer(data=request.data)
+
+        if not demande.is_valid():
+            raise FiltreInvalideError(premier_message(demande.errors))
+
+        resultat = unite_gestion.supprimer(
+            une_code_ident, request.user, demande.validated_data["mot_de_passe"]
+        )
+
+        return Response(resultat, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
     post=extend_schema(
         description=(
             "Crée l'unité d'échantillonnage dans la base métier — inscrite "
@@ -264,6 +340,206 @@ class PreparerFormulaireView(views.APIView):
         corps["unite"] = normaliser_verrou(resultat.unite_creee)
 
         return Response(corps, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+    get=extend_schema(
+        description=(
+            "Liste tous les projets de sondage, avec leur nombre d'unités "
+            "d'échantillonnage et les droits de l'appelant sur chacun "
+            "(modification, suppression)."
+        ),
+        responses={200: ListeProjetsSerializer},
+    ),
+    post=extend_schema(
+        description=(
+            "Crée un projet de sondage dans la base métier "
+            "(`ifa_data.proje_sonda`) et les types d'UE qu'il prévoit "
+            "(`ifa_data.proje_type_unite_echan`), dans une même transaction. "
+            "Le n° de projet doit être libre ; l'identifiant, les dates, "
+            "l'utilisateur et la version de type sont fixés par le serveur."
+        ),
+        request=ProjetSondageSerializer,
+        responses={201: ProjetSondageCreeSerializer},
+    ),
+)
+class ProjetsSondageView(views.APIView):
+    """`GET` et `POST /api/v1/ifa/projets-sondage/` — liste, et création.
+
+    Contrairement à « Créer une UE », aucun projet QFieldCloud n'est préparé :
+    la réponse revient une fois la ligne écrite, et le projet est aussitôt
+    utilisable comme rattachement des unités.
+    """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProjetSondageSerializer
+
+    def post(self, request: Request) -> Response:
+        demande = ProjetSondageSerializer(data=request.data)
+
+        if not demande.is_valid():
+            raise FiltreInvalideError(premier_message(demande.errors))
+
+        projet = projet_sonda.creer(demande.validated_data, request.user.username)
+
+        return Response(projet, status=status.HTTP_201_CREATED)
+
+    def get(self, request: Request) -> Response:
+        return Response(projet_gestion.lister(request.user), status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+    get=extend_schema(
+        description=(
+            "Un projet de sondage : ses champs, ses types d'UE, son nombre "
+            "d'unités et les droits de l'appelant."
+        ),
+        responses={200: ProjetDetailSerializer},
+    ),
+)
+class ProjetSondageView(views.APIView):
+    """`GET /api/v1/ifa/projets-sondage/<pro_code_ident>/`."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request: Request, pro_code_ident: str) -> Response:
+        return Response(
+            projet_gestion.lire(pro_code_ident, request.user),
+            status=status.HTTP_200_OK,
+        )
+
+
+@extend_schema_view(
+    post=extend_schema(
+        description=(
+            "Modifie un projet de sondage. Seuls les champs envoyés sont "
+            "considérés, et seuls ceux qui changent demandent un droit. "
+            "`pro_date_maj` (lu à l'ouverture) est exigé : un projet modifié "
+            "entre-temps est refusé (409)."
+        ),
+        request=ModificationProjetSerializer,
+        responses={200: ProjetDetailSerializer},
+    ),
+)
+class ModifierProjetView(views.APIView):
+    """`POST /api/v1/ifa/projets-sondage/<pro_code_ident>/modifier/`.
+
+    POST et non PATCH, comme les autres actions de l'application
+    (`deverrouiller/`, `ouvrir/`) : un seul verbe d'écriture côté plugin.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request: Request, pro_code_ident: str) -> Response:
+        demande = ModificationProjetSerializer(data=request.data, partial=True)
+
+        if not demande.is_valid():
+            raise FiltreInvalideError(premier_message(demande.errors))
+
+        if "pro_date_maj" not in demande.validated_data:
+            raise FiltreInvalideError(
+                "La date de dernière mise à jour du projet est absente : "
+                "rouvrez le projet avant de le modifier."
+            )
+
+        projet = projet_gestion.modifier(
+            pro_code_ident, demande.validated_data, request.user
+        )
+
+        return Response(projet, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+    post=extend_schema(
+        description=(
+            "Supprime un projet de sondage et ses types d'UE. Exige le mot de "
+            "passe de l'appelant. Un utilisateur standard ne supprime que ses "
+            "propres projets hors production ; un administrateur, tout projet. "
+            "Un projet utilisé par une UE n'est jamais supprimé."
+        ),
+        request=SuppressionProjetSerializer,
+        responses={200: SuppressionFaiteSerializer},
+    ),
+)
+class SupprimerProjetView(views.APIView):
+    """`POST /api/v1/ifa/projets-sondage/<pro_code_ident>/supprimer/`.
+
+    POST plutôt que DELETE : la demande porte un corps (le mot de passe), que
+    certains intermédiaires retirent d'un DELETE.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request: Request, pro_code_ident: str) -> Response:
+        demande = SuppressionProjetSerializer(data=request.data)
+
+        if not demande.is_valid():
+            raise FiltreInvalideError(premier_message(demande.errors))
+
+        resultat = projet_gestion.supprimer(
+            pro_code_ident, request.user, demande.validated_data["mot_de_passe"]
+        )
+
+        return Response(resultat, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+    get=extend_schema(
+        description=(
+            "Liste les types d'unité d'échantillonnage qu'un projet de sondage "
+            "peut prévoir, lus dans `type_unite_echan` (sans « Type Projet »)."
+        ),
+        responses={200: TypesUeSerializer},
+    ),
+)
+class TypesUeView(views.APIView):
+    """`GET /api/v1/ifa/types-ue/`.
+
+    Sert la liste à cocher de « Créer un projet ». Lecture seule.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request: Request) -> Response:
+        return Response(
+            {"types": projet_sonda.types_disponibles()},
+            status=status.HTTP_200_OK,
+        )
+
+
+@extend_schema_view(
+    get=extend_schema(
+        description=(
+            "Les types d'UE que prévoit un projet de sondage, désigné par son n° "
+            "(paramètre `pro_no`). Liste vide si le projet n'en prévoit aucun : "
+            "le client propose alors tous les types."
+        ),
+        parameters=[
+            OpenApiParameter(
+                "pro_no",
+                str,
+                OpenApiParameter.QUERY,
+                required=True,
+                description="N° du projet, ex. 09-OG",
+            ),
+        ],
+        responses={200: TypesDuProjetSerializer},
+    ),
+)
+class TypesDuProjetView(views.APIView):
+    """`GET /api/v1/ifa/projets-sondage/types-ue/?pro_no=…`.
+
+    Le n° voyage en paramètre de requête plutôt que dans le chemin : il est
+    saisi librement et peut contenir des espaces, voire une barre oblique.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request: Request) -> Response:
+        return Response(
+            projet_sonda.types_du_projet(request.query_params.get("pro_no", "")),
+            status=status.HTTP_200_OK,
+        )
 
 
 def premier_message(erreurs: Any) -> str:

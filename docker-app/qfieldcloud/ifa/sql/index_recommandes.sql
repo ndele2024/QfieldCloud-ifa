@@ -37,6 +37,19 @@ ANALYZE ifa_data.mesurage;
 
 
 -- ---------------------------------------------------------------------------
+--  Projets de sondage : « utilisé par combien d'UE ? »
+-- ---------------------------------------------------------------------------
+--  « Modifier / Afficher / Supprimer un projet » compte les unités de chaque
+--  projet (`projet_gestion.nombre_unites`, et la liste entière en une
+--  requête) : c'est ce qui décide si le projet est encore modifiable et
+--  supprimable. `mesurage` n'a pas d'index sur `pro_code_ident` : chaque
+--  comptage balaye la table, ~350 ms sur 700 000 mesurages. L'index couvrant
+--  ci-dessous répond depuis l'index seul.
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_mesurage_pro_code_ident
+    ON ifa_data.mesurage (pro_code_ident, une_code_ident);
+
+
+-- ---------------------------------------------------------------------------
 --  Facultatif, et plus intrusif : recherche par fragment de code
 -- ---------------------------------------------------------------------------
 --  La recherche par code est partielle (`ILIKE '%…%'`), donc non indexable par

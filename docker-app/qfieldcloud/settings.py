@@ -293,6 +293,19 @@ IFA_PROJET_FORMULAIRE = os.environ.get("IFA_PROJET_FORMULAIRE", "formulaire_UE_I
 IFA_FORMULAIRE_UNITES_MAX = int(os.environ.get("IFA_FORMULAIRE_UNITES_MAX", "2000"))
 IFA_FORMULAIRE_LIGNES_MAX = int(os.environ.get("IFA_FORMULAIRE_LIGNES_MAX", "300000"))
 
+# Version de type (`versi_type_unite_echan.vet_code_ident`) donnée aux projets
+# de sondage créés depuis le plugin. Vide : la version en production du type
+# « Type Projet », retrouvée dans la base (voir `ifa/projet_sonda.py`).
+IFA_PROJET_VERSION_TYPE = os.environ.get("IFA_PROJET_VERSION_TYPE", "")
+
+# Organisation QFieldCloud dont les membres de rôle `admin` sont administrateurs
+# des projets de sondage : ils modifient un projet en production et suppriment
+# tout projet (voir `ifa/projet_gestion.py`). Les superutilisateurs le sont
+# aussi. Par défaut, l'organisation propriétaire du projet modèle.
+IFA_ORGANISATION_ADMIN = os.environ.get(
+    "IFA_ORGANISATION_ADMIN", IFA_PROJET_MODELE_PROPRIETAIRE
+)
+
 # L'alias n'est déclaré que si la base est configurée : une installation
 # QFieldCloud sans base IFA doit démarrer normalement, les points d'accès
 # répondant alors 503.

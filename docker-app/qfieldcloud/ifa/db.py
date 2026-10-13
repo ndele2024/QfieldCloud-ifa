@@ -11,11 +11,17 @@ n'en est pas propriétaire. Trois conséquences, appliquées ici :
 2. **Transaction en lecture seule par défaut.** `curseur()` ouvre un
    `SET TRANSACTION READ ONLY` : même un défaut de programmation ne peut pas
    écrire dans la base de production. La seule exception est
-   `curseur_ecriture()`, et les deux seules écritures que QFieldCloud pratique
-   sur la base métier y passent, toutes deux sur `unite_echan` :
-   le **verrouillage** d'une unité (`verrou.py`) et la **création** d'une
-   nouvelle unité (`unite.py`). Le compte PostgreSQL du serveur a donc besoin
-   des droits `UPDATE` et `INSERT` sur cette table, et d'eux seuls.
+   `curseur_ecriture()`, et toutes les écritures que QFieldCloud pratique sur
+   la base métier y passent : le **verrouillage** d'une unité (`verrou.py`) et
+   la **création** d'une nouvelle unité (`unite.py`), sur `unite_echan` ; la
+   **création** d'un projet de sondage et de ses types d'UE
+   (`projet_sonda.py`), puis sa **modification** et sa **suppression**
+   (`projet_gestion.py`), sur `proje_sonda` et `proje_type_unite_echan` ; la
+   **suppression** d'une unité et de toutes ses données de terrain
+   (`unite_gestion.py`). Le compte PostgreSQL du serveur a donc besoin des
+   droits `UPDATE` et `INSERT` sur `unite_echan`, `INSERT`, `UPDATE` et
+   `DELETE` sur les deux tables du projet, `DELETE` sur les 44 tables qui
+   portent `une_code_ident`, et d'eux seuls.
 3. **Délai maximal par requête.** `statement_timeout` empêche une recherche mal
    filtrée d'immobiliser un travailleur gunicorn — les tables comptent plusieurs
    centaines de milliers de lignes et certaines colonnes ne sont pas indexées
@@ -102,10 +108,13 @@ def curseur() -> Iterator[Any]:
 def curseur_ecriture() -> Iterator[Any]:
     """Curseur sur la base IFA, en écriture.
 
-    Contrepartie de `curseur()`, et seule porte d'écriture du module. Deux
-    usages, tous deux sur `unite_echan` : le verrouillage d'une unité — sans
-    quoi deux techniciens ouvriraient la même — et la création d'une nouvelle
-    unité, qui réserve son code au moment où le technicien la déclare.
+    Contrepartie de `curseur()`, et seule porte d'écriture du module. Trois
+    usages : le verrouillage d'une unité — sans quoi deux techniciens
+    ouvriraient la même —, la création d'une nouvelle unité, qui réserve son
+    code au moment où le technicien la déclare, la création, la
+    modification et la suppression d'un projet de sondage dans `proje_sonda`,
+    avec ses types d'UE dans `proje_type_unite_echan`, et la suppression d'une
+    unité avec toutes ses données de terrain.
 
     La transaction reste celle de Django (`transaction.atomic`) : une erreur
     levée dans le bloc annule l'`UPDATE`. Le délai maximal est le même que pour

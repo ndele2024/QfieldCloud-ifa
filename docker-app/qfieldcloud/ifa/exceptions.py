@@ -156,3 +156,140 @@ class ProjetModeleInvalideError(QFieldCloudException):
         if message:
             self.message = message
         super().__init__(detail=detail or self.message)
+
+
+class ProjetExistantError(QFieldCloudException):
+    """Le n° du nouveau projet est déjà porté par un projet de la base.
+
+    `proje_sonda.pro_no` n'est pas contraint unique par le schéma, mais le
+    fonds le respecte et le plugin s'en sert pour rattacher une unité à son
+    projet. Le message nomme le projet existant : le responsable reconnaîtra
+    peut-être le sien, déjà créé par un collègue.
+    """
+
+    code = "ifa_projet_existant"
+    message = "Un projet de sondage porte déjà ce numéro."
+    status_code = status.HTTP_409_CONFLICT
+    log_as_error = False
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class VersionProjetIntrouvableError(QFieldCloudException):
+    """Aucune version de type ne qualifie les projets de sondage.
+
+    `proje_sonda.vet_code_ident` porte une clé étrangère vers
+    `versi_type_unite_echan`. Sans version en production du type
+    « Type Projet », un projet ne peut pas être créé : c'est un défaut du
+    référentiel ou de la configuration, pas de la saisie.
+    """
+
+    code = "ifa_version_projet_introuvable"
+    message = "La version de type des projets de sondage est introuvable."
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class ProjetIntrouvableError(QFieldCloudException):
+    """Aucun projet de sondage ne porte ce numéro."""
+
+    code = "ifa_projet_introuvable"
+    message = "Projet de sondage introuvable."
+    status_code = status.HTTP_404_NOT_FOUND
+    log_as_error = False
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class ModificationRefuseeError(QFieldCloudException):
+    """Les droits de l'utilisateur ne permettent pas cette modification.
+
+    Le message dit pourquoi — projet en production, ou utilisé par des UE — et
+    nomme les champs refusés.
+    """
+
+    code = "ifa_modification_refusee"
+    message = "Vous ne pouvez pas modifier ce projet."
+    status_code = status.HTTP_403_FORBIDDEN
+    log_as_error = False
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class SuppressionRefuseeError(QFieldCloudException):
+    """Les droits de l'utilisateur, ou l'état du projet ou de l'unité, interdisent
+    sa suppression."""
+
+    code = "ifa_suppression_refusee"
+    message = "Vous ne pouvez pas supprimer ce projet."
+    status_code = status.HTTP_403_FORBIDDEN
+    log_as_error = False
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class TablesInconnuesError(QFieldCloudException):
+    """L'unité a des données dans une table que la suppression ne connaît pas.
+
+    Une table ajoutée au schéma après `unite_gestion.NIVEAUX` : la vider à
+    l'aveugle pourrait violer une clé étrangère, ou laisser des lignes
+    orphelines. Défaut de configuration du serveur, pas de la demande.
+    """
+
+    code = "ifa_tables_inconnues"
+    message = "L'unité a des données que la suppression ne sait pas traiter."
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class MotDePasseInvalideError(QFieldCloudException):
+    """Le mot de passe de confirmation ne correspond pas à l'utilisateur.
+
+    403 et non 401 : sur un 401, le plugin (`SessionCloud`) croit son jeton
+    révoqué, en redemande un et rejoue la requête — avec le même mot de passe
+    faux.
+    """
+
+    code = "ifa_mot_de_passe_invalide"
+    message = "Mot de passe incorrect : le projet n'a pas été supprimé."
+    status_code = status.HTTP_403_FORBIDDEN
+    log_as_error = False
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)
+
+
+class ProjetModifieEntreTempsError(QFieldCloudException):
+    """Le projet a changé depuis que la fenêtre l'a lu."""
+
+    code = "ifa_projet_modifie"
+    message = "Le projet a été modifié entre-temps : rouvrez-le."
+    status_code = status.HTTP_409_CONFLICT
+    log_as_error = False
+
+    def __init__(self, message: str = "", detail: str = ""):
+        if message:
+            self.message = message
+        super().__init__(detail=detail or self.message)

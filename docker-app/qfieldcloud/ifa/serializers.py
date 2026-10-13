@@ -9,6 +9,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.geos.error import GEOSException
 from rest_framework import serializers
 
+from qfieldcloud.ifa import projet_gestion, projet_sonda
 from qfieldcloud.ifa.filtres import (
     MODE_BASSIN,
     MODE_CODE,
@@ -577,3 +578,362 @@ class OuvertureSerializer(serializers.Serializer):
     unite = UniteVerrouSerializer(
         help_text="État de verrou de l'unité après l'ouverture"
     )
+
+
+class TypeUeProjetSerializer(serializers.Serializer):
+    """Un type d'UE ajouté au projet, et ce qui est planifié pour lui."""
+
+    tue_code_ident = serializers.CharField(
+        trim_whitespace=True,
+        max_length=40,
+        help_text="Identifiant du type, tel que rendu par `GET types-ue/`",
+        error_messages={
+            "required": "Un type d'UE est sans identifiant.",
+            "blank": "Un type d'UE est sans identifiant.",
+            "max_length": "Identifiant de type d'UE trop long.",
+        },
+    )
+    # Les deux nombres sont exigés : ajouter un type à un projet, c'est dire ce
+    # qu'on y planifie.
+    nb_impla_plani = serializers.IntegerField(
+        min_value=projet_sonda.NB_IMPLA_MIN,
+        max_value=projet_sonda.NB_PLANI_MAX,
+        help_text="Nombre d'implantations planifiées — au moins une",
+        error_messages={
+            "required": "Indiquez le nombre d'implantations planifiées.",
+            "null": "Indiquez le nombre d'implantations planifiées.",
+            "invalid": "Le nombre d'implantations planifiées doit être un entier.",
+            "min_value": (
+                f"Le nombre d'implantations planifiées doit être d'au moins "
+                f"{projet_sonda.NB_IMPLA_MIN}."
+            ),
+            "max_value": (
+                f"Le nombre d'implantations planifiées ne peut pas dépasser "
+                f"{projet_sonda.NB_PLANI_MAX}."
+            ),
+        },
+    )
+    nb_remes_plani = serializers.IntegerField(
+        min_value=projet_sonda.NB_REMES_MIN,
+        max_value=projet_sonda.NB_PLANI_MAX,
+        help_text="Nombre de remesurages planifiés — zéro ou plus",
+        error_messages={
+            "required": "Indiquez le nombre de remesurages planifiés.",
+            "null": "Indiquez le nombre de remesurages planifiés.",
+            "invalid": "Le nombre de remesurages planifiés doit être un entier.",
+            "min_value": (
+                "Le nombre de remesurages planifiés ne peut pas être négatif."
+            ),
+            "max_value": (
+                f"Le nombre de remesurages planifiés ne peut pas dépasser "
+                f"{projet_sonda.NB_PLANI_MAX}."
+            ),
+        },
+    )
+
+
+class ProjetSondageSerializer(serializers.Serializer):
+    """Demande de création d'un projet de sondage — « Créer un projet ».
+
+    Chaque champ porte la longueur de sa colonne dans `proje_sonda` et des
+    messages en français : ceux de DRF arriveraient en anglais dans la fenêtre
+    du plugin. L'identifiant, les dates, l'utilisateur et la version de type
+    sont fixés par le serveur, jamais par le client.
+    """
+
+    pro_no = serializers.CharField(
+        trim_whitespace=True,
+        max_length=projet_sonda.LONGUEUR_NUMERO,
+        help_text="N° du projet, unique, ex. 09-OG",
+        error_messages={
+            "required": "Le n° du projet est obligatoire.",
+            "blank": "Le n° du projet est obligatoire.",
+            "max_length": (
+                f"Le n° du projet ne peut pas dépasser "
+                f"{projet_sonda.LONGUEUR_NUMERO} caractères."
+            ),
+        },
+    )
+    pro_nom = serializers.CharField(
+        trim_whitespace=True,
+        max_length=projet_sonda.LONGUEUR_NOM,
+        help_text="Nom du projet",
+        error_messages={
+            "required": "Le nom du projet est obligatoire.",
+            "blank": "Le nom du projet est obligatoire.",
+            "max_length": (
+                f"Le nom du projet ne peut pas dépasser "
+                f"{projet_sonda.LONGUEUR_NOM} caractères."
+            ),
+        },
+    )
+    pro_an = serializers.IntegerField(
+        help_text="Année du projet",
+        error_messages={
+            "required": "L'année du projet est obligatoire.",
+            "invalid": "L'année du projet doit être un nombre, ex. 2026.",
+            "null": "L'année du projet est obligatoire.",
+        },
+    )
+    # Exigée, bien que nullable dans le schéma : c'est la région du projet qui
+    # range ses unités dans la recherche par région, et qui le fait apparaître
+    # dans la liste de « Créer une UE ».
+    rad_no = serializers.ChoiceField(
+        choices=projet_sonda.REGIONS,
+        help_text="Région administrative (type énuméré `region`)",
+        error_messages={
+            "required": "La région du projet est obligatoire.",
+            "invalid_choice": "Région inconnue : « {input} ».",
+        },
+    )
+    pro_code_statu = serializers.ChoiceField(
+        choices=projet_sonda.STATUTS_CREATION,
+        default=projet_sonda.STATUT_ELABORATION,
+        help_text="« El » (en élaboration) ou « Pr » (en production)",
+        error_messages={
+            "invalid_choice": (
+                "Statut de création inconnu : « {input} ». Un projet naît en "
+                "élaboration (El) ou en production (Pr)."
+            ),
+        },
+    )
+    pro_ind_inven_norma = serializers.BooleanField(
+        default=False, help_text="Inventaire normalisé"
+    )
+    pro_descr = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        trim_whitespace=True,
+        max_length=projet_sonda.LONGUEUR_DESCRIPTION,
+        error_messages={
+            "max_length": (
+                f"La description ne peut pas dépasser "
+                f"{projet_sonda.LONGUEUR_DESCRIPTION} caractères."
+            ),
+        },
+    )
+    pro_com = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        trim_whitespace=True,
+        max_length=projet_sonda.LONGUEUR_COMMENTAIRE,
+        error_messages={
+            "max_length": (
+                f"Le commentaire ne peut pas dépasser "
+                f"{projet_sonda.LONGUEUR_COMMENTAIRE} caractères."
+            ),
+        },
+    )
+
+    # Au moins un type : un projet qui ne prévoit aucun type d'UE ne pourrait
+    # recevoir aucune unité.
+    types_ue = TypeUeProjetSerializer(
+        many=True,
+        allow_empty=False,
+        max_length=projet_sonda.TYPES_MAX,
+        help_text="Types d'UE prévus par le projet — au moins un",
+        error_messages={
+            "required": "Choisissez au moins un type d'UE pour le projet.",
+            "empty": "Choisissez au moins un type d'UE pour le projet.",
+            "not_a_list": "Les types d'UE doivent être envoyés en liste.",
+            "max_length": (
+                f"Un projet ne peut pas prévoir plus de "
+                f"{projet_sonda.TYPES_MAX} types d'UE."
+            ),
+        },
+    )
+
+    def validate_types_ue(self, types: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        # La clé primaire de l'association est le couple (projet, type) : un
+        # doublon ferait échouer l'`INSERT` en « base indisponible ».
+        vus: set[str] = set()
+
+        for type_ue in types:
+            code = type_ue["tue_code_ident"]
+            if code in vus:
+                raise serializers.ValidationError(
+                    "Un même type d'UE est choisi deux fois."
+                )
+            vus.add(code)
+
+        return types
+
+    def validate_pro_an(self, valeur: int) -> int:
+        maximum = projet_sonda.annee_max()
+
+        if not projet_sonda.ANNEE_MIN <= valeur <= maximum:
+            raise serializers.ValidationError(
+                f"L'année du projet doit être comprise entre "
+                f"{projet_sonda.ANNEE_MIN} et {maximum}."
+            )
+
+        return valeur
+
+
+class TypeUeAssocieSerializer(serializers.Serializer):
+    """Un type d'UE tel qu'associé au projet créé."""
+
+    tue_code_ident = serializers.CharField()
+    tue_nom = serializers.CharField()
+    nb_impla_plani = serializers.IntegerField()
+    nb_remes_plani = serializers.IntegerField()
+
+
+class TypeUeSerializer(serializers.Serializer):
+    """Un type d'UE du référentiel."""
+
+    tue_code_ident = serializers.CharField()
+    tue_nom = serializers.CharField()
+    tue_descr = serializers.CharField()
+
+
+class TypesUeSerializer(serializers.Serializer):
+    """La liste des types d'UE qu'un projet peut prévoir."""
+
+    types = TypeUeSerializer(many=True)
+
+
+class TypesDuProjetSerializer(serializers.Serializer):
+    """Les types d'UE prévus par un projet — vide s'il n'en prévoit aucun."""
+
+    pro_code_ident = serializers.CharField()
+    pro_no = serializers.CharField()
+    pro_nom = serializers.CharField()
+    types = TypeUeAssocieSerializer(many=True)
+
+
+class ProjetSondageCreeSerializer(serializers.Serializer):
+    """Ce que le plugin reçoit une fois le projet inscrit."""
+
+    pro_code_ident = serializers.CharField(help_text="Identifiant (UUID)")
+    pro_no = serializers.CharField()
+    pro_nom = serializers.CharField()
+    pro_an = serializers.IntegerField()
+    rad_no = serializers.CharField()
+    pro_descr = serializers.CharField()
+    pro_com = serializers.CharField()
+    pro_code_statu = serializers.CharField()
+    pro_date_statu = serializers.CharField()
+    pro_date_premi_mise_produ = serializers.CharField(
+        help_text="Vide tant que le projet n'est pas passé en production"
+    )
+    pro_ind_inven_norma = serializers.CharField(help_text="« O » ou « N »")
+    pro_date_creat = serializers.CharField()
+    pro_code_utili_creat = serializers.CharField()
+    types_ue = TypeUeAssocieSerializer(
+        many=True, help_text="Les types d'UE écrits dans proje_type_unite_echan"
+    )
+
+
+class ModificationProjetSerializer(ProjetSondageSerializer):
+    """Demande de modification d'un projet — « Modifier un projet ».
+
+    Utilisé en `partial=True` : seuls les champs envoyés sont validés, avec les
+    mêmes règles qu'à la création. Le statut accepte ici « Te » (terminé).
+
+    `pro_date_maj` est la date de dernière mise à jour lue par la fenêtre : le
+    serveur refuse la modification si elle a changé depuis.
+    """
+
+    pro_code_statu = serializers.ChoiceField(
+        choices=projet_gestion.STATUTS,
+        help_text="« El » (en élaboration), « Pr » (en production), « Te » (terminé)",
+        error_messages={
+            "invalid_choice": "Statut inconnu : « {input} ».",
+        },
+    )
+    pro_date_maj = serializers.CharField(
+        allow_blank=True,
+        trim_whitespace=True,
+        max_length=40,
+        help_text="pro_date_maj lu avant modification — contrôle de concurrence",
+    )
+
+
+class SuppressionProjetSerializer(serializers.Serializer):
+    """Demande de suppression d'un projet ou d'une unité : le mot de passe de
+    l'utilisateur."""
+
+    mot_de_passe = serializers.CharField(
+        trim_whitespace=False,
+        max_length=256,
+        style={"input_type": "password"},
+        error_messages={
+            "required": "Saisissez votre mot de passe pour confirmer la suppression.",
+            "blank": "Saisissez votre mot de passe pour confirmer la suppression.",
+        },
+    )
+
+
+class DroitsProjetSerializer(serializers.Serializer):
+    """Ce que l'appelant peut faire du projet, et pourquoi pas le reste."""
+
+    admin = serializers.BooleanField()
+    createur = serializers.BooleanField()
+    utilise = serializers.BooleanField()
+    nb_unites = serializers.IntegerField()
+    modifiable = serializers.BooleanField()
+    champs_modifiables = serializers.ListField(child=serializers.CharField())
+    raison_modification = serializers.CharField()
+    supprimable = serializers.BooleanField()
+    raison_suppression = serializers.CharField()
+
+
+class DroitsUniteSerializer(serializers.Serializer):
+    """Ce que l'appelant peut faire de l'unité (« Consulter une UE »)."""
+
+    admin = serializers.BooleanField()
+    createur = serializers.BooleanField()
+    diffusee = serializers.BooleanField()
+    verrouillee_par_un_autre = serializers.BooleanField()
+    supprimable = serializers.BooleanField()
+    raison_suppression = serializers.CharField()
+
+
+class UniteDetailSerializer(serializers.Serializer):
+    """Une unité, ce que sa suppression emporterait, et les droits."""
+
+    une_code_ident = serializers.CharField()
+    tue_nom = serializers.CharField()
+    une_ind_verro = serializers.CharField()
+    une_nom_propr_verro = serializers.CharField()
+    une_date_creat = serializers.CharField()
+    une_code_utili_creat = serializers.CharField()
+    une_date_maj = serializers.CharField()
+    une_code_utili_maj = serializers.CharField()
+    nb_mesurages = serializers.IntegerField()
+    nb_enregistrements = serializers.IntegerField()
+    tables = serializers.DictField(child=serializers.IntegerField())
+    droits = DroitsUniteSerializer()
+
+
+class SuppressionUniteFaiteSerializer(serializers.Serializer):
+    supprime = serializers.BooleanField()
+    une_code_ident = serializers.CharField()
+    nb_mesurages = serializers.IntegerField()
+    nb_enregistrements = serializers.IntegerField()
+    tables = serializers.DictField(child=serializers.IntegerField())
+
+
+class ProjetDetailSerializer(ProjetSondageCreeSerializer):
+    """Un projet, ses types d'UE, son usage et les droits de l'appelant."""
+
+    pro_date_maj = serializers.CharField()
+    pro_code_utili_maj = serializers.CharField()
+    nb_unites = serializers.IntegerField()
+    droits = DroitsProjetSerializer()
+
+
+class ListeProjetsSerializer(serializers.Serializer):
+    """Tous les projets de sondage, pour « Modifier / Afficher un projet »."""
+
+    admin = serializers.BooleanField(help_text="L'appelant est-il administrateur ?")
+    utilisateur = serializers.CharField()
+    projets = ProjetDetailSerializer(many=True)
+
+
+class SuppressionFaiteSerializer(serializers.Serializer):
+    supprime = serializers.BooleanField()
+    pro_code_ident = serializers.CharField()
+    pro_no = serializers.CharField()
+    types_supprimes = serializers.IntegerField()

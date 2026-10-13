@@ -19,11 +19,37 @@ découlent, appliquées dans `db.py` :
 2. **Transaction en lecture seule par défaut.** `db.curseur()` ouvre un
    `SET TRANSACTION READ ONLY` : même un défaut de programmation ne peut pas
    écrire dans la base de production. Une seule exception,
-   `db.curseur_ecriture()`, sert aux deux écritures du programme, toutes deux
-   sur `unite_echan` : le **verrouillage** d'une unité (`verrou.py`, quatre
-   colonnes) et la **création** d'une nouvelle unité (`unite.py`). Le compte
-   PostgreSQL du serveur a donc besoin des droits `UPDATE` et `INSERT` sur cette
-   table, et d'eux seuls.
+   `db.curseur_ecriture()`, sert à toutes les écritures du programme : le
+   **verrouillage** d'une unité (`verrou.py`, quatre colonnes) et la
+   **création** d'une nouvelle unité (`unite.py`), sur `unite_echan` ; la
+   **création** d'un projet de sondage et de ses types d'UE
+   (`projet_sonda.py`), puis sa **modification** et sa **suppression**
+   (`projet_gestion.py`), sur `proje_sonda` et `proje_type_unite_echan` ; la
+   **suppression** d'une unité et de toutes ses données de terrain
+   (`unite_gestion.py`, §15). Le compte PostgreSQL du serveur a donc besoin de
+   ces droits, et d'eux seuls :
+
+   ```sql
+   GRANT UPDATE, INSERT ON ifa_data.unite_echan TO ifauser;
+   GRANT INSERT, UPDATE, DELETE ON ifa_data.proje_sonda TO ifauser;
+   GRANT SELECT, INSERT, UPDATE, DELETE
+       ON ifa_data.proje_type_unite_echan TO ifauser;
+   -- Supprimer une unité (`unite_gestion.py`) : l'unité et ses données de
+   -- terrain, dans les 44 tables qui portent `une_code_ident`.
+   DO $$
+   DECLARE t record;
+   BEGIN
+       FOR t IN SELECT c.table_name
+                  FROM information_schema.columns c
+                  JOIN information_schema.tables x USING (table_schema, table_name)
+                 WHERE c.table_schema = 'ifa_data'
+                   AND c.column_name = 'une_code_ident'
+                   AND x.table_type = 'BASE TABLE'
+       LOOP
+           EXECUTE format('GRANT DELETE ON ifa_data.%I TO ifauser', t.table_name);
+       END LOOP;
+   END $$;
+   ```
 3. **Aucune migration.** `routers.IfaDatabaseRouter` renvoie `False` pour
    `allow_migrate` sur l'alias `ifa`, et `settings.DATABASES["ifa"]["TEST"]`
    vaut `{"MIRROR": "default"}` pour que le lanceur de tests ne crée jamais de
@@ -56,6 +82,8 @@ paramètres, aucune chance de les voir diverger.
 | `IFA_PROJET_FORMULAIRE` | `formulaire_UE_IFA` | Nom du projet de saisie d'une nouvelle unité. |
 | `IFA_FORMULAIRE_UNITES_MAX` | `2000` | Unités qu'un filtre de création peut embarquer. |
 | `IFA_FORMULAIRE_LIGNES_MAX` | `300000` | Garde-fou du remplissage d'une création. |
+| `IFA_PROJET_VERSION_TYPE` | *(vide)* | Version de type (`vet_code_ident`) des projets de sondage créés. Vide : la version en production du type « Type Projet » — voir §11. |
+| `IFA_ORGANISATION_ADMIN` | valeur de `IFA_PROJET_MODELE_PROPRIETAIRE` (`ifa_team`) | Organisation dont les membres de rôle `admin` administrent les projets de sondage — voir §14. |
 
 En développement local sous Docker Desktop, `VALIDATION_PG_HOST` vaut
 `host.docker.internal`. Sur un hôte Linux, cette adresse n'est pas résolue
@@ -683,3 +711,465 @@ reçoit l'ancien ou le nouveau, jamais un mélange —, l'archive **avant**
 avec l'ancienne archive.
 
 Tests : `tests/test_plugin.py`.
+
+---
+
+## 11. `POST /api/v1/ifa/projets-sondage/`
+
+Crée un projet de sondage — une ligne dans `ifa_data.proje_sonda` — et les types
+d'UE qu'il prévoit — une ligne par type dans `ifa_data.proje_type_unite_echan`.
+C'est la commande « Créer un projet » du plugin (`FenetreCreerProjet.qml`). Rien
+d'autre n'est préparé — pas de projet QFieldCloud, pas de packaging : la réponse
+revient une fois les lignes écrites. Code : `projet_sonda.py`.
+
+« Projet » désigne ici le **projet de sondage** de la base métier, auquel les
+mesurages des unités sont rattachés — pas un projet QFieldCloud (`projets.py`).
+
+### Requête
+
+```json
+{
+  "pro_no": "09-OG",
+  "pro_nom": "Observations générales",
+  "pro_an": 2026,
+  "rad_no": "09",
+  "pro_code_statu": "El",
+  "pro_ind_inven_norma": false,
+  "pro_descr": "",
+  "pro_com": "",
+  "types_ue": [
+    { "tue_code_ident": "f0758571-e68e-47f5-a3d5-9c865e3c61c9",
+      "nb_impla_plani": 12, "nb_remes_plani": 2 },
+    { "tue_code_ident": "8657841d-fb87-475a-a1ee-7ad6de8b9c09",
+      "nb_impla_plani": 1, "nb_remes_plani": 0 }
+  ]
+}
+```
+
+| Champ | Obligatoire | Règle |
+|---|---|---|
+| `pro_no` | oui | 20 caractères. **Unique**, à la casse et aux espaces près. |
+| `pro_nom` | oui | 100 caractères. |
+| `pro_an` | oui | Entier entre 1950 et l'année courante + 5. |
+| `rad_no` | oui | Une valeur du type énuméré `region` (`01`…`17`, `DDF`, `DFA`, `DPP`, `SP`). Nullable dans le schéma, mais exigée : c'est elle qui range le projet dans la recherche par région et dans la liste de « Créer une UE ». |
+| `pro_code_statu` | non (`El`) | `El` (en élaboration) ou `Pr` (en production). Un projet ne naît pas `Te`. |
+| `pro_ind_inven_norma` | non (`false`) | Écrit `O` / `N`. |
+| `pro_descr`, `pro_com` | non | 1 000 et 4 000 caractères. Vides : écrits `NULL`. |
+| `types_ue` | oui | Liste d'**au moins un** type, 50 au plus, sans doublon. Chaque type est désigné par son `tue_code_ident`, tel que le rend `GET types-ue/` (§12). « Type Projet » est refusé. |
+| `types_ue[].nb_impla_plani` | oui | Nombre d'implantations planifiées : entier de 1 à 100 000. |
+| `types_ue[].nb_remes_plani` | oui | Nombre de remesurages planifiés : entier de 0 à 100 000. |
+
+### Ce que fixe le serveur
+
+| Colonne | Valeur |
+|---|---|
+| `pro_code_ident` | Un UUID, comme les 166 projets hérités. |
+| `pro_date_statu`, `pro_date_creat`, `pro_date_maj` | `LOCALTIMESTAMP`. |
+| `pro_date_premi_mise_produ` | `LOCALTIMESTAMP` si le projet naît `Pr`, sinon `NULL`. |
+| `pro_code_utili_creat`, `pro_code_utili_maj` | L'utilisateur QFieldCloud, tronqué à 20 caractères. |
+| `vet_code_ident` | `IFA_PROJET_VERSION_TYPE` si renseignée ; sinon la version en production (`vet_code_statu = 'P'`) du type « Type Projet » — aujourd'hui « Modèle général », celle de tous les projets du fonds. S'il y en a plusieurs, celle que portent le plus de projets. |
+| `qgis_id` | Identité, remplie par PostgreSQL. |
+
+Et pour chaque type de `proje_type_unite_echan` : `pro_code_ident` (le projet
+qui vient d'être écrit), `ptu_date_creat` / `ptu_date_maj` à
+`LOCALTIMESTAMP`, `ptu_code_utili_creat` / `ptu_code_utili_maj` à
+l'utilisateur.
+
+### Les types d'UE du projet — `proje_type_unite_echan`
+
+Un projet prévoit plusieurs types d'UE, et un type d'UE se retrouve dans
+plusieurs projets : c'est une association plusieurs-à-plusieurs, qui n'existait
+pas dans le schéma. La table est créée par **`sql/proje_type_unite_echan.sql`**
+(idempotent, à appliquer une fois sur chaque base existante) ; sur une base
+recréée de zéro, elle vient de `complement_sql_projet.sql`.
+
+| Colonne | Type | Rôle |
+|---|---|---|
+| `pro_code_ident` | `varchar(40)` | Le projet — clé étrangère vers `proje_sonda`. |
+| `tue_code_ident` | `varchar(40)` | Le type — clé étrangère vers `type_unite_echan`. |
+| `ptu_nb_impla_plani` | `integer NOT NULL`, ≥ 1 | Nombre d'implantations planifiées. |
+| `ptu_nb_remes_plani` | `integer NOT NULL`, ≥ 0 | Nombre de remesurages planifiés. |
+| `ptu_date_creat`, `ptu_code_utili_creat`, `ptu_date_maj`, `ptu_code_utili_maj` | | Traçabilité, comme les autres tables. |
+| `qgis_id` | `bigint` identité | Clé technique mono-colonne et déclencheur `trg_qgis_id`, comme les tables du projet QField. |
+
+Clé primaire `(pro_code_ident, tue_code_ident)` — un type ne figure qu'une fois
+par projet —, et un index sur `tue_code_ident` pour la question inverse
+(« quels projets prévoient ce type ? »). Les noms suivent les conventions du
+schéma : abréviations à cinq lettres, préfixe de colonne `ptu_`.
+
+Les deux nombres sont **obligatoires** : ajouter un type à un projet, c'est dire
+ce qu'on y planifie. Au moins une implantation — un type sans implantation
+n'aurait rien à faire dans le projet —, et zéro remesurage ou plus — une
+campagne unique n'en prévoit pas. Les contraintes `ck_ptu_nb_impla_plani` et
+`ck_ptu_nb_remes_plani` le garantissent dans la base, le sérialiseur le dit en
+français avant elle.
+
+Le projet et ses types sont écrits dans **une même transaction**. Les types sont
+vérifiés avant le premier `INSERT` : un type inconnu (ou « Type Projet ») annule
+la demande entière, et aucun projet ne reste sans les types qu'on a voulu lui
+donner.
+
+### Pourquoi l'unicité du numéro est vérifiée ici
+
+La clé primaire est l'UUID : la base n'empêche pas deux projets au même
+`pro_no`. Le fonds n'en compte pourtant aucun, et le plugin transporte ce numéro
+comme `code_projet` d'une unité créée — deux projets au même numéro rendraient
+ce rattachement ambigu.
+
+La vérification et l'`INSERT` se font dans la même transaction, sous
+`pg_advisory_xact_lock(hashtext('ifa.proje_sonda.pro_no'))` : deux créations
+simultanées du même numéro ne passent pas toutes les deux. Le verrou tombe avec
+la transaction et ne demande aucun droit particulier.
+
+Les noms, eux, ne sont pas uniques dans le fonds (« Aménagement et
+compensation de l'habitat du poisson » y figure trois fois) : ils ne sont pas
+contrôlés.
+
+### Réponse — 201
+
+La ligne écrite, sans aucun `null` :
+
+```json
+{
+  "pro_code_ident": "015f3d0b-fdef-4f18-ac40-5d5e31ca3cd2",
+  "pro_no": "09-OG", "pro_nom": "Observations générales", "pro_an": 2026,
+  "rad_no": "09", "pro_descr": "", "pro_com": "",
+  "pro_code_statu": "El", "pro_date_statu": "2026-10-05T09:30:00",
+  "pro_date_premi_mise_produ": "", "pro_ind_inven_norma": "N",
+  "pro_date_creat": "2026-10-05T09:30:00", "pro_code_utili_creat": "ifauser",
+  "types_ue": [
+    { "tue_code_ident": "f0758571-e68e-47f5-a3d5-9c865e3c61c9",
+      "tue_nom": "Inventaire sur plan d'eau",
+      "nb_impla_plani": 12, "nb_remes_plani": 2 },
+    { "tue_code_ident": "8657841d-fb87-475a-a1ee-7ad6de8b9c09",
+      "tue_nom": "ADNe", "nb_impla_plani": 1, "nb_remes_plani": 0 }
+  ]
+}
+```
+
+### Erreurs
+
+| Statut | `code` | Cas |
+|---|---|---|
+| 400 | `ifa_filtre_invalide` | Champ absent, trop long, année hors bornes, région ou statut inconnu, aucun type d'UE, type en double, nombre planifié absent, sous son minimum ou au-delà de 100 000. Le message nomme le champ. |
+| 400 | `ifa_type_unite_introuvable` | Un type d'UE n'existe pas dans `type_unite_echan`, ou c'est « Type Projet ». Rien n'est écrit. |
+| 409 | `ifa_projet_existant` | Le n° est déjà pris ; le message nomme le projet qui le porte et son année. |
+| 503 | `ifa_version_projet_introuvable` | Aucune version en production du type « Type Projet » : défaut du référentiel, à corriger par `IFA_PROJET_VERSION_TYPE`. |
+| 503 | `ifa_base_indisponible` | Base injoignable, droit `INSERT` manquant sur `proje_sonda` ou `proje_type_unite_echan`, ou table `proje_type_unite_echan` absente (script non appliqué). |
+
+---
+
+## 12. `GET /api/v1/ifa/types-ue/`
+
+Les types d'UE qu'un projet peut planifier : la liste du dialogue « Ajouter un
+type d'UE » de « Créer un projet ». Lecture seule.
+
+```json
+{
+  "types": [
+    { "tue_code_ident": "8657841d-fb87-475a-a1ee-7ad6de8b9c09",
+      "tue_nom": "ADNe", "tue_descr": "" },
+    { "tue_code_ident": "f0758571-e68e-47f5-a3d5-9c865e3c61c9",
+      "tue_nom": "Inventaire sur plan d'eau", "tue_descr": "" }
+  ]
+}
+```
+
+Lus dans `type_unite_echan`, triés par libellé, **sans « Type Projet »** (le
+type qui qualifie les projets eux-mêmes, voir `vet_code_ident` au §11) et sans
+les types au libellé vide. 19 types sur le fonds de développement.
+
+Le plugin ne se sert pas ici de sa liste codée en dur (`Referentiels.typesUe`) :
+elle compte 13 types et en omet 6 — ADNe, Enregistrement saumon atlantique,
+Importation hors Québec de spécimens, Recrutement MOSA Gaspésie, Réseau
+d'enregistrements des émetteurs, Réseau de suivi de la température.
+
+---
+
+## 13. `GET /api/v1/ifa/projets-sondage/types-ue/?pro_no=…`
+
+Les types d'UE que prévoit un projet, lus dans `proje_type_unite_echan`. « Créer
+une UE » y restreint sa liste de types quand un projet est choisi. Lecture
+seule. Code : `projet_sonda.types_du_projet()`.
+
+Le projet se désigne par son **n°** (`pro_no`), parce que c'est ce que porte la
+liste de projets du plugin, lue dans la couche `proje_sonda`. Il voyage en
+paramètre de requête et non dans le chemin : saisi librement, il peut contenir
+des espaces, voire une barre oblique. La comparaison ignore la casse et les
+espaces de bordure, comme l'unicité vérifiée à la création (§11).
+
+```json
+{
+  "pro_code_ident": "ac9d1161-a64f-4582-93c1-60d7a605e147",
+  "pro_no": "09-OG",
+  "pro_nom": "Observations générales",
+  "types": [
+    { "tue_code_ident": "8657841d-fb87-475a-a1ee-7ad6de8b9c09",
+      "tue_nom": "ADNe", "nb_impla_plani": 1, "nb_remes_plani": 0 },
+    { "tue_code_ident": "a2c0ae50-ca5d-428f-b516-155a1b69a86a",
+      "tue_nom": "Pêche sportive", "nb_impla_plani": 12, "nb_remes_plani": 3 }
+  ]
+}
+```
+
+`types` est triée par libellé, et **vide** quand le projet ne prévoit aucun
+type — c'est le cas de tous les projets antérieurs à la table. Ce n'est pas une
+erreur : le plugin propose alors tous les types.
+
+| Statut | `code` | Cas |
+|---|---|---|
+| 400 | `ifa_filtre_invalide` | `pro_no` absent, vide ou de plus de 20 caractères. |
+| 404 | `ifa_projet_introuvable` | Aucun projet ne porte ce n°. |
+| 503 | `ifa_base_indisponible` | Base injoignable, ou table `proje_type_unite_echan` absente. |
+
+Le plugin traite ces trois erreurs de la même façon : il propose tous les types,
+en disant pourquoi. La saisie d'une unité n'en est jamais bloquée.
+
+---
+
+## 14. Afficher, modifier, supprimer un projet de sondage
+
+La fenêtre « Modifier / Afficher / Supprimer un projet » du plugin. Code :
+`projet_gestion.py` ; la création reste dans `projet_sonda.py` (§11), dont les
+contrôles sont repris (n° unique, types existants).
+
+| Verbe | Chemin | Rôle |
+|---|---|---|
+| `GET` | `projets-sondage/` | Tous les projets, avec leur nombre d'UE et les droits de l'appelant sur chacun. |
+| `GET` | `projets-sondage/<pro_code_ident>/` | Un projet, ses types d'UE, son nombre d'UE, les droits. |
+| `POST` | `projets-sondage/<pro_code_ident>/modifier/` | Modifie les champs envoyés. |
+| `POST` | `projets-sondage/<pro_code_ident>/supprimer/` | Supprime le projet et ses types — mot de passe exigé. |
+
+Le projet se désigne par son identifiant (UUID), qui tient dans un segment
+d'URL. `projets-sondage/types-ue/` (§13) est déclaré avant
+`projets-sondage/<pro_code_ident>/`, qui l'avalerait sinon. Modifier et
+supprimer passent par POST, comme les autres actions de l'application ; la
+suppression porte un corps (le mot de passe), que certains intermédiaires
+retirent d'un DELETE.
+
+### Qui est administrateur
+
+Un **superutilisateur** QFieldCloud, ou un **membre de rôle `admin`** de
+l'organisation `IFA_ORGANISATION_ADMIN` (`ifa_team` par défaut) — y compris son
+propriétaire. `is_staff` ne suffit pas : ce drapeau ouvre la page
+d'administration Django (pour publier le plugin, par exemple), il ne dit rien du
+métier. Sur l'instance de développement, `ifauser` est `is_staff` mais
+seulement `member` d'`ifa_team` : il n'est **pas** administrateur des projets.
+
+Pour nommer un administrateur : admin QFieldCloud → *Organization members* →
+le membre d'`ifa_team` → rôle `admin`.
+
+### Les droits — `droits()`
+
+| | Utilisateur standard | Administrateur |
+|---|---|---|
+| **Modifier** un projet en production (`Pr`) | ✗ — affichage seul | ✓ |
+| **Modifier** un projet hors production (`El`, `Te`) | ✓ | ✓ |
+| … s'il est **utilisé par une UE** | nom, description et nombres planifiés | nom, description et nombres planifiés |
+| **Supprimer** un projet qu'il a créé, hors production | ✓ | ✓ |
+| **Supprimer** un projet en production, ou celui d'un autre | ✗ | ✓ |
+| **Supprimer** un projet utilisé par une UE | ✗ | ✗ |
+
+- **« Utilisé par une UE »** : au moins un mesurage le référence
+  (`mesurage.pro_code_ident`). C'est le seul lien entre une unité et un projet.
+  Sur le fonds de développement, 157 projets sur 166 le sont.
+- **Le créateur** est `pro_code_utili_creat`, comparé au nom de l'utilisateur
+  QFieldCloud tronqué à 20 caractères, sans tenir compte de la casse. Pour le
+  fonds hérité, c'est le code de l'agent dans l'ancienne application
+  (`kamdo1`, `robma8`…) : ces projets ne sont supprimables par un utilisateur
+  standard que si son nom QFieldCloud est ce même code.
+- **Projet utilisé : les types d'UE sont figés, pas leurs nombres.** On ne
+  peut ni ajouter ni retirer un type — des mesurages en dépendent —, mais les
+  nombres d'implantations et de remesurages planifiés restent modifiables.
+  Les droits l'expriment par le pseudo-champ `types_ue_nombres`
+  (`NOMBRES_PLANIFIES`) : la demande envoie toujours la liste complète dans
+  `types_ue`, et `changements_effectifs()` la classe en `types_ue_nombres` si
+  elle garde exactement les mêmes types, en `types_ue` sinon.
+- **Aucun projet utilisé n'est supprimé, administrateur compris.**
+  `mesurage.pro_code_ident` n'a pas de clé étrangère vers `proje_sonda` : la
+  base laisserait faire, et les mesurages resteraient rattachés à un projet
+  disparu, sans erreur ni trace. C'est une protection des données plutôt
+  qu'une question de droits ; pour la lever, il faudrait d'abord décider du
+  sort des mesurages.
+
+Les droits sont rendus avec chaque projet, et la fenêtre s'en sert pour se
+présenter. Ils sont **recalculés dans la transaction qui écrit** — après un
+`SELECT … FOR UPDATE` sur le projet —, si bien qu'un projet passé en production
+ou utilisé entre-temps est refusé au moment d'écrire.
+
+```json
+"droits": {
+  "admin": false, "createur": true, "utilise": false, "nb_unites": 0,
+  "modifiable": true,
+  "champs_modifiables": ["pro_no", "pro_nom", "pro_an", "rad_no",
+                         "pro_code_statu", "pro_ind_inven_norma",
+                         "types_ue", "pro_descr", "pro_com",
+                         "types_ue_nombres"],
+  "raison_modification": "",
+  "supprimable": true, "raison_suppression": ""
+}
+```
+
+Les raisons sont rédigées pour être affichées telles quelles (« Ce projet est
+en production : seul un administrateur peut le modifier. »).
+
+### Modifier
+
+```json
+{ "pro_date_maj": "2026-10-07T10:12:03", "pro_nom": "Nouveau nom",
+  "types_ue": [ { "tue_code_ident": "…", "nb_impla_plani": 5, "nb_remes_plani": 1 } ] }
+```
+
+- **Seuls les champs envoyés** sont considérés, avec les règles de la création
+  (§11) — le statut accepte en plus `Te`. Un champ envoyé mais identique à la
+  base n'est pas un changement et ne demande aucun droit.
+- **`pro_date_maj` est exigé** : c'est la date lue à l'ouverture. Si elle a
+  changé, quelqu'un a modifié le projet entre-temps : **409**
+  `ifa_projet_modifie`, qui nomme l'auteur, plutôt que d'écraser son travail.
+- **Le statut** : `pro_date_statu` passe à maintenant ; un passage en production
+  date `pro_date_premi_mise_produ`, une fois pour toutes.
+- **Les types d'UE** : la liste envoyée remplace l'ancienne. Les types retirés
+  sont supprimés, les nouveaux ajoutés, ceux dont les nombres changent mis à
+  jour ; les autres ne sont pas touchés.
+- `pro_date_maj` et `pro_code_utili_maj` sont mis à jour. La réponse est le
+  projet relu (comme `GET`), droits compris.
+
+### Supprimer
+
+```json
+{ "mot_de_passe": "…" }
+```
+
+1. Le **mot de passe** est vérifié en premier (`check_password`), avant toute
+   lecture de la base. Faux : **403** `ifa_mot_de_passe_invalide` — pas 401,
+   sur lequel `SessionCloud` redemanderait un jeton et rejouerait la requête.
+   L'échec est journalisé (`WARNING`), jamais le mot de passe.
+2. Les droits sont recalculés sous `FOR UPDATE`.
+3. Les types du projet (`proje_type_unite_echan`) puis le projet sont
+   supprimés, dans la même transaction. La suppression est journalisée
+   (`WARNING`) avec son auteur.
+
+### Erreurs
+
+| Statut | `code` | Cas |
+|---|---|---|
+| 400 | `ifa_filtre_invalide` | Identifiant absent ou trop long, champ invalide, `pro_date_maj` absente, mot de passe vide. |
+| 400 | `ifa_type_unite_introuvable` | Un type d'UE inconnu. |
+| 403 | `ifa_modification_refusee` | Projet en production (standard), ou champ hors de ceux permis pour un projet utilisé — le message nomme les champs refusés. |
+| 403 | `ifa_suppression_refusee` | Pas le créateur, projet en production (standard), ou projet utilisé. |
+| 403 | `ifa_mot_de_passe_invalide` | Mot de passe incorrect. |
+| 404 | `ifa_projet_introuvable` | Le projet n'existe plus. |
+| 409 | `ifa_projet_modifie` | Modifié par quelqu'un d'autre depuis l'ouverture. |
+| 409 | `ifa_projet_existant` | Le nouveau n° est déjà porté par un autre projet. |
+| 503 | `ifa_base_indisponible` | Base injoignable, ou droit `UPDATE`/`DELETE` manquant. |
+
+### Performances
+
+Le nombre d'UE d'un projet se compte dans `mesurage`, qui n'a pas d'index sur
+`pro_code_ident` : ~350 ms par projet, et autant pour **toute la liste**, que
+`lister()` compte en une seule requête (`SELECT DISTINCT pro_code_ident,
+une_code_ident`). `sql/index_recommandes.sql` propose
+`idx_mesurage_pro_code_ident`, qui répond depuis l'index seul.
+
+### Ce qui n'est pas fait
+
+- Pas de limite au nombre d'essais de mot de passe : la suppression exige déjà
+  une session authentifiée. Si le risque le justifie, la limitation de débit de
+  DRF (`throttle_classes`) se pose sur `SupprimerProjetView`.
+- Pas d'historique des modifications au-delà de `pro_date_maj` /
+  `pro_code_utili_maj` et du journal du serveur.
+
+---
+
+## 15. Supprimer une unité d'échantillonnage — `unite_gestion.py`
+
+« Consulter une UE » propose de supprimer une unité. Deux points d'accès :
+
+| | |
+|---|---|
+| `GET /api/v1/ifa/unites/<une_code_ident>/` | l'unité, ce que sa suppression emporterait, et les droits de l'appelant |
+| `POST /api/v1/ifa/unites/<une_code_ident>/supprimer/` | `{"mot_de_passe": "…"}` — la suppression |
+
+POST et non DELETE, comme pour un projet : la demande porte le mot de passe.
+
+### Les droits — `droits()`
+
+La même logique que les projets (§14) :
+
+| | Utilisateur standard | Administrateur |
+|---|---|---|
+| Unité qu'il a créée, données **non diffusées** | ✓ | ✓ |
+| Unité qu'il a créée, données **diffusées** | ✗ | ✓ |
+| Unité créée par un autre | ✗ | ✓ |
+| Unité **verrouillée par quelqu'un d'autre** | ✗ | ✗ |
+
+- **Créateur** : `une_code_utili_creat`, comparé comme pour un projet
+  (`projet_gestion.meme_auteur` : nom tronqué à 20 caractères, casse ignorée).
+- **Diffusée** : au moins un mesurage porte `une_etat_diffu = 'D'` — le
+  pendant d'un projet en production. C'est le cas de tout le fonds hérité
+  (699 885 mesurages sur 700 369) : en pratique, un utilisateur standard ne
+  supprime que les unités qu'il a créées dans « Créer une UE » et qui n'ont
+  pas encore été diffusées.
+- **Verrouillée par un autre** : refusé à tous, administrateur compris — une
+  équipe travaille dessus, son projet QField ne pourrait plus être
+  synchronisé. Le message nomme le détenteur. Une unité verrouillée **par
+  l'utilisateur lui-même** reste supprimable : c'est le cas d'une unité créée
+  par erreur, qui naît verrouillée à son nom (§5).
+- **Administrateur** : le même que pour les projets (§14).
+
+### Ce qui est supprimé
+
+Une unité ne vit pas seule : ses mesurages et toutes les données qui en
+dépendent (pêches, captures, anomalies, habitat, physico-chimie…) portent son
+code dans **43 tables**, plus `unite_echan`. Toutes partent, dans **une seule
+transaction** : rien ne reste orphelin, et rien ne part si une table refuse.
+
+Les clés étrangères de `ifa_data` sont en `NO ACTION` : un parent ne part
+qu'après ses enfants. `NIVEAUX` range les tables des feuilles vers la racine
+(`anoma_speci` → `detail_speci` → `pose_levee_filet` → `peche_exper` →
+`mesurage`, et ainsi de suite) ; un test confronte cet ordre au graphe des clés
+relevé sur la base. Chaque table porte `une_code_ident` en tête de sa clé
+primaire : chaque `DELETE` passe par l'index (la plus grosse unité compte 132
+mesurages).
+
+**Garde-fou** : une table de `ifa_data` qui porte `une_code_ident` sans figurer
+dans `NIVEAUX` — ajoutée au schéma depuis — n'est jamais vidée à l'aveugle. Si
+elle contient des lignes de l'unité, la suppression est refusée
+(`TablesInconnuesError`, 503) et le journal la nomme : il faut alors l'ajouter
+à `NIVEAUX`, au bon niveau.
+
+La suppression est journalisée en `WARNING`, avec le nombre de lignes par
+table.
+
+### Réponses
+
+```json
+GET → {
+  "une_code_ident": "02-12777-IPE", "tue_nom": "Inventaire sur plan d'eau",
+  "une_ind_verro": "N", "une_nom_propr_verro": "",
+  "une_date_creat": "…", "une_code_utili_creat": "kamdo1", "…": "…",
+  "nb_mesurages": 3, "nb_enregistrements": 8402,
+  "tables": { "mesurage": 3, "peche_exper": 3, "detail_speci": 3649, "…": 0 },
+  "droits": { "admin": false, "createur": true, "diffusee": true,
+              "verrouillee_par_un_autre": false, "supprimable": false,
+              "raison_suppression": "Les données de cette unité sont diffusées : …" }
+}
+
+POST → { "supprime": true, "une_code_ident": "02-12777-IPE",
+         "nb_mesurages": 3, "nb_enregistrements": 8402, "tables": { … } }
+```
+
+### Erreurs
+
+| Statut | Code | Quand |
+|---|---|---|
+| 400 | `ifa_filtre_invalide` | code absent ou trop long, mot de passe manquant |
+| 403 | `ifa_mot_de_passe_invalide` | mot de passe faux — vérifié **avant** toute lecture |
+| 403 | `ifa_suppression_refusee` | droits insuffisants ; le message dit pourquoi |
+| 404 | `ifa_unite_introuvable` | l'unité n'existe pas (ou plus) |
+| 503 | `ifa_tables_inconnues` | données dans une table que la suppression ne connaît pas |
+
+### Droits SQL
+
+La suppression demande `DELETE` sur les 44 tables qui portent `une_code_ident`
+— voir le bloc `GRANT` du §1, qui les énumère depuis le catalogue.
